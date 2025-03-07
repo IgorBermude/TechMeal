@@ -2,9 +2,10 @@ package br.bom.techmeal.academic.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 @Entity
-public class Cliente {
+public class Cliente implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int idCliente;
@@ -14,9 +15,9 @@ public class Cliente {
     private double saldoCliente;
     @Column ( nullable = false , length = 5)
     private double limiteCliente;
-    @Column ( nullable = false)
+    @Temporal(value = TemporalType.DATE)
     private Date dtNascCliente;
-    @Column
+    @Temporal(value = TemporalType.DATE)
     private Date ultimaCompraCliente;
     @Column
     private double faturaCliente;
