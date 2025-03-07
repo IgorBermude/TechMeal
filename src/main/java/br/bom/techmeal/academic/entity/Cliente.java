@@ -16,7 +16,7 @@ public class Cliente {
     private double limiteCliente;
     @Column ( nullable = false)
     private Date dtNascCliente;
-    @Column ( nullable = false)
+    @Column
     private Date ultimaCompraCliente;
     @Column
     private double faturaCliente;
