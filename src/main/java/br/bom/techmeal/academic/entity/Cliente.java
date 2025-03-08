@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 public class Cliente implements Serializable {
     @Id
@@ -21,6 +23,10 @@ public class Cliente implements Serializable {
     private Date ultimaCompraCliente;
     @Column
     private double faturaCliente;
+    @OneToMany(mappedBy ="Cliente")
+    private List<Comanda> comandas;
+
+
 
     public void recarregarCartão(){
 

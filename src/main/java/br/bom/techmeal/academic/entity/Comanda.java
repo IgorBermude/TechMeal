@@ -9,10 +9,13 @@ public class Comanda implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int idCompraComanda;
+    @ManyToOne
+    private Cliente cliente;
     @Column(name = "valorTotal", nullable = false)
     private int valorTotalComanda;
     @Temporal(value = TemporalType.DATE)
     private Date horaEntradaComanda;
     @Temporal(value = TemporalType.DATE)
     private Date horaSaidaComanda;
+
 }
