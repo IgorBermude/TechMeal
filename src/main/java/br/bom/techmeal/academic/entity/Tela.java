@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
 public class Tela implements Serializable{
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
