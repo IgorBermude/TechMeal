@@ -26,10 +26,10 @@ public class Produto implements Serializable {
     @Column(nullable = false)
     private double valorDeCustoProduto;
 
-    @OneToMany (mappedBy = "Produto")
+    @OneToMany (mappedBy = "produto")
     private List<HistoricoPreco> historicoPrecoList;
 
-    @ManyToMany (mappedBy = "Produto", fetch = FetchType.LAZY)
+    @ManyToMany (mappedBy = "produto", fetch = FetchType.LAZY)
     private List<Comanda> comandaListProduto;
 
     public void gerarCodigoBarras(){

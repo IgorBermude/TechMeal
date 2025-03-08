@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 public class Comanda implements Serializable {
     @Id
@@ -15,6 +17,15 @@ public class Comanda implements Serializable {
     private Date horaEntradaComanda;
     @Temporal(value = TemporalType.DATE)
     private Date horaSaidaComanda;
+
     @ManyToOne
     private Cliente cliente;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_comanda_produto",
+            joinColumns = @JoinColumn(name = "comanda_id"),
+            inverseJoinColumns = @JoinColumn (name = "produto_id")
+    )
+    private List<Produto> produtoListComanda;
 }

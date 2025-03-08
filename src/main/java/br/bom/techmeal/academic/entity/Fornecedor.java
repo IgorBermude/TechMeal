@@ -3,6 +3,8 @@ package br.bom.techmeal.academic.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
+
 @Entity
 public class Fornecedor implements Serializable {
     @Id
@@ -23,4 +25,7 @@ public class Fornecedor implements Serializable {
 
     @Column(nullable = false)
     private String chavePixFornecedor;
+
+    @OneToMany (mappedBy = "fornecedor")
+    private List<ControleContas> controleContasListFornecedor;
 }

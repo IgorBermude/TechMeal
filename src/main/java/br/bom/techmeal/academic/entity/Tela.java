@@ -17,6 +17,6 @@ public class Tela implements Serializable{
     @Column (nullable = false)
     private String url;
 
-    @OneToMany(mappedBy = "Tela")
+    @OneToMany(mappedBy = "tela")
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListTela;
 }

@@ -1,6 +1,7 @@
 package br.bom.techmeal.academic.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -13,4 +14,7 @@ public class HistoricoRecarga implements Serializable {
 
     @Column(nullable = false)
     private double valorRecargaHistoricoRecarga;
+
+    @ManyToOne
+    private HistoricoRecarga historicoRecarga;
 }

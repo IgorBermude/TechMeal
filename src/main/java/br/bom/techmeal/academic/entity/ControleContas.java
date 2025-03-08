@@ -17,4 +17,7 @@ public class ControleContas implements Serializable {
     private String descricaoControleContas;
     @Column (nullable = false)
     private double valorControleContas;
+
+    @ManyToOne
+    private ControleContas controleContas;
 }

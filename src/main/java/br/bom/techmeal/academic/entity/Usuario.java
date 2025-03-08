@@ -23,7 +23,7 @@ public class Usuario implements Serializable{
     @Column (nullable = false)
     private String senhaUsuario;
 
-    @OneToMany (mappedBy = "Usuario")
+    @OneToMany (mappedBy = "usuario")
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
 
     public void login(){

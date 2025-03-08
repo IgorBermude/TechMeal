@@ -23,10 +23,12 @@ public class Cliente implements Serializable {
     private Date ultimaCompraCliente;
     @Column
     private double faturaCliente;
-    @OneToMany(mappedBy ="Cliente")
+
+    @OneToMany(mappedBy ="cliente")
     private List<Comanda> comandas;
 
-
+    @OneToMany(mappedBy = "cliente")
+    private List<HistoricoRecarga> historicoRecargaListCliente;
 
     public void recarregarCartão(){
 

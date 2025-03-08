@@ -16,6 +16,6 @@ public class Permissao implements Serializable {
     @Column(nullable = false)
     private String acaoPermissao;
 
-    @OneToMany (mappedBy = "Permissao")
+    @OneToMany (mappedBy = "permissao")
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListPermissao;
 }
