@@ -1,11 +1,9 @@
 package br.bom.techmeal.academic.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Produto implements Serializable {
     @Id
@@ -26,6 +24,12 @@ public class Produto implements Serializable {
 
     @Column(nullable = false)
     private double valorDeCustoProduto;
+
+    @OneToMany (mappedBy = "Produto")
+    private List<HistoricoPreco> historicoPrecoList;
+
+    @ManyToMany (mappedBy = "Produto", fetch = FetchType.LAZY)
+    private List<Comanda> comandaListProduto;
 
     public void gerarCodigoBarras(){
 

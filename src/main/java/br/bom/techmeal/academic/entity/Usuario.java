@@ -1,11 +1,9 @@
 package br.bom.techmeal.academic.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Usuario implements Serializable{
     @Id
@@ -23,6 +21,9 @@ public class Usuario implements Serializable{
 
     @Column (nullable = false)
     private String senhaUsuario;
+
+    @OneToMany (mappedBy = "Usuario")
+    private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
 
     public void login(){
 

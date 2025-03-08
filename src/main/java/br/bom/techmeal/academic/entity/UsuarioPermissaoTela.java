@@ -1,7 +1,15 @@
 package br.bom.techmeal.academic.entity;
 
+import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.ManyToAny;
+
 public class UsuarioPermissaoTela {
-    protected int idTela;
-    protected int idPermissao;
-    protected int idUsuario;
+    @ManyToOne
+    private Tela tela;
+
+    @ManyToOne
+    private Permissao permissao;
+
+    @ManyToOne
+    private Usuario usuario;
 }

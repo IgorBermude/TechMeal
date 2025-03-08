@@ -1,11 +1,9 @@
 package br.bom.techmeal.academic.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Permissao implements Serializable {
     @Id
@@ -17,4 +15,7 @@ public class Permissao implements Serializable {
 
     @Column(nullable = false)
     private String acaoPermissao;
+
+    @OneToMany (mappedBy = "Permissao")
+    private List<UsuarioPermissaoTela> usuarioPermissaoTelaListPermissao;
 }
