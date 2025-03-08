@@ -15,4 +15,6 @@ public class Comanda implements Serializable {
     private Date horaEntradaComanda;
     @Temporal(value = TemporalType.DATE)
     private Date horaSaidaComanda;
+    @ManyToOne
+    private Cliente cliente;
 }
