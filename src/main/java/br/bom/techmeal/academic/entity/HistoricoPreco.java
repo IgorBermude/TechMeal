@@ -8,8 +8,9 @@ import java.util.Date;
 public class HistoricoPreco implements Serializable {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idHistoricoPreco;
+
     @Temporal(value = TemporalType.DATE)
     private Date dataHistoricoPreco;
 
@@ -26,5 +27,9 @@ public class HistoricoPreco implements Serializable {
     private double custoNovoHistoricoPreco;
 
     @ManyToOne
-    private HistoricoPreco historicoPreco;
+    @JoinColumn(name = "produto_id", nullable = false)  // Chave estrangeira para Produto
+    private Produto produto;  // Relacionamento com Produto
+
+    // outros métodos...
 }
+

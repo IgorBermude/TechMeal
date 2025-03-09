@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Produto implements Serializable {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idProduto;
 
     @Column(nullable = false)
@@ -26,13 +26,14 @@ public class Produto implements Serializable {
     @Column(nullable = false)
     private double valorDeCustoProduto;
 
-    @OneToMany (mappedBy = "produto")
+    @OneToMany(mappedBy = "produto")
     private List<HistoricoPreco> historicoPrecoList;
 
-    @ManyToMany (mappedBy = "produto", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "produtoListComanda", fetch = FetchType.LAZY)
     private List<Comanda> comandaListProduto;
 
-    public void gerarCodigoBarras(){
-
+    public void gerarCodigoBarras() {
+        // implementação do código
     }
 }
+

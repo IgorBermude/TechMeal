@@ -28,7 +28,7 @@ public class Cliente implements Serializable {
     private List<Comanda> comandas;
 
     @OneToMany(mappedBy = "cliente")
-    private List<HistoricoRecarga> historicoRecargaListCliente;
+    private List<HistoricoRecarga> historicoRecarga;
 
     public void recarregarCartão(){
 

@@ -17,5 +17,6 @@ public class HistoricoRecarga implements Serializable {
     private double valorRecargaHistoricoRecarga;
 
     @ManyToOne
-    private HistoricoRecarga historicoRecarga;
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 }
