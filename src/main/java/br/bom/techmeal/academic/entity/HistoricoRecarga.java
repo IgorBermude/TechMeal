@@ -1,14 +1,15 @@
 package br.bom.techmeal.academic.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+@Entity
 
 public class HistoricoRecarga implements Serializable {
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private int idHistoricoRecarga;
     @Temporal(value = TemporalType.DATE)
     private Date dataRecargaHistoricoRecarga;
 

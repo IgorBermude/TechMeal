@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@EntityScan("entity")
-@EnableJpaRepositories(basePackages = "entity")
+@EntityScan("br.bom.techmeal.academic.entity")
+@EnableJpaRepositories(basePackages = "br.bom.techmeal.academic.entity")
 public class AcademicApplication {
 
 	public static void main(String[] args) {
