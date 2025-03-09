@@ -26,7 +26,7 @@ public class Comanda implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            name = "tb_comanda_produto",
+            name = "comanda_produto",
             joinColumns = @JoinColumn(name = "comanda_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
