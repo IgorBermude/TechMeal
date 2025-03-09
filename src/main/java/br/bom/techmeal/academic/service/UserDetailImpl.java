@@ -6,16 +6,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class UserDetailImpl implements UserDetails {
     private int id;
     private String name;
-    private String username;
+    private String login;
     private String password;
 
     public static UserDetailImpl build(Usuario usuario){
-        return new UserDetailImpl(usuario.getNomeUsuario(),usuario.getIdUsuario(), usuario.getNomeUsuario(),
+        return new UserDetailImpl(usuario.getNomeUsuario(),usuario.getIdUsuario(), usuario.getLogin(),
                 new ArrayList<>()); // essa lista sera as permissoes
 
 
@@ -24,7 +23,7 @@ public class UserDetailImpl implements UserDetails {
     public UserDetailImpl(String name, int id, String username, Collection<? extends GrantedAuthority> authorities) {
         this.name = name;
         this.id = id;
-        this.username = username;
+        this.login = login;
         this.authorities = authorities;
     }
 
@@ -41,7 +40,7 @@ public class UserDetailImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return login;
     }
 
     @Override
