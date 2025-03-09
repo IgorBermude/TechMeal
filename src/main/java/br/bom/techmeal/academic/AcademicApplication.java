@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 @SpringBootApplication
 @EntityScan("br.bom.techmeal.academic.entity")
-@EnableJpaRepositories(basePackages = "br.bom.techmeal.academic.entity")
+@EnableJpaRepositories(basePackages = "br.bom.techmeal.academic.repository")
 public class AcademicApplication {
 
 	public static void main(String[] args) {

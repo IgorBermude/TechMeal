@@ -20,11 +20,82 @@ public class Usuario implements Serializable{
     @Column (nullable = false)
     private String nomeUsuario;
 
+    @Column(nullable = false)
+    private String login;
+
+
     @Column (nullable = false)
     private String senhaUsuario;
 
     @OneToMany (mappedBy = "usuario")
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
+
+
+    public Usuario(int idUsuario, List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario, String senhaUsuario, String login, String nomeUsuario, String emailUsuario, String telefoneUsuario) {
+        this.idUsuario = idUsuario;
+        this.usuarioPermissaoTelaListUsuario = usuarioPermissaoTelaListUsuario;
+        this.senhaUsuario = senhaUsuario;
+        this.login = login;
+        this.nomeUsuario = nomeUsuario;
+        this.emailUsuario = emailUsuario;
+        this.telefoneUsuario = telefoneUsuario;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getEmailUsuario() {
+        return emailUsuario;
+    }
+
+    public void setEmailUsuario(String emailUsuario) {
+        this.emailUsuario = emailUsuario;
+    }
+
+    public String getTelefoneUsuario() {
+        return telefoneUsuario;
+    }
+
+    public void setTelefoneUsuario(String telefoneUsuario) {
+        this.telefoneUsuario = telefoneUsuario;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
+
+    public List<UsuarioPermissaoTela> getUsuarioPermissaoTelaListUsuario() {
+        return usuarioPermissaoTelaListUsuario;
+    }
+
+    public void setUsuarioPermissaoTelaListUsuario(List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario) {
+        this.usuarioPermissaoTelaListUsuario = usuarioPermissaoTelaListUsuario;
+    }
+
+    public String getSenhaUsuario() {
+        return senhaUsuario;
+    }
+
+    public void setSenhaUsuario(String senhaUsuario) {
+        this.senhaUsuario = senhaUsuario;
+    }
 
     public void login(){
 
