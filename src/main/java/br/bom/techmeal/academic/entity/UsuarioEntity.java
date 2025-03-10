@@ -1,12 +1,15 @@
 package br.bom.techmeal.academic.entity;
 
+import br.bom.techmeal.academic.dto.UsuarioDTO;
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import jakarta.persistence.*;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Usuario implements Serializable{
+public class UsuarioEntity implements Serializable{
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idUsuario;
@@ -28,10 +31,10 @@ public class Usuario implements Serializable{
     private String senhaUsuario;
 
     @OneToMany (mappedBy = "usuario")
-    private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
+    private List<UsuarioPermissaoTelaEntity> usuarioPermissaoTelaListUsuario;
 
 
-    public Usuario(int idUsuario, List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario, String senhaUsuario, String login, String nomeUsuario, String emailUsuario, String telefoneUsuario) {
+    public UsuarioEntity(int idUsuario, List<UsuarioPermissaoTelaEntity> usuarioPermissaoTelaListUsuario, String senhaUsuario, String login, String nomeUsuario, String emailUsuario, String telefoneUsuario) {
         this.idUsuario = idUsuario;
         this.usuarioPermissaoTelaListUsuario = usuarioPermissaoTelaListUsuario;
         this.senhaUsuario = senhaUsuario;
@@ -39,6 +42,14 @@ public class Usuario implements Serializable{
         this.nomeUsuario = nomeUsuario;
         this.emailUsuario = emailUsuario;
         this.telefoneUsuario = telefoneUsuario;
+    }
+
+    public UsuarioEntity(UsuarioDTO usuario){
+        BeanUtils.copyProperties(usuario, this);
+    }
+
+    public UsuarioEntity(){
+
     }
 
     public String getLogin() {
@@ -81,11 +92,11 @@ public class Usuario implements Serializable{
         this.nomeUsuario = nomeUsuario;
     }
 
-    public List<UsuarioPermissaoTela> getUsuarioPermissaoTelaListUsuario() {
+    public List<UsuarioPermissaoTelaEntity> getUsuarioPermissaoTelaListUsuario() {
         return usuarioPermissaoTelaListUsuario;
     }
 
-    public void setUsuarioPermissaoTelaListUsuario(List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario) {
+    public void setUsuarioPermissaoTelaListUsuario(List<UsuarioPermissaoTelaEntity> usuarioPermissaoTelaListUsuario) {
         this.usuarioPermissaoTelaListUsuario = usuarioPermissaoTelaListUsuario;
     }
 

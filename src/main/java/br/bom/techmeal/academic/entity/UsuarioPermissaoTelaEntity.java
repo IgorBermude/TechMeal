@@ -1,18 +1,18 @@
 package br.bom.techmeal.academic.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ManyToAny;
+
 @Entity
-public class UsuarioPermissaoTela {
+public class UsuarioPermissaoTelaEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int idPermissaoTela;
     @ManyToOne
-    private Tela tela;
+    private TelaEntity tela;
 
     @ManyToOne
-    private Permissao permissao;
+    private PermissaoEntity permissao;
 
     @ManyToOne
-    private Usuario usuario;
+    private UsuarioEntity usuario;
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Comanda implements Serializable {
+public class ComandaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCompraComanda;
@@ -22,7 +22,7 @@ public class Comanda implements Serializable {
     private Date horaSaidaComanda;
 
     @ManyToOne
-    private Cliente cliente;
+    private ClienteEntity cliente;
 
     @ManyToMany
     @JoinTable(
@@ -30,6 +30,6 @@ public class Comanda implements Serializable {
             joinColumns = @JoinColumn(name = "comanda_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
-    private List<Produto> produtoListComanda;
+    private List<ProdutoEntity> produtoListComanda;
 }
 

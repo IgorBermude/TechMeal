@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 @Entity
-public class Permissao implements Serializable {
+public class PermissaoEntity implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private int idPermisao;
@@ -17,5 +17,5 @@ public class Permissao implements Serializable {
     private String acaoPermissao;
 
     @OneToMany (mappedBy = "permissao")
-    private List<UsuarioPermissaoTela> usuarioPermissaoTelaListPermissao;
+    private List<UsuarioPermissaoTelaEntity> usuarioPermissaoTelaListPermissao;
 }

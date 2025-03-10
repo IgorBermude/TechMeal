@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Cliente implements Serializable {
+public class ClienteEntity implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int idCliente;
@@ -25,10 +25,10 @@ public class Cliente implements Serializable {
     private double faturaCliente;
 
     @OneToMany(mappedBy ="cliente")
-    private List<Comanda> comandas;
+    private List<ComandaEntity> comandas;
 
     @OneToMany(mappedBy = "cliente")
-    private List<HistoricoRecarga> historicoRecarga;
+    private List<HistoricoRecargaEntity> historicoRecarga;
 
     public void recarregarCartão(){
 

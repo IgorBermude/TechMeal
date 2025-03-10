@@ -39,7 +39,7 @@ public class JwtUtils {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
         return key;
     }
-    public boolean validadeJwtToken(String authToken){
+    public boolean validateJwtToken(String authToken){
       try {
           Jwts.parser().setSigningKey(getSigninKey()).build().parseClaimsJwt(authToken);
 

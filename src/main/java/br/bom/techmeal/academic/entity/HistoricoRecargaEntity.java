@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 @Entity
 
-public class HistoricoRecarga implements Serializable {
+public class HistoricoRecargaEntity implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int idHistoricoRecarga;
@@ -18,5 +18,5 @@ public class HistoricoRecarga implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    private ClienteEntity cliente;
 }

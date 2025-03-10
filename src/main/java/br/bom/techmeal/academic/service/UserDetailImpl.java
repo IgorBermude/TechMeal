@@ -1,6 +1,6 @@
 package br.bom.techmeal.academic.service;
 
-import br.bom.techmeal.academic.entity.Usuario;
+import br.bom.techmeal.academic.entity.UsuarioEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,7 +13,7 @@ public class UserDetailImpl implements UserDetails {
     private String login;
     private String password;
 
-    public static UserDetailImpl build(Usuario usuario){
+    public static UserDetailImpl build(UsuarioEntity usuario){
         return new UserDetailImpl(usuario.getNomeUsuario(),usuario.getIdUsuario(), usuario.getLogin(),
                 new ArrayList<>()); // essa lista sera as permissoes
 

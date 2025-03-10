@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 @Entity
-public class ControleContas implements Serializable {
+public class ControleContasEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idContaControleContas;
@@ -24,6 +24,6 @@ public class ControleContas implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id", nullable = false) // Define a chave estrangeira
-    private Fornecedor fornecedor;
+    private FornecedorEntity fornecedor;
 }
 

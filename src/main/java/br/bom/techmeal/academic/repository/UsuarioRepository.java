@@ -1,13 +1,14 @@
 package br.bom.techmeal.academic.repository;
 
-import br.bom.techmeal.academic.entity.Usuario;
+import br.bom.techmeal.academic.entity.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+// De acordo com o tipo id do Usuario int --> Integer
+public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
 
-    Optional<Usuario> findByLogin(String login);
+    Optional<UsuarioEntity> findByLogin(String login);
 
 }

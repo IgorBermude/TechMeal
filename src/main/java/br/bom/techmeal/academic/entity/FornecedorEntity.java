@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Fornecedor implements Serializable {
+public class FornecedorEntity implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private int idFornecedor;
@@ -27,5 +27,5 @@ public class Fornecedor implements Serializable {
     private String chavePixFornecedor;
 
     @OneToMany (mappedBy = "fornecedor")
-    private List<ControleContas> controleContasListFornecedor;
+    private List<ControleContasEntity> controleContasListFornecedor;
 }
