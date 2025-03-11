@@ -31,16 +31,19 @@ public class WebSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http) throws  Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults());
-        http.csrf(csrf-> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/usuario/**").permitAll()
-                        .anyRequest().authenticated());
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()  // Permite acesso a '/auth/
+                        .requestMatchers("/usuario/**").permitAll() // Permite acesso a '/usuario/
+                        .requestMatchers("/produto/**").permitAll() // Permite acesso a '/produto/
+                        .anyRequest().authenticated()); // Exige autenticação para qualquer outra requisição
 
         return http.build();
     }
+
 
 }
