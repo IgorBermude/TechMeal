@@ -54,6 +54,70 @@ public class Produto implements Serializable {
 
     }
 
+    public int getIdProduto() {
+        return idProduto;
+    }
+
+    public void setIdProduto(int idProduto) {
+        this.idProduto = idProduto;
+    }
+
+    public String getNomeProduto() {
+        return nomeProduto;
+    }
+
+    public void setNomeProduto(String nomeProduto) {
+        this.nomeProduto = nomeProduto;
+    }
+
+    public long getCodigoBarrasProduto() {
+        return codigoBarrasProduto;
+    }
+
+    public void setCodigoBarrasProduto(long codigoBarrasProduto) {
+        this.codigoBarrasProduto = codigoBarrasProduto;
+    }
+
+    public int getQuantProduto() {
+        return quantProduto;
+    }
+
+    public void setQuantProduto(int quantProduto) {
+        this.quantProduto = quantProduto;
+    }
+
+    public double getPrecoProduto() {
+        return precoProduto;
+    }
+
+    public void setPrecoProduto(double precoProduto) {
+        this.precoProduto = precoProduto;
+    }
+
+    public double getValorDeCustoProduto() {
+        return valorDeCustoProduto;
+    }
+
+    public void setValorDeCustoProduto(double valorDeCustoProduto) {
+        this.valorDeCustoProduto = valorDeCustoProduto;
+    }
+
+    public List<HistoricoPreco> getHistoricoPrecoList() {
+        return historicoPrecoList;
+    }
+
+    public void setHistoricoPrecoList(List<HistoricoPreco> historicoPrecoList) {
+        this.historicoPrecoList = historicoPrecoList;
+    }
+
+    public List<Comanda> getComandaListProduto() {
+        return comandaListProduto;
+    }
+
+    public void setComandaListProduto(List<Comanda> comandaListProduto) {
+        this.comandaListProduto = comandaListProduto;
+    }
+
     public void gerarCodigoBarras() {
         // implementação do código
     }
