@@ -2,6 +2,7 @@ package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.UsuarioDTO;
 import br.bom.techmeal.academic.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @RequestMapping(value = "/usuario")
 public class UsuarioController {
 
+    @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping

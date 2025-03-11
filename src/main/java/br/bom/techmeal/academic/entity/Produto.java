@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class ProdutoEntity implements Serializable {
+public class Produto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idProduto;
@@ -27,10 +27,10 @@ public class ProdutoEntity implements Serializable {
     private double valorDeCustoProduto;
 
     @OneToMany(mappedBy = "produto")
-    private List<HistoricoPrecoEntity> historicoPrecoList;
+    private List<HistoricoPreco> historicoPrecoList;
 
     @ManyToMany(mappedBy = "produtoListComanda", fetch = FetchType.LAZY)
-    private List<ComandaEntity> comandaListProduto;
+    private List<Comanda> comandaListProduto;
 
     public void gerarCodigoBarras() {
         // implementação do código

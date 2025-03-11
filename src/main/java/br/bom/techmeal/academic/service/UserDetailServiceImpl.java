@@ -1,6 +1,6 @@
 package br.bom.techmeal.academic.service;
 
-import br.bom.techmeal.academic.entity.UsuarioEntity;
+import br.bom.techmeal.academic.entity.Usuario;
 import br.bom.techmeal.academic.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +16,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UsuarioEntity usuario = usuarioRepository.findByLogin(username).get();
+        Usuario usuario = usuarioRepository.findByLogin(username).get();
         return UserDetailImpl.build(usuario);
     }
 }

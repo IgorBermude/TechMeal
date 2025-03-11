@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class TelaEntity implements Serializable{
+public class Tela implements Serializable{
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private int idTela;
@@ -18,5 +18,5 @@ public class TelaEntity implements Serializable{
     private String url;
 
     @OneToMany(mappedBy = "tela")
-    private List<UsuarioPermissaoTelaEntity> usuarioPermissaoTelaListTela;
+    private List<UsuarioPermissaoTela> usuarioPermissaoTelaListTela;
 }

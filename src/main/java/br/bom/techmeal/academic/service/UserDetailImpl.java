@@ -1,6 +1,6 @@
 package br.bom.techmeal.academic.service;
 
-import br.bom.techmeal.academic.entity.UsuarioEntity;
+import br.bom.techmeal.academic.entity.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,22 +12,26 @@ public class UserDetailImpl implements UserDetails {
     private String name;
     private String login;
     private String password;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserDetailImpl build(UsuarioEntity usuario){
-        return new UserDetailImpl(usuario.getNomeUsuario(),usuario.getIdUsuario(), usuario.getLogin(),
-                new ArrayList<>()); // essa lista sera as permissoes
-
-
-    }
-
-    public UserDetailImpl(String name, int id, String username, Collection<? extends GrantedAuthority> authorities) {
+    // Construtor para inicializar a classe com as permissoes
+    public UserDetailImpl(String name, int id, String login, String password, Collection<? extends GrantedAuthority> authorities) {
         this.name = name;
         this.id = id;
         this.login = login;
+        this.password = password;
         this.authorities = authorities;
     }
 
-    private Collection <? extends GrantedAuthority> authorities;
+
+    public static UserDetailImpl build(Usuario usuario){
+        return new UserDetailImpl(usuario.getNomeUsuario(),
+                usuario.getIdUsuario(),
+                usuario.getLogin(),
+                usuario.getSenhaUsuario(), // Adicionando a senha
+                new ArrayList<>()); // Inicialmente sem permissoes
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

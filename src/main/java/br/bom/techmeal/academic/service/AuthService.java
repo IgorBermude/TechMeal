@@ -19,25 +19,26 @@ public class AuthService {
 
     public AcessDTO login(AuthenticationDTO authDto){
         try {
-            //cria mecanismo de credencial
+            // Cria o token de autenticação
             UsernamePasswordAuthenticationToken userAuth =
-                    new UsernamePasswordAuthenticationToken(authDto.getUsername(), authDto.getPassword());
-            //prepara mecanismo de autenticar
-            Authentication authentication = authenticationManager.authenticate(userAuth);
-            //busca usuario logado
-            UserDetailImpl userAuthenticate = (UserDetailImpl) authentication.getPrincipal();
+                    new UsernamePasswordAuthenticationToken(authDto.getLogin(), authDto.getSenhaUsuario());
 
+            // Autentica o usuário
+            Authentication authentication = authenticationManager.authenticate(userAuth);
+
+            // Se a autenticação for bem-sucedida, gera o token JWT
+            UserDetailImpl userAuthenticate = (UserDetailImpl) authentication.getPrincipal();
             String token = jwtUtils.generateTokenFromUserDetailsImpl(userAuthenticate);
             AcessDTO acessDto = new AcessDTO(token);
 
             return acessDto;
-
-        }catch (BadCredentialsException e){
-            // login ou senha invalido
-
+        } catch (BadCredentialsException e) {
+            // Login ou senha inválidos
+            return new AcessDTO("Acesso negado");
         }
-        return null;
-
     }
+
+
+
 
 }

@@ -2,22 +2,22 @@ package br.bom.techmeal.academic.dto;
 
 public class AuthenticationDTO {
 
-    private String username;
-    private String password;
+    private String login;
+    private String senhaUsuario;
 
-    public String getUsername() {
-        return username;
+    public String getSenhaUsuario() {
+        return senhaUsuario;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSenhaUsuario(String senhaUsuario) {
+        this.senhaUsuario = senhaUsuario;
     }
 
-    public String getPassword() {
-        return password;
+    public String getLogin() {
+        return login;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

@@ -1,10 +1,7 @@
 package br.bom.techmeal.academic.dto;
 
-import br.bom.techmeal.academic.entity.UsuarioEntity;
-import br.bom.techmeal.academic.entity.UsuarioPermissaoTelaEntity;
-import com.fasterxml.jackson.databind.util.BeanUtil;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
+import br.bom.techmeal.academic.entity.Usuario;
+import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -17,9 +14,9 @@ public class UsuarioDTO {
     private String nomeUsuario;
     private String login;
     private String senhaUsuario;
-    private List<UsuarioPermissaoTelaEntity> usuarioPermissaoTelaListUsuario;
+    private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
 
-    public UsuarioDTO(UsuarioEntity usuario){
+    public UsuarioDTO(Usuario usuario){
         BeanUtils.copyProperties(usuario, this);
     }
 
@@ -75,11 +72,11 @@ public class UsuarioDTO {
         this.senhaUsuario = senhaUsuario;
     }
 
-    public List<UsuarioPermissaoTelaEntity> getUsuarioPermissaoTelaListUsuario() {
+    public List<UsuarioPermissaoTela> getUsuarioPermissaoTelaListUsuario() {
         return usuarioPermissaoTelaListUsuario;
     }
 
-    public void setUsuarioPermissaoTelaListUsuario(List<UsuarioPermissaoTelaEntity> usuarioPermissaoTelaListUsuario) {
+    public void setUsuarioPermissaoTelaListUsuario(List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario) {
         this.usuarioPermissaoTelaListUsuario = usuarioPermissaoTelaListUsuario;
     }
 }

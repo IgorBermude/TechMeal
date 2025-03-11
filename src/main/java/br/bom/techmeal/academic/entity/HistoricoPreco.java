@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 @Entity
-public class HistoricoPrecoEntity implements Serializable {
+public class HistoricoPreco implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class HistoricoPrecoEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)  // Chave estrangeira para Produto
-    private ProdutoEntity produto;  // Relacionamento com Produto
+    private Produto produto;  // Relacionamento com Produto
 
     // outros métodos...
 }
