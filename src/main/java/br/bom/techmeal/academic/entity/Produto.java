@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.entity;
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.dto.UsuarioDTO;
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -15,17 +16,18 @@ public class Produto implements Serializable {
     private int idProduto;
 
     @Column(nullable = false)
+    @NotNull
     private String nomeProduto;
-
+    @NotNull
     @Column(nullable = false)
     private long codigoBarrasProduto;
-
+    @NotNull
     @Column(nullable = false)
     private int quantProduto;
-
+    @NotNull
     @Column(nullable = false)
     private double precoProduto;
-
+    @NotNull
     @Column(nullable = false)
     private double valorDeCustoProduto;
 

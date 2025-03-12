@@ -1,21 +1,15 @@
 package br.bom.techmeal.academic.security.jwt;
 
 import br.bom.techmeal.academic.service.UserDetailImpl;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
-
-
-import java.security.Key;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
-
 
 import javax.crypto.SecretKey;
+import java.security.Key;
+import java.security.SignatureException;
 import java.util.Date;
 
 @Component
@@ -44,8 +38,9 @@ public class JwtUtils {
                 .parseClaimsJws(token).getBody().getSubject();
 
     }
-    public boolean validateJwtToken(String authToken){
+    public boolean validateJwtToken(String authToken) {
         try {
+            // Tenta validar o token usando a chave de assinatura.
             Jwts.parser().setSigningKey(getSigninKey()).build().parseClaimsJws(authToken);
             return true; // Se o token for válido, retorna true.
         } catch (ExpiredJwtException e) {
@@ -54,9 +49,13 @@ public class JwtUtils {
             System.out.println("Token não suportado: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             System.out.println("Token inválido: " + e.getMessage());
+        } catch (JwtException e) {
+            // Se houver erro de assinatura, loga a mensagem de erro.
+            System.err.println("Erro na validacao do JWT: " + e.getMessage());
         }
         return false; // Se ocorrer qualquer exceção, retorna false.
     }
+
 
 
 
