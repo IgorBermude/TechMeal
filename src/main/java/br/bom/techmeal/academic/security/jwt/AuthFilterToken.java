@@ -18,10 +18,10 @@ import java.io.IOException;
 public class AuthFilterToken extends OncePerRequestFilter {
 
     @Autowired
-    private JwtUtils jwtUtils;  // Injeção automática do JwtUtils
+    private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailServiceImpl userDetailService;  // Injeção automática do UserDetailServiceImpl
+    private UserDetailServiceImpl userDetailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
