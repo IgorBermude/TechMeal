@@ -6,10 +6,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 
-import java.nio.charset.MalformedInputException;
+
 import java.security.Key;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
@@ -39,22 +39,25 @@ public class JwtUtils {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
         return key;
     }
-    public boolean validateJwtToken(String authToken){
-      try {
-          Jwts.parser().setSigningKey(getSigninKey()).build().parseClaimsJwt(authToken);
-
-      } catch(ExpiredJwtException e){
-          System.out.println("Token expirado" + e.getMessage());
-      }catch(UnsupportedJwtException e){
-          System.out.println("Token não suportado" + e.getMessage());
-      }
-      catch(IllegalArgumentException e){
-          System.out.println("Token Argumento Inválido" + e.getMessage());
-      }
-      return false;
-
+    public String getLoginToken(String token){
+        return Jwts.parser().setSigningKey(getSigninKey()).build()
+                .parseClaimsJws(token).getBody().getSubject();
 
     }
+    public boolean validateJwtToken(String authToken){
+        try {
+            Jwts.parser().setSigningKey(getSigninKey()).build().parseClaimsJws(authToken);
+            return true; // Se o token for válido, retorna true.
+        } catch (ExpiredJwtException e) {
+            System.out.println("Token expirado: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            System.out.println("Token não suportado: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Token inválido: " + e.getMessage());
+        }
+        return false; // Se ocorrer qualquer exceção, retorna false.
+    }
+
 
 
 }
