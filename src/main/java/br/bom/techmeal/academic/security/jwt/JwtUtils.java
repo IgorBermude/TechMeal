@@ -46,11 +46,11 @@ public class JwtUtils {
         } catch (ExpiredJwtException e) {
             System.out.println("Token expirado: " + e.getMessage());
         } catch (UnsupportedJwtException e) {
-            System.out.println("Token não suportado: " + e.getMessage());
+            System.out.println("Token nao suportado: " + e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.out.println("Token inválido: " + e.getMessage());
+            System.out.println("Token invalido: " + e.getMessage());
         } catch (JwtException e) {
-            // Se houver erro de assinatura, loga a mensagem de erro.
+
             System.err.println("Erro na validacao do JWT: " + e.getMessage());
         }
         return false; // Se ocorrer qualquer exceção, retorna false.
