@@ -34,7 +34,7 @@ public class AuthService {
             return acessDto;
         } catch (BadCredentialsException e) {
             // Login ou senha inválidos
-            return new AcessDTO("Acesso negado");
+            return null;
         }
     }
 
