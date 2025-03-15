@@ -3,11 +3,6 @@ package br.bom.techmeal.academic.dto;
 import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.entity.HistoricoPreco;
 import br.bom.techmeal.academic.entity.Produto;
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;

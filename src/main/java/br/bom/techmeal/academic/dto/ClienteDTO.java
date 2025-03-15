@@ -1,43 +1,29 @@
-package br.bom.techmeal.academic.entity;
+package br.bom.techmeal.academic.dto;
 
-import br.bom.techmeal.academic.dto.ClienteDTO;
-import br.bom.techmeal.academic.dto.ProdutoDTO;
-import jakarta.persistence.*;
+import br.bom.techmeal.academic.entity.Cliente;
+import br.bom.techmeal.academic.entity.Comanda;
+import br.bom.techmeal.academic.entity.HistoricoRecarga;
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-public class Cliente implements Serializable {
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+public class ClienteDTO {
     private int idCliente;
-    @Column(nullable = false)
     private String nomeCliente;
-    @Column ( nullable = false , length = 5)
     private double saldoCliente;
-    @Column ( nullable = false , length = 5)
     private double limiteCliente;
-    @Temporal(value = TemporalType.DATE)
     private Date dtNascCliente;
-    @Temporal(value = TemporalType.DATE)
     private Date ultimaCompraCliente;
-    @Column
     private double faturaCliente;
-
-    @OneToMany(mappedBy ="cliente")
     private List<Comanda> comandas;
-
-    @OneToMany(mappedBy = "cliente")
     private List<HistoricoRecarga> historicoRecarga;
 
-    public Cliente(ClienteDTO cliente){
+    public ClienteDTO(Cliente cliente){
         BeanUtils.copyProperties(cliente, this);
     }
 
-    public Cliente(){
+    public ClienteDTO(){
 
     }
 
@@ -111,9 +97,5 @@ public class Cliente implements Serializable {
 
     public void setHistoricoRecarga(List<HistoricoRecarga> historicoRecarga) {
         this.historicoRecarga = historicoRecarga;
-    }
-
-    public void recarregarCartão(){
-
     }
 }
