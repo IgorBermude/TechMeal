@@ -39,10 +39,10 @@ public class ProdutoController {
     }
 
     @GetMapping("/gerar-codigo")
-    public ResponseEntity<String> gerarCodigoDeBarras() throws IOException {
+    public ResponseEntity<String> gerarCodigoDeBarras(@RequestParam String nomeProduto) throws IOException {
         try {
             // Chama o serviço para gerar o código de barras, passando o ID
-            String codigoBarras = produtoService.gerarCodigoDeBarras();
+            String codigoBarras = produtoService.gerarCodigoDeBarras(nomeProduto);
 
             // Verifica se o código de barras foi gerado com sucesso
             if (codigoBarras == null || codigoBarras.isEmpty()) {

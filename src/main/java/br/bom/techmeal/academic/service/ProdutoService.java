@@ -49,15 +49,15 @@ public class ProdutoService {
     }
 
     private static int contadorItem = 1; // Variável para autoincremento
-    public String gerarCodigoDeBarras() throws IOException {
+    public String gerarCodigoDeBarras(String nomeProduto) throws IOException {
         // Código do país (Brasil)
         String codigoPais = "789";
 
         // Número da empresa (exemplo)
         String codigoEmpresa = "835741";
 
-        // Descrição do item (autoincremento)
-        String descricaoItem = String.format("%03d", contadorItem++);
+        // Descrição do item (pelo nome)
+        String descricaoItem = nomeProduto;
 
         // Concatenar código do país, empresa e descrição do item
         String codigoSemDigito = codigoPais + codigoEmpresa + descricaoItem;
@@ -68,13 +68,9 @@ public class ProdutoService {
         // Concatenar tudo para formar o código de barras completo
         String numeroCodigoDeBarras = codigoSemDigito + digitoVerificador;
 
-        if (numeroCodigoDeBarras == null || numeroCodigoDeBarras.isEmpty()) {
-            throw new IllegalArgumentException("Código de barras inválido.");
-        }
-
         // Gerar o código de barras usando ZXing
         // Cria uma matriz de bits para o código de barras
-        BitMatrix bitMatrix = new Code128Writer().encode(numeroCodigoDeBarras, BarcodeFormat.CODE_128, 300, 100);
+        BitMatrix bitMatrix = new Code128Writer().encode(numeroCodigoDeBarras, BarcodeFormat.EAN_13, 300, 100);
 
         // Criar diretório para armazenar códigos de barras
         String diretorio = "codigos-de-barras/";
