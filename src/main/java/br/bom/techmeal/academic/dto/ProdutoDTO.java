@@ -10,7 +10,7 @@ import java.util.List;
 public class ProdutoDTO {
     private int idProduto;
     private String nomeProduto;
-    private long codigoBarrasProduto;
+    private String codigoBarrasProduto;
     private int quantProduto;
     private double precoProduto;
     private double valorDeCustoProduto;
@@ -41,11 +41,11 @@ public class ProdutoDTO {
         this.nomeProduto = nomeProduto;
     }
 
-    public long getCodigoBarrasProduto() {
+    public String getCodigoBarrasProduto() {
         return codigoBarrasProduto;
     }
 
-    public void setCodigoBarrasProduto(long codigoBarrasProduto) {
+    public void setCodigoBarrasProduto(String codigoBarrasProduto) {
         this.codigoBarrasProduto = codigoBarrasProduto;
     }
 

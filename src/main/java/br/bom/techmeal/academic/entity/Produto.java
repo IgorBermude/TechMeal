@@ -20,7 +20,7 @@ public class Produto implements Serializable {
     private String nomeProduto;
     @NotNull
     @Column(nullable = false)
-    private long codigoBarrasProduto;
+    private String codigoBarrasProduto;
     @NotNull
     @Column(nullable = false)
     private int quantProduto;
@@ -37,7 +37,7 @@ public class Produto implements Serializable {
     @ManyToMany(mappedBy = "produtoListComanda", fetch = FetchType.LAZY)
     private List<Comanda> comandaListProduto;
 
-    public Produto(int idProduto, String nomeProduto, long codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<Comanda> comandaListProduto) {
+    public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<Comanda> comandaListProduto) {
         this.idProduto = idProduto;
         this.nomeProduto = nomeProduto;
         this.codigoBarrasProduto = codigoBarrasProduto;
@@ -72,11 +72,11 @@ public class Produto implements Serializable {
         this.nomeProduto = nomeProduto;
     }
 
-    public long getCodigoBarrasProduto() {
+    public String getCodigoBarrasProduto() {
         return codigoBarrasProduto;
     }
 
-    public void setCodigoBarrasProduto(long codigoBarrasProduto) {
+    public void setCodigoBarrasProduto(String codigoBarrasProduto) {
         this.codigoBarrasProduto = codigoBarrasProduto;
     }
 
@@ -118,10 +118,6 @@ public class Produto implements Serializable {
 
     public void setComandaListProduto(List<Comanda> comandaListProduto) {
         this.comandaListProduto = comandaListProduto;
-    }
-
-    public void gerarCodigoBarras() {
-        // implementação do código
     }
 }
 
