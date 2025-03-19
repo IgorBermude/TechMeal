@@ -23,8 +23,28 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public void inserir(@RequestBody ProdutoDTO produto){
-        produtoService.inserir(produto);
+    public ResponseEntity<String> inserir(@RequestBody ProdutoDTO produto) {
+        try {
+            // Gera o código de barras automaticamente
+            String codigoBarras = produtoService.gerarCodigoDeBarras(produto.getNomeProduto());
+
+            if (codigoBarras == null || codigoBarras.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Erro ao gerar o código de barras.");
+            }
+
+            //Seta o codigo de barras no produto
+            produto.setCodigoBarrasProduto(codigoBarras);
+
+            // Salva o produto no banco de dados
+            produtoService.inserir(produto);
+
+            return ResponseEntity.ok("Produto cadastrado com sucesso! Código de barras: " + codigoBarras);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao cadastrar o produto: " + e.getMessage());
+        }
     }
 
     @PutMapping
@@ -36,30 +56,6 @@ public class ProdutoController {
     public ResponseEntity<Void> excluir(@PathVariable("id") Integer id){
         produtoService.excluir(id);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/gerar-codigo")
-    public ResponseEntity<String> gerarCodigoDeBarras(@RequestParam String nomeProduto) throws IOException {
-        try {
-            // Chama o serviço para gerar o código de barras, passando o ID
-            String codigoBarras = produtoService.gerarCodigoDeBarras(nomeProduto);
-
-            // Verifica se o código de barras foi gerado com sucesso
-            if (codigoBarras == null || codigoBarras.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Erro ao gerar o código de barras.");
-            }
-
-            // Retorna a resposta com o código de barras gerado
-            return ResponseEntity.ok("Código de barras gerado com sucesso: " + codigoBarras);
-        } catch (IOException e) {
-            // Log do erro (opcional)
-            e.printStackTrace();
-
-            // Retorna uma resposta de erro em caso de exceção
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro ao processar a solicitação: " + e.getMessage());
-        }
     }
 
 

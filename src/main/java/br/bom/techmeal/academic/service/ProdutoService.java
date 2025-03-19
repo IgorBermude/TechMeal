@@ -4,7 +4,6 @@ import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.entity.Produto;
 import br.bom.techmeal.academic.repository.ProdutoRepository;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;
@@ -48,7 +47,6 @@ public class ProdutoService {
         return new ProdutoDTO(produtoRepository.findById(id).get());
     }
 
-    private static int contadorItem = 1; // Variável para autoincremento
     public String gerarCodigoDeBarras(String nomeProduto) throws IOException {
         // Código do país (Brasil)
         String codigoPais = "789";
@@ -56,8 +54,9 @@ public class ProdutoService {
         // Número da empresa (exemplo)
         String codigoEmpresa = "835741";
 
-        // Descrição do item (pelo nome)
-        String descricaoItem = nomeProduto;
+        // Usando o código hash do nomeProduto para gerar um número e pegando os 3 últimos dígitos
+        int hashNomeProduto = nomeProduto.hashCode();
+        String descricaoItem = String.format("%03d", Math.abs(hashNomeProduto) % 1000);
 
         // Concatenar código do país, empresa e descrição do item
         String codigoSemDigito = codigoPais + codigoEmpresa + descricaoItem;
@@ -65,12 +64,11 @@ public class ProdutoService {
         // Calcular dígito verificador
         String digitoVerificador = calcularDigitoVerificador(codigoSemDigito);
 
-        // Concatenar tudo para formar o código de barras completo
+        // Código de barras final
         String numeroCodigoDeBarras = codigoSemDigito + digitoVerificador;
 
         // Gerar o código de barras usando ZXing
-        // Cria uma matriz de bits para o código de barras
-        BitMatrix bitMatrix = new Code128Writer().encode(numeroCodigoDeBarras, BarcodeFormat.EAN_13, 300, 100);
+        BitMatrix bitMatrix = new Code128Writer().encode(numeroCodigoDeBarras, BarcodeFormat.CODE_128, 300, 100);
 
         // Criar diretório para armazenar códigos de barras
         String diretorio = "codigos-de-barras/";
@@ -82,7 +80,7 @@ public class ProdutoService {
         // Caminho do arquivo gerado
         String nomeArquivo = diretorio + "codigo_" + numeroCodigoDeBarras + ".png";
 
-        // Converte a matriz de bits em uma imagem e salva no caminho especificado
+        // Converter a matriz de bits em uma imagem e salvar
         Path path = FileSystems.getDefault().getPath(nomeArquivo);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
@@ -91,18 +89,24 @@ public class ProdutoService {
         return numeroCodigoDeBarras; // Retorna o número do código gerado
     }
 
-    //Calculando o digito verificador a partir do modulo 10
+    // Cálculo correto do dígito verificador para EAN-13
     public String calcularDigitoVerificador(String codigo) {
         int soma = 0;
         for (int i = 0; i < codigo.length(); i++) {
             int digito = Character.getNumericValue(codigo.charAt(i));
-            if (i % 2 == 0) {
-                digito *= 3; // Multiplica por 3 nas posições ímpares (considerando índice 0 como 1)
+
+            // Índices pares multiplicam por 1, índices ímpares por 3 (da direita para a esquerda)
+            if ((codigo.length() - i) % 2 == 0) {
+                digito *= 3;
             }
+
             soma += digito;
         }
+
         int resto = soma % 10;
         int digitoVerificador = (resto == 0) ? 0 : 10 - resto;
+
         return String.valueOf(digitoVerificador);
     }
+
 }
