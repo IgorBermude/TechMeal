@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.controller;
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
-    public List<ProdutoDTO> listarTodos(){
+    public List<ProdutoDTO> listarTodos() {
         return produtoService.listarTodos();
     }
 
@@ -32,14 +33,20 @@ public class ProdutoController {
                         .body("Erro ao gerar o código de barras.");
             }
 
-            //Seta o codigo de barras no produto
+            // Seta o código de barras no produto
             produto.setCodigoBarrasProduto(codigoBarras);
 
             // Salva o produto no banco de dados
             produtoService.inserir(produto);
 
             return ResponseEntity.ok("Produto cadastrado com sucesso! Código de barras: " + codigoBarras);
+        } catch (DataIntegrityViolationException e) {
+            // Log de erro
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Erro: Código de barras já existe no sistema.");
         } catch (Exception e) {
+            // Log de erro
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao cadastrar o produto: " + e.getMessage());
@@ -47,15 +54,13 @@ public class ProdutoController {
     }
 
     @PutMapping
-    public ProdutoDTO alterar(@RequestBody ProdutoDTO produto){
+    public ProdutoDTO alterar(@RequestBody ProdutoDTO produto) {
         return produtoService.alterar(produto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {
         produtoService.excluir(id);
         return ResponseEntity.ok().build();
     }
-
-
 }

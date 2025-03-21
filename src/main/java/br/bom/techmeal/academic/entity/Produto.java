@@ -16,18 +16,18 @@ public class Produto implements Serializable {
     private int idProduto;
 
     @Column(nullable = false)
-    @NotNull
+
     private String nomeProduto;
-    @NotNull
-    @Column(nullable = false)
+
+    @Column(nullable = false, unique = true)
     private String codigoBarrasProduto;
-    @NotNull
+
     @Column(nullable = false)
     private int quantProduto;
-    @NotNull
+
     @Column(nullable = false)
     private double precoProduto;
-    @NotNull
+
     @Column(nullable = false)
     private double valorDeCustoProduto;
 

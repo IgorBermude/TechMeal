@@ -8,6 +8,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,10 +29,20 @@ public class ProdutoService {
         return produtos.stream().map(ProdutoDTO::new).toList();
     }
 
-    public void inserir(ProdutoDTO produto){
-        Produto produtoEntity = new Produto(produto);
+    public void inserir(ProdutoDTO produtoDTO) throws DataIntegrityViolationException {
+        // Verifica se já existe um produto com o mesmo código de barras
+        if (produtoRepository.existsByCodigoBarrasProduto(produtoDTO.getCodigoBarrasProduto())) {
+            // Lança exceção se o código de barras já existir
+            throw new DataIntegrityViolationException("Código de barras já existe.");
+        }
+
+        // Converte o ProdutoDTO para a entidade Produto
+        Produto produtoEntity = new Produto(produtoDTO);
+
+        // Salva o produto no banco de dados
         produtoRepository.save(produtoEntity);
     }
+
 
     public ProdutoDTO alterar(ProdutoDTO produto){
         Produto produtoEntity = new Produto(produto);
