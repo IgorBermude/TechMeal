@@ -29,30 +29,31 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager (AuthenticationConfiguration authenticationConfiguration) throws Exception {
-
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public AuthFilterToken authFilterToken(){
         return new AuthFilterToken();
-
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults());
-        http.csrf(csrf -> csrf.disable())
+        http.cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()  // Permite acesso a '/auth/
-                        .requestMatchers("/usuario/**").permitAll() // Permite acesso a '/usuario/
-                       /* .requestMatchers("/produto/**").permitAll() // Permite acesso a '/produto/*/
-                        .anyRequest().authenticated()); // Exige autenticação para qualquer outra requisição
-        http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
+                        .requestMatchers("/auth/**").permitAll() // Permite acesso ao login e autenticação
+                        .requestMatchers("/usuario/**").permitAll() // Permite acesso aos endpoints de usuário
+                        .requestMatchers("/swagger-ui/**").permitAll() // Permite acesso ao Swagger UI
+                        .requestMatchers("/v3/api-docs/**").permitAll()  // Permite acesso aos docs da API (Swagger)
+                        .requestMatchers("/favicon.ico").permitAll()  // Permite acesso ao favicon do Swagger
+                        .anyRequest().authenticated()); // Outras requisições exigem autenticação
 
+        // Adiciona o filtro de autenticação antes do UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
-
 }

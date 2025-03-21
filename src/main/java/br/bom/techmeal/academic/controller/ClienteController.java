@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.controller;
 import br.bom.techmeal.academic.dto.ClienteDTO;
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.service.ClienteService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

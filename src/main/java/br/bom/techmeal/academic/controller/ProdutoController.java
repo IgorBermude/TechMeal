@@ -2,6 +2,7 @@ package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.service.ProdutoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
