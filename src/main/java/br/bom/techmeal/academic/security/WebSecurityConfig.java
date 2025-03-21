@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/auth/**").permitAll()  // Permite acesso a '/auth/
                         .requestMatchers("/usuario/**").permitAll() // Permite acesso a '/usuario/
                         .requestMatchers("/produto/**").permitAll() // Permite acesso a '/produto/
+                        .requestMatchers("/cliente/**").permitAll() // Permite acesso a '/produto/
                         .anyRequest().authenticated()); // Exige autenticação para qualquer outra requisição
         http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
 
