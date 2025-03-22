@@ -1,42 +1,25 @@
-package br.bom.techmeal.academic.entity;
+package br.bom.techmeal.academic.dto;
 
-import br.bom.techmeal.academic.dto.FornecedorDTO;
-import br.bom.techmeal.academic.dto.ProdutoDTO;
-import jakarta.persistence.*;
+import br.bom.techmeal.academic.entity.ControleContas;
+import br.bom.techmeal.academic.entity.Fornecedor;
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
 import java.util.List;
 
-@Entity
-public class Fornecedor implements Serializable {
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+public class FornecedorDTO {
     private int idFornecedor;
-
-    @Column(nullable = false)
     private String cnpjFornecedor;
-
-    @Column(nullable = false)
     private String nomeSocialFornecedor;
-
-    @Column(nullable = false)
     private String celularFornecedor;
-
-    @Column(nullable = false)
     private String emailFornecedor;
-
-    @Column(nullable = false)
     private String chavePixFornecedor;
-
-    @OneToMany (mappedBy = "fornecedor")
     private List<ControleContas> controleContasListFornecedor;
 
-    public Fornecedor(FornecedorDTO fornecedor){
+    public FornecedorDTO(Fornecedor fornecedor){
         BeanUtils.copyProperties(fornecedor, this);
     }
 
-    public Fornecedor(){
+    public FornecedorDTO(){
 
     }
 

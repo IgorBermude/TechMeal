@@ -1,39 +1,25 @@
-package br.bom.techmeal.academic.entity;
+package br.bom.techmeal.academic.dto;
 
-import br.bom.techmeal.academic.dto.ControleContasDTO;
-import br.bom.techmeal.academic.dto.FornecedorDTO;
+import br.bom.techmeal.academic.entity.ControleContas;
+import br.bom.techmeal.academic.entity.Fornecedor;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
 import java.util.Date;
-@Entity
-public class ControleContas implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class ControleContasDTO {
     private int idContaControleContas;
-
-    @Temporal(value = TemporalType.DATE)
     private Date dtVencimentoControleContas;
-
-    @Temporal(value = TemporalType.DATE)
     private Date dtPagamentoControleContas;
-
-    @Column
     private String descricaoControleContas;
-
-    @Column(nullable = false)
     private double valorControleContas;
-
-    @ManyToOne
-    @JoinColumn(name = "fornecedor_id", nullable = false) // Define a chave estrangeira
     private Fornecedor fornecedor;
 
-    public ControleContas(ControleContasDTO controleContas){
+    public ControleContasDTO(ControleContas controleContas){
         BeanUtils.copyProperties(controleContas, this);
     }
 
-    public ControleContas(){
+    public ControleContasDTO(){
 
     }
 
@@ -85,4 +71,3 @@ public class ControleContas implements Serializable {
         this.fornecedor = fornecedor;
     }
 }
-
