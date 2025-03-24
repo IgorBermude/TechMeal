@@ -26,6 +26,9 @@ public class ControleContas implements Serializable {
     @Column(nullable = false)
     private double valorControleContas;
 
+    @Column(nullable = false)
+    private String statusControleContas;
+
     @ManyToOne
     @JoinColumn(name = "fornecedor_id", nullable = false) // Define a chave estrangeira
     @JsonBackReference // Evita a serialização repetitiva
@@ -45,6 +48,14 @@ public class ControleContas implements Serializable {
 
     public void setIdContaControleContas(int idContaControleContas) {
         this.idContaControleContas = idContaControleContas;
+    }
+
+    public String getStatusControlContas() {
+        return statusControleContas;
+    }
+
+    public void setStatusControlContas(String statusControlContas) {
+        this.statusControleContas = statusControlContas;
     }
 
     public Date getDtVencimentoControleContas() {

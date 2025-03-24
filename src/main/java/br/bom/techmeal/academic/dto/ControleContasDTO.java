@@ -14,6 +14,7 @@ public class ControleContasDTO {
     private String descricaoControleContas;
     private double valorControleContas;
     private Fornecedor fornecedor;
+    private String statusControleContas;
 
     public ControleContasDTO(ControleContas controleContas){
         BeanUtils.copyProperties(controleContas, this);
@@ -25,6 +26,14 @@ public class ControleContasDTO {
 
     public int getIdContaControleContas() {
         return idContaControleContas;
+    }
+
+    public String getStatusControlContas() {
+        return statusControleContas;
+    }
+
+    public void setStatusControlContas(String statusControlContas) {
+        this.statusControleContas = statusControlContas;
     }
 
     public void setIdContaControleContas(int idContaControleContas) {
