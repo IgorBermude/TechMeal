@@ -1,6 +1,7 @@
 package br.bom.techmeal.academic.entity;
 
 import br.bom.techmeal.academic.dto.UsuarioDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
@@ -29,6 +30,7 @@ public class Usuario implements Serializable{
     private String senhaUsuario;
 
     @OneToMany (mappedBy = "usuario")
+    @JsonBackReference // Evita a serialização repetitiva
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
 
 

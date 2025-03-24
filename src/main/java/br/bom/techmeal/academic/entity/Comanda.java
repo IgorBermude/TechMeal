@@ -1,5 +1,6 @@
 package br.bom.techmeal.academic.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ public class Comanda implements Serializable {
             joinColumns = @JoinColumn(name = "comanda_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
+    @JsonBackReference // Evita a serialização repetitiva
     private List<Produto> produtoListComanda;
 }
 

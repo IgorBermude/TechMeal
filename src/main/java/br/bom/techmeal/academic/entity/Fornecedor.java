@@ -2,6 +2,8 @@ package br.bom.techmeal.academic.entity;
 
 import br.bom.techmeal.academic.dto.FornecedorDTO;
 import br.bom.techmeal.academic.dto.ProdutoDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
@@ -30,6 +32,7 @@ public class Fornecedor implements Serializable {
     private String chavePixFornecedor;
 
     @OneToMany (mappedBy = "fornecedor")
+    @JsonBackReference // Evita a serialização repetitiva
     private List<ControleContas> controleContasListFornecedor;
 
     public Fornecedor(FornecedorDTO fornecedor){

@@ -2,6 +2,7 @@ package br.bom.techmeal.academic.entity;
 
 import br.bom.techmeal.academic.dto.ControleContasDTO;
 import br.bom.techmeal.academic.dto.FornecedorDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
@@ -27,6 +28,7 @@ public class ControleContas implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id", nullable = false) // Define a chave estrangeira
+    @JsonBackReference // Evita a serialização repetitiva
     private Fornecedor fornecedor;
 
     public ControleContas(ControleContasDTO controleContas){

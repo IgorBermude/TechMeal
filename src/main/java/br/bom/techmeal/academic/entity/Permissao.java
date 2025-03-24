@@ -1,5 +1,6 @@
 package br.bom.techmeal.academic.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -17,5 +18,6 @@ public class Permissao implements Serializable {
     private String acaoPermissao;
 
     @OneToMany (mappedBy = "permissao")
+    @JsonBackReference // Evita a serialização repetitiva
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListPermissao;
 }

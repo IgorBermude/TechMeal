@@ -1,5 +1,6 @@
 package br.bom.techmeal.academic.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -18,5 +19,6 @@ public class Tela implements Serializable{
     private String url;
 
     @OneToMany(mappedBy = "tela")
+    @JsonBackReference // Evita a serialização repetitiva
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListTela;
 }

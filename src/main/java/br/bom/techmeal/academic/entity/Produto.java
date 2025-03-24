@@ -2,6 +2,7 @@ package br.bom.techmeal.academic.entity;
 
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.dto.UsuarioDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -32,9 +33,11 @@ public class Produto implements Serializable {
     private double valorDeCustoProduto;
 
     @OneToMany(mappedBy = "produto")
+    @JsonBackReference // Evita a serialização repetitiva
     private List<HistoricoPreco> historicoPrecoList;
 
     @ManyToMany(mappedBy = "produtoListComanda", fetch = FetchType.LAZY)
+    @JsonBackReference // Evita a serialização repetitiva
     private List<Comanda> comandaListProduto;
 
     public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<Comanda> comandaListProduto) {

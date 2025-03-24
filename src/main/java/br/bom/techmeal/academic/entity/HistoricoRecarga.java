@@ -1,5 +1,6 @@
 package br.bom.techmeal.academic.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -18,5 +19,6 @@ public class HistoricoRecarga implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference // Evita a serialização repetitiva
     private Cliente cliente;
 }

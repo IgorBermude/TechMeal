@@ -1,5 +1,6 @@
 package br.bom.techmeal.academic.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -28,6 +29,7 @@ public class HistoricoPreco implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)  // Chave estrangeira para Produto
+    @JsonBackReference // Evita a serialização repetitiva
     private Produto produto;  // Relacionamento com Produto
 
     // outros métodos...
