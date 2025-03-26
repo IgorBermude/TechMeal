@@ -4,11 +4,13 @@ import br.bom.techmeal.academic.dto.AcessDTO;
 import br.bom.techmeal.academic.dto.AuthenticationDTO;
 import br.bom.techmeal.academic.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthService {
@@ -29,16 +31,9 @@ public class AuthService {
             // Se a autenticação for bem-sucedida, gera o token JWT
             UserDetailImpl userAuthenticate = (UserDetailImpl) authentication.getPrincipal();
             String token = jwtUtils.generateTokenFromUserDetailsImpl(userAuthenticate);
-            AcessDTO acessDto = new AcessDTO(token);
-
-            return acessDto;
+            return new AcessDTO(token);
         } catch (BadCredentialsException e) {
-
-            return null;
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas");
         }
     }
-
-
-
-
 }

@@ -2,11 +2,12 @@ package br.bom.techmeal.academic.dto;
 
 import br.bom.techmeal.academic.entity.ControleContas;
 import br.bom.techmeal.academic.entity.Fornecedor;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ControleContasDTO {
     private int idContaControleContas;
     private Date dtVencimentoControleContas;
@@ -16,28 +17,31 @@ public class ControleContasDTO {
     private Fornecedor fornecedor;
     private String statusControleContas;
 
-    public ControleContasDTO(ControleContas controleContas){
+    public ControleContasDTO(ControleContas controleContas) {
         BeanUtils.copyProperties(controleContas, this);
+        if (this.statusControleContas == null) {
+            this.statusControleContas = "PENDENTE"; // Define um valor padrão se estiver nulo
+        }
     }
 
-    public ControleContasDTO(){
-
+    public ControleContasDTO() {
+        this.statusControleContas = "PENDENTE"; // Define um valor padrão no construtor vazio
     }
 
     public int getIdContaControleContas() {
         return idContaControleContas;
     }
 
-    public String getStatusControlContas() {
+    public void setIdContaControleContas(int idContaControleContas) {
+        this.idContaControleContas = idContaControleContas;
+    }
+
+    public String getStatusControleContas() {
         return statusControleContas;
     }
 
-    public void setStatusControlContas(String statusControlContas) {
-        this.statusControleContas = statusControlContas;
-    }
-
-    public void setIdContaControleContas(int idContaControleContas) {
-        this.idContaControleContas = idContaControleContas;
+    public void setStatusControleContas(String statusControleContas) {
+        this.statusControleContas = statusControleContas;
     }
 
     public Date getDtVencimentoControleContas() {

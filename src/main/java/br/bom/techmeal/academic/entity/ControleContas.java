@@ -23,6 +23,14 @@ public class ControleContas implements Serializable {
     @Column
     private String descricaoControleContas;
 
+    public String getStatusControleContas() {
+        return statusControleContas;
+    }
+
+    public void setStatusControleContas(String statusControleContas) {
+        this.statusControleContas = statusControleContas;
+    }
+
     @Column(nullable = false)
     private double valorControleContas;
 
