@@ -13,4 +13,11 @@ public interface ControleContasRepository extends JpaRepository<ControleContas, 
     // Busca contas com status "Não Paga" e vencidas
     @Query("SELECT c FROM ControleContas c WHERE c.statusControleContas = 'Não Paga' AND c.dtVencimentoControleContas <= :currentDate")
     List<ControleContas> findVencidas(@Param("currentDate") Date currentDate);
+
+    //   buscar uma conta pelo ID
+    ControleContas findByIdContaControleContas(Integer id);
+
+    //   atualizar o status de uma conta para "Paga"
+    @Query("UPDATE ControleContas c SET c.statusControleContas = 'Paga' WHERE c.idContaControleContas = :id")
+    void pagarConta(@Param("id") Integer id);
 }
