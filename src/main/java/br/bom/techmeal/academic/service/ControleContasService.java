@@ -17,7 +17,7 @@ public class ControleContasService {
     private ControleContasRepository controleContasRepository;
 
     public List<ControleContasDTO> listarTodos() {
-        atualizarContasVencidas(); // Atualiza contas vencidas antes de listar
+        //atualizarContasVencidas(); // Atualiza contas vencidas antes de listar
         List<ControleContas> controleContas = controleContasRepository.findAll();
         return controleContas.stream().map(ControleContasDTO::new).toList();
     }
@@ -43,25 +43,7 @@ public class ControleContasService {
 
 
 
-    public void atualizarContasVencidas() {
-        // Cria um objeto java.util.Date para a data atual
-        java.util.Date hojeUtil = new java.util.Date();
 
-        // Converte para java.sql.Date, mas garantindo que a hora será zero
-        java.sql.Date hojeSql = new java.sql.Date(hojeUtil.getTime());  // Pega o tempo em milissegundos
-
-        // Buscar contas vencendo hoje e ainda não pagas
-        List<ControleContas> contas = controleContasRepository
-                .findByDtVencimentoControleContasAndStatusControleContas(hojeSql, "Não paga");
-
-        // Atualizar o status para "Vencida"
-        for (ControleContas conta : contas) {
-            conta.setStatusControleContas("Vencida");
-        }
-
-        // Salvar atualizações
-        controleContasRepository.saveAll(contas);
-    }
 
 
 

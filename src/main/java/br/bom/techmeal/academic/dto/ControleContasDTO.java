@@ -5,6 +5,7 @@ import br.bom.techmeal.academic.entity.Fornecedor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,15 +18,18 @@ public class ControleContasDTO {
     private Fornecedor fornecedor;
     private String statusControleContas;
 
+    // Construtor para conversão da entidade (GET)
     public ControleContasDTO(ControleContas controleContas) {
         BeanUtils.copyProperties(controleContas, this);
+        // Sobrescreve a data para evitar ajuste duplicado
+        this.dtVencimentoControleContas = controleContas.getDtVencimentoControleContas();
         if (this.statusControleContas == null) {
-            this.statusControleContas = "PENDENTE"; // Define um valor padrão se estiver nulo
+            this.statusControleContas = "Não Paga";
         }
     }
 
     public ControleContasDTO() {
-        this.statusControleContas = "PENDENTE"; // Define um valor padrão no construtor vazio
+        this.statusControleContas = "Não Paga";
     }
 
     public int getIdContaControleContas() {
@@ -48,8 +52,22 @@ public class ControleContasDTO {
         return dtVencimentoControleContas;
     }
 
+    // Setter para entrada de dados (POST)
     public void setDtVencimentoControleContas(Date dtVencimentoControleContas) {
-        this.dtVencimentoControleContas = dtVencimentoControleContas;
+        if (dtVencimentoControleContas != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dtVencimentoControleContas);
+            // Zera hora, minuto, segundo e milissegundo
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            // Adiciona 1 dia para compensar (necessário apenas para entrada, se assim você configurou)
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            this.dtVencimentoControleContas = new java.sql.Date(calendar.getTimeInMillis());
+        } else {
+            this.dtVencimentoControleContas = null;
+        }
     }
 
     public Date getDtPagamentoControleContas() {

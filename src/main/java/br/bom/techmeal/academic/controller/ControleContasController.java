@@ -17,7 +17,7 @@ public class ControleContasController {
 
     @GetMapping
     public List<ControleContasDTO> listarTodos() {
-        controleContasService.atualizarContasVencidas(); //
+        //controleContasService.atualizarContasVencidas(); //
         return controleContasService.listarTodos();
     }
 
