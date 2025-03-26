@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.dto;
 import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.entity.HistoricoPreco;
 import br.bom.techmeal.academic.entity.Produto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -14,16 +15,18 @@ public class ProdutoDTO {
     private int quantProduto;
     private double precoProduto;
     private double valorDeCustoProduto;
+
+    @JsonIgnore
     private List<HistoricoPreco> historicoPrecoList;
+
+    @JsonIgnore
     private List<Comanda> comandaListProduto;
 
     public ProdutoDTO(Produto produto){
         BeanUtils.copyProperties(produto, this);
     }
 
-    public ProdutoDTO(){
-
-    }
+    public ProdutoDTO() { }
 
     public int getIdProduto() {
         return idProduto;

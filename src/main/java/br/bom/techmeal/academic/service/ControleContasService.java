@@ -5,8 +5,7 @@ import br.bom.techmeal.academic.entity.ControleContas;
 import br.bom.techmeal.academic.repository.ControleContasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.text.SimpleDateFormat;
-import java.sql.Date; // Use java.sql.Date para compatibilidade com o banco de dados
+
 
 import java.util.List;
 

@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.dto;
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.entity.HistoricoRecarga;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
@@ -16,16 +17,18 @@ public class ClienteDTO {
     private Date dtNascCliente;
     private Date ultimaCompraCliente;
     private double faturaCliente;
+
+    @JsonIgnore
     private List<Comanda> comandas;
+
+    @JsonIgnore
     private List<HistoricoRecarga> historicoRecarga;
 
     public ClienteDTO(Cliente cliente){
         BeanUtils.copyProperties(cliente, this);
     }
 
-    public ClienteDTO(){
-
-    }
+    public ClienteDTO(){ }
 
     public int getIdCliente() {
         return idCliente;

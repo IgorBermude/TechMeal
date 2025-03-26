@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.entity;
 import br.bom.techmeal.academic.dto.ClienteDTO;
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
@@ -29,11 +30,11 @@ public class Cliente implements Serializable {
     private double faturaCliente;
 
     @OneToMany(mappedBy ="cliente")
-    @JsonBackReference // Evita a serialização repetitiva
+    @JsonManagedReference
     private List<Comanda> comandas;
 
     @OneToMany(mappedBy = "cliente")
-    @JsonBackReference // Evita a serialização repetitiva
+    @JsonManagedReference
     private List<HistoricoRecarga> historicoRecarga;
 
     public Cliente(ClienteDTO cliente){

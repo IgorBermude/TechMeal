@@ -57,7 +57,6 @@ public class ControleContasDTO {
         if (dtVencimentoControleContas != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(dtVencimentoControleContas);
-            // Zera hora, minuto, segundo e milissegundo
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);

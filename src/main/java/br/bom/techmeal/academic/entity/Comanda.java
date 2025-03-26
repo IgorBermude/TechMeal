@@ -31,7 +31,7 @@ public class Comanda implements Serializable {
             joinColumns = @JoinColumn(name = "comanda_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
-    @JsonBackReference // Evita a serialização repetitiva
+    @JsonBackReference // Este é o lado "filho" da relação
     private List<Produto> produtoListComanda;
 }
 
