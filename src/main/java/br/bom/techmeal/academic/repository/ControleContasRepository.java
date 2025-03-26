@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ControleContasRepository extends JpaRepository<ControleContas, Integer> {
 
-
-
+    // Busca contas com status "Não Paga" e vencidas
+    @Query("SELECT c FROM ControleContas c WHERE c.statusControleContas = 'Não Paga' AND c.dtVencimentoControleContas <= :currentDate")
+    List<ControleContas> findVencidas(@Param("currentDate") Date currentDate);
 }

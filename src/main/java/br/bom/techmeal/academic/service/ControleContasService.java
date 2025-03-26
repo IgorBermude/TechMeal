@@ -6,7 +6,7 @@ import br.bom.techmeal.academic.repository.ControleContasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,9 +16,20 @@ public class ControleContasService {
     private ControleContasRepository controleContasRepository;
 
     public List<ControleContasDTO> listarTodos() {
-        //atualizarContasVencidas(); // Atualiza contas vencidas antes de listar
+        atualizarContasVencidas(); // Atualiza contas vencidas antes de listar
         List<ControleContas> controleContas = controleContasRepository.findAll();
         return controleContas.stream().map(ControleContasDTO::new).toList();
+    }
+
+    // Método para atualizar o status das contas vencidas
+    public void atualizarContasVencidas() {
+        Date currentDate = new Date(); // Data atual
+        List<ControleContas> contasVencidas = controleContasRepository.findVencidas(currentDate);
+
+        for (ControleContas conta : contasVencidas) {
+            conta.setStatusControleContas("Vencida");
+            controleContasRepository.save(conta); // Atualiza a conta no banco
+        }
     }
 
     public void inserir(ControleContasDTO controleContas) {
@@ -39,12 +50,4 @@ public class ControleContasService {
     public ControleContasDTO buscarPorId(Integer id) {
         return new ControleContasDTO(controleContasRepository.findById(id).orElseThrow());
     }
-
-
-
-
-
-
-
-
 }
