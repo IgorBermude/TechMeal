@@ -35,7 +35,11 @@ public class ClienteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable("id") Integer id){
-        clienteService.excluir(id);
-        return ResponseEntity.ok().build();
+        try {
+            clienteService.excluir(id);
+            return ResponseEntity.ok().build(); // Retorna 200 OK se a exclusão for bem-sucedida
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).build(); // Retorna 404 se a conta não for encontrada
+        }
     }
 }

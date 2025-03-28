@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.controller;
 import br.bom.techmeal.academic.dto.ControleContasDTO;
 import br.bom.techmeal.academic.service.ControleContasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,17 @@ public class ControleContasController {
         controleContasService.atualizarContasVencidas(); // Atualiza as contas vencidas
         return controleContasService.listarTodos();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<ControleContasDTO> buscarContaPorId(@PathVariable Integer id) {
+        ControleContasDTO conta = controleContasService.buscarPorId(id); // Serviço que busca a conta pelo id
+
+        if (conta != null) {
+            return ResponseEntity.ok(conta); // Retorna a conta encontrada
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 caso não encontre
+        }
+    }
+
 
 
     @PostMapping
@@ -41,6 +53,7 @@ public class ControleContasController {
     public ResponseEntity<ControleContasDTO> pagarConta(@PathVariable Integer id) {
         try {
             ControleContasDTO contaPaga = controleContasService.pagarConta(id);
+            System.out.println("Conta paga com sucesso: " + contaPaga);
             return ResponseEntity.ok(contaPaga); // Retorna a conta paga com 200 OK
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).build(); // Retorna 404 se a conta não for encontrada
