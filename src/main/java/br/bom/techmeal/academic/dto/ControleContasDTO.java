@@ -100,4 +100,6 @@ public class ControleContasDTO {
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
     }
+
+
 }
