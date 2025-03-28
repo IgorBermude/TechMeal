@@ -54,7 +54,7 @@ public class ControleContasController {
         try {
             ControleContasDTO contaPaga = controleContasService.pagarConta(id);
             System.out.println("Conta paga com sucesso: " + contaPaga);
-            return ResponseEntity.ok(contaPaga); // Retorna a conta paga com 200 OK
+            return ResponseEntity.status(201).build(); // Retorna a conta paga com 200 OK
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).build(); // Retorna 404 se a conta não for encontrada
         }
