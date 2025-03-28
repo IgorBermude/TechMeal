@@ -1,12 +1,14 @@
 package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.ControleContasDTO;
+import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.service.ControleContasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.ldap.Control;
 import java.util.List;
 
 @RestController
@@ -34,7 +36,6 @@ public class ControleContasController {
     }
 
 
-
     @PostMapping
     public ResponseEntity<Void> inserir(@RequestBody ControleContasDTO controleContas) {
         controleContasService.inserir(controleContas);
@@ -60,6 +61,27 @@ public class ControleContasController {
         }
     }
 
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<ControleContasDTO> alterar(@PathVariable Integer id, @RequestBody ControleContasDTO controleContasAtualizado){
+        try {
+            ControleContasDTO controleContasExistente = controleContasService.buscarPorId(id);
+
+            if (controleContasExistente != null) {
+                // Aqui você pode adicionar qualquer validação extra que queira fazer para o produto
+                // Exemplo: verificar se o código de barras já existe no sistema antes de atualizar
+
+                // Atualiza o produto no serviço
+                controleContasAtualizado.setIdContaControleContas(id); // Certifique-se de que o ID do produto a ser alterado é o correto
+                ControleContasDTO controleContasAlterado = controleContasService.alterar(controleContasAtualizado);
+
+                return ResponseEntity.ok(controleContasAlterado); // Retorna o produto atualizado
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Produto não encontrado
+            }
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).build(); // Retorna 404 se o produto não for encontrado
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {

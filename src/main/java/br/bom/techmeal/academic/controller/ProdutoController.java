@@ -48,6 +48,8 @@ public class ProdutoController {
             // Seta o código de barras no produto
             produto.setCodigoBarrasProduto(codigoBarras);
 
+            //produto.setCodigoBarrasImagemProduto();
+
             // Salva o produto no banco de dados
             produtoService.inserir(produto);
 

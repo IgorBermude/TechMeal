@@ -15,6 +15,7 @@ public class ProdutoDTO {
     private int quantProduto;
     private double precoProduto;
     private double valorDeCustoProduto;
+    private byte[] codigoBarrasImagemProduto;
 
     @JsonIgnore
     private List<HistoricoPreco> historicoPrecoList;
@@ -27,6 +28,14 @@ public class ProdutoDTO {
     }
 
     public ProdutoDTO() { }
+
+    public byte[] getCodigoBarrasImagemProduto() {
+        return codigoBarrasImagemProduto;
+    }
+
+    public void setCodigoBarrasImagemProduto(byte[] codigoBarrasImagemProduto) {
+        this.codigoBarrasImagemProduto = codigoBarrasImagemProduto;
+    }
 
     public int getIdProduto() {
         return idProduto;

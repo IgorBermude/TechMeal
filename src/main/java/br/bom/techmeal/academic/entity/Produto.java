@@ -17,7 +17,6 @@ public class Produto implements Serializable {
     private int idProduto;
 
     @Column(nullable = false)
-
     private String nomeProduto;
 
     @Column(nullable = false, unique = true)
@@ -32,6 +31,10 @@ public class Produto implements Serializable {
     @Column(nullable = false)
     private double valorDeCustoProduto;
 
+    @Lob
+    @Column(name = "codigo_barras_imagem")
+    private byte[] codigoBarrasImagemProduto;
+
     @OneToMany(mappedBy = "produto")
     @JsonBackReference // Evita a serialização repetitiva
     private List<HistoricoPreco> historicoPrecoList;
@@ -40,7 +43,7 @@ public class Produto implements Serializable {
     @JsonBackReference // Evita a serialização repetitiva
     private List<Comanda> comandaListProduto;
 
-    public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<Comanda> comandaListProduto) {
+    public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<Comanda> comandaListProduto, byte[] codigoBarrasImagemProduto) {
         this.idProduto = idProduto;
         this.nomeProduto = nomeProduto;
         this.codigoBarrasProduto = codigoBarrasProduto;
@@ -49,6 +52,7 @@ public class Produto implements Serializable {
         this.valorDeCustoProduto = valorDeCustoProduto;
         this.historicoPrecoList = historicoPrecoList;
         this.comandaListProduto = comandaListProduto;
+        this.codigoBarrasImagemProduto = codigoBarrasImagemProduto;
     }
 
     public Produto(ProdutoDTO produto){
@@ -107,6 +111,14 @@ public class Produto implements Serializable {
         this.valorDeCustoProduto = valorDeCustoProduto;
     }
 
+    public byte[] getCodigoBarrasImagemProduto() {
+        return codigoBarrasImagemProduto;
+    }
+
+    public void setCodigoBarrasImagemProduto(byte[] codigoBarrasImagem) {
+        this.codigoBarrasImagemProduto = codigoBarrasImagem;
+    }
+
     public List<HistoricoPreco> getHistoricoPrecoList() {
         return historicoPrecoList;
     }
@@ -123,4 +135,3 @@ public class Produto implements Serializable {
         this.comandaListProduto = comandaListProduto;
     }
 }
-

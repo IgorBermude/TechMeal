@@ -88,6 +88,8 @@ public class ProdutoService {
             Files.createDirectories(caminhoDiretorio);
         }
 
+        // Setar a imagem do codigo de barras no produto, para isso é preciso alterar essa função para talvez retornar a imagem.
+
         // Caminho do arquivo gerado
         String nomeArquivo = diretorio + "codigo_" + numeroCodigoDeBarras + ".png";
 
