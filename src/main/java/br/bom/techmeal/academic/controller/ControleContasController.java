@@ -1,7 +1,7 @@
 package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.ControleContasDTO;
-import br.bom.techmeal.academic.dto.ProdutoDTO;
+
 import br.bom.techmeal.academic.service.ControleContasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,27 +61,32 @@ public class ControleContasController {
         }
     }
 
+
+
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<ControleContasDTO> alterar(@PathVariable Integer id, @RequestBody ControleContasDTO controleContasAtualizado){
+    public ResponseEntity<ControleContasDTO> alterar(@PathVariable Integer id, @RequestBody ControleContasDTO controleContasAtualizado) {
         try {
+            // Verifica se a conta existe
             ControleContasDTO controleContasExistente = controleContasService.buscarPorId(id);
 
             if (controleContasExistente != null) {
-                // Aqui você pode adicionar qualquer validação extra que queira fazer para o produto
-                // Exemplo: verificar se o código de barras já existe no sistema antes de atualizar
-
-                // Atualiza o produto no serviço
-                controleContasAtualizado.setIdContaControleContas(id); // Certifique-se de que o ID do produto a ser alterado é o correto
+                // Chama o serviço para alterar a conta
                 ControleContasDTO controleContasAlterado = controleContasService.alterar(id, controleContasAtualizado);
 
-                return ResponseEntity.ok(controleContasAlterado); // Retorna o produto atualizado
+                // Retorna a conta alterada com status 200 OK
+                return ResponseEntity.ok(controleContasAlterado);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Produto não encontrado
+                // Retorna erro 404 se a conta não for encontrada
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } catch (RuntimeException e) {
-            return ResponseEntity.status(404).build(); // Retorna 404 se o produto não for encontrado
+            // Retorna erro 500 caso algum outro erro aconteça
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {
