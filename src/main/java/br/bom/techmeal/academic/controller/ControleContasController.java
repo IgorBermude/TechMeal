@@ -72,7 +72,7 @@ public class ControleContasController {
 
                 // Atualiza o produto no serviço
                 controleContasAtualizado.setIdContaControleContas(id); // Certifique-se de que o ID do produto a ser alterado é o correto
-                ControleContasDTO controleContasAlterado = controleContasService.alterar(controleContasAtualizado);
+                ControleContasDTO controleContasAlterado = controleContasService.alterar(id, controleContasAtualizado);
 
                 return ResponseEntity.ok(controleContasAlterado); // Retorna o produto atualizado
             } else {

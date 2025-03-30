@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -58,7 +59,7 @@ public class ProdutoService {
         return new ProdutoDTO(produtoRepository.findById(id).get());
     }
 
-    public String gerarCodigoDeBarras(String nomeProduto) throws IOException {
+    public ProdutoDTO gerarCodigoDeBarras(ProdutoDTO produto) throws IOException {
         // Código do país (Brasil)
         String codigoPais = "789";
 
@@ -66,7 +67,7 @@ public class ProdutoService {
         String codigoEmpresa = "835741";
 
         // Usando o código hash do nomeProduto para gerar um número e pegando os 3 últimos dígitos
-        int hashNomeProduto = nomeProduto.hashCode();
+        int hashNomeProduto = produto.getNomeProduto().hashCode();
         String descricaoItem = String.format("%03d", Math.abs(hashNomeProduto) % 1000);
 
         // Concatenar código do país, empresa e descrição do item
@@ -81,25 +82,24 @@ public class ProdutoService {
         // Gerar o código de barras usando ZXing
         BitMatrix bitMatrix = new Code128Writer().encode(numeroCodigoDeBarras, BarcodeFormat.CODE_128, 300, 100);
 
-        // Criar diretório para armazenar códigos de barras
-        String diretorio = "codigos-de-barras/";
-        Path caminhoDiretorio = Paths.get(diretorio);
-        if (!Files.exists(caminhoDiretorio)) {
-            Files.createDirectories(caminhoDiretorio);
-        }
-
         // Setar a imagem do codigo de barras no produto, para isso é preciso alterar essa função para talvez retornar a imagem.
 
-        // Caminho do arquivo gerado
-        String nomeArquivo = diretorio + "codigo_" + numeroCodigoDeBarras + ".png";
+        // Seta o código de barras no produto
+        produto.setCodigoBarrasProduto(numeroCodigoDeBarras);
 
-        // Converter a matriz de bits em uma imagem e salvar
-        Path path = FileSystems.getDefault().getPath(nomeArquivo);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+        // Converte o BitMatrix para um array de bytes
+        byte[] imagemProduto = converterParaByts(bitMatrix);
 
-        System.out.println("Código de barras gerado com sucesso: " + nomeArquivo);
+        // Seta a imagem do barras no produto
+        produto.setCodigoBarrasImagemProduto(imagemProduto);
 
-        return numeroCodigoDeBarras; // Retorna o número do código gerado
+        return produto; // Retorna o número do código gerado
+    }
+
+    private byte[] converterParaByts(BitMatrix bitMatrix) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(bitMatrix, "png", baos);
+        return baos.toByteArray();
     }
 
     // Cálculo correto do dígito verificador para EAN-13

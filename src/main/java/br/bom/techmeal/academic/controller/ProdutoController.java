@@ -38,22 +38,17 @@ public class ProdutoController {
     public ResponseEntity<String> inserir(@RequestBody ProdutoDTO produto) {
         try {
             // Gera o código de barras automaticamente
-            String codigoBarras = produtoService.gerarCodigoDeBarras(produto.getNomeProduto());
+            produto = produtoService.gerarCodigoDeBarras(produto);
 
-            if (codigoBarras == null || codigoBarras.isEmpty()) {
+            if (produto.getCodigoBarrasProduto() == null || produto.getCodigoBarrasProduto().isEmpty()) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("Erro ao gerar o código de barras.");
             }
 
-            // Seta o código de barras no produto
-            produto.setCodigoBarrasProduto(codigoBarras);
-
-            //produto.setCodigoBarrasImagemProduto();
-
             // Salva o produto no banco de dados
             produtoService.inserir(produto);
 
-            return ResponseEntity.ok("Produto cadastrado com sucesso! Código de barras: " + codigoBarras);
+            return ResponseEntity.ok("Produto cadastrado com sucesso! Código de barras: " + produto.getCodigoBarrasProduto());
         } catch (DataIntegrityViolationException e) {
             // Log de erro
             e.printStackTrace();

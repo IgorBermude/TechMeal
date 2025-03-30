@@ -45,6 +45,32 @@ public class ControleContasService {
         return new ControleContasDTO(controleContasRepository.save(controleContasEntity));
     }
 
+    public ControleContasDTO alterar(Integer id, ControleContasDTO controleContasAtualizado) {
+        // Buscar a conta existente no banco usando o ID
+        ControleContas controleContasExistente = controleContasRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+
+        // Atualiza os dados da conta com os novos valores
+        if (controleContasAtualizado.getDescricaoControleContas() != null) {
+            controleContasExistente.setDescricaoControleContas(controleContasAtualizado.getDescricaoControleContas());
+        }
+        if (controleContasAtualizado.getValorControleContas() != 0) {
+            controleContasExistente.setValorControleContas(controleContasAtualizado.getValorControleContas());
+        }
+        if (controleContasAtualizado.getStatusControleContas() != null) {
+            controleContasExistente.setStatusControleContas(controleContasAtualizado.getStatusControleContas());
+        }
+        if (controleContasAtualizado.getDtVencimentoControleContas() != null) {
+            controleContasExistente.setDtVencimentoControleContas(controleContasAtualizado.getDtVencimentoControleContas());
+        }
+
+        // Salva as alterações no banco
+        controleContasRepository.save(controleContasExistente);
+
+        // Retorna o DTO atualizado com os novos dados
+        return new ControleContasDTO(controleContasExistente);
+    }
+
 
     public void excluir(Integer id) {
         ControleContas controleContas = controleContasRepository.findById(id)
