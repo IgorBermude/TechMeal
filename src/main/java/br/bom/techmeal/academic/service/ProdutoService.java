@@ -59,6 +59,15 @@ public class ProdutoService {
         return new ProdutoDTO(produtoRepository.findById(id).get());
     }
 
+    public ProdutoDTO buscarPorCodigoBarras(String codigoBarras){
+        Produto produto = produtoRepository.findByCodigoBarrasProduto(codigoBarras);
+        if (produto != null) {
+            return new ProdutoDTO(produto);
+        } else {
+            return null; // ou lançar uma exceção, dependendo do seu caso de uso
+        }
+    }
+
     public ProdutoDTO gerarCodigoDeBarras(ProdutoDTO produto) throws IOException {
         // Código do país (Brasil)
         String codigoPais = "789";

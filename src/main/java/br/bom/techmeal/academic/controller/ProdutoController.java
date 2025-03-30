@@ -4,12 +4,14 @@ import br.bom.techmeal.academic.dto.ControleContasDTO;
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.service.ProdutoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.Transient;
 import java.util.List;
 
 @RestController
@@ -26,6 +28,18 @@ public class ProdutoController {
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoDTO> buscarProdutoPorId(@PathVariable Integer id) {
         ProdutoDTO produto = produtoService.buscarPorId(id); // Serviço que busca a conta pelo id
+
+        if (produto != null) {
+            return ResponseEntity.ok(produto); // Retorna a conta encontrada
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 caso não encontre
+        }
+    }
+
+    @GetMapping("/codigobarras/{codigoBarras}")
+    @Transactional
+    public ResponseEntity<ProdutoDTO> buscarProdutoPorCodigoBarras(@PathVariable String codigoBarras) {
+        ProdutoDTO produto = produtoService.buscarPorCodigoBarras(codigoBarras); // Serviço que busca a conta pelo id
 
         if (produto != null) {
             return ResponseEntity.ok(produto); // Retorna a conta encontrada
