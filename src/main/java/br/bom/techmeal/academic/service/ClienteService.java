@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -14,27 +15,33 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<ClienteDTO> listarTodos(){
+    public List<ClienteDTO> listarTodos() {
         List<Cliente> clientes = clienteRepository.findAll();
         return clientes.stream().map(ClienteDTO::new).toList();
     }
 
-    public void inserir(ClienteDTO cliente){
+    public ClienteDTO buscarPorId(Integer id) {
+        Optional<Cliente> clienteOpt = clienteRepository.findById(id);
+
+        if (clienteOpt.isEmpty()) {
+            return null; // Você pode lançar uma exceção personalizada aqui, se desejar
+        }
+
+        return new ClienteDTO(clienteOpt.get());
+    }
+
+    public void inserir(ClienteDTO cliente) {
         Cliente clienteEntity = new Cliente(cliente);
         clienteRepository.save(clienteEntity);
     }
 
-    public ClienteDTO alterar(ClienteDTO cliente){
+    public ClienteDTO alterar(ClienteDTO cliente) {
         Cliente clienteEntity = new Cliente(cliente);
         return new ClienteDTO(clienteRepository.save(clienteEntity));
     }
 
-    public void excluir(Integer id){
-        Cliente cliente = clienteRepository.findById(id).get();
-        clienteRepository.delete(cliente);
-    }
-
-    public ClienteDTO buscarPorId(Integer id){
-        return new ClienteDTO(clienteRepository.findById(id).get());
+    public void excluir(Integer id) {
+        Optional<Cliente> clienteOpt = clienteRepository.findById(id);
+        clienteOpt.ifPresent(clienteRepository::delete);
     }
 }
