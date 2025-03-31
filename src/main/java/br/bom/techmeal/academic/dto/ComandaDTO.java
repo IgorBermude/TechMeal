@@ -1,49 +1,31 @@
-package br.bom.techmeal.academic.entity;
+package br.bom.techmeal.academic.dto;
 
-import br.bom.techmeal.academic.dto.ComandaDTO;
-import br.bom.techmeal.academic.dto.ControleContasDTO;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import br.bom.techmeal.academic.entity.Cliente;
+import br.bom.techmeal.academic.entity.Comanda;
+import br.bom.techmeal.academic.entity.Produto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idCompraComanda")
-public class Comanda implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ComandaDTO {
     private int idCompraComanda;
-
-    @Column(name = "valorTotal", nullable = false)
     private int valorTotalComanda;
-
-    @Temporal(value = TemporalType.DATE)
     private Date horaEntradaComanda;
-
-    @Temporal(value = TemporalType.DATE)
     private Date horaSaidaComanda;
-
-    @ManyToOne
+    //@JsonIgnore
     private Cliente cliente;
-
-    @ManyToMany
-    @JoinTable(
-            name = "comanda_produto",
-            joinColumns = @JoinColumn(name = "comanda_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id")
-    )
+    //@JsonIgnore
     private List<Produto> produtoListComanda;
 
-    public Comanda(ComandaDTO comanda){
+    public ComandaDTO(Comanda comanda){
         BeanUtils.copyProperties(comanda, this);
     }
 
-    public Comanda(){
-    }
+    public ComandaDTO(){ }
 
     public int getIdCompraComanda() {
         return idCompraComanda;
@@ -91,11 +73,5 @@ public class Comanda implements Serializable {
 
     public void setProdutoListComanda(List<Produto> produtoListComanda) {
         this.produtoListComanda = produtoListComanda;
-    }
-
-    public void addProduto(Produto produto) {
-        if (produto != null && !produtoListComanda.contains(produto)) {
-            produtoListComanda.add(produto);
-        }
     }
 }
