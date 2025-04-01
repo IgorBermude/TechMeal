@@ -6,6 +6,7 @@ import br.bom.techmeal.academic.entity.HistoricoRecarga;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class ClienteDTO {
 
     public ClienteDTO(Cliente cliente){
         BeanUtils.copyProperties(cliente, this);
+        // Sobrescreve a data para evitar ajuste duplicado
+        this.dtNascCliente = cliente.getDtNascCliente();
+        this.ultimaCompraCliente = cliente.getUltimaCompraCliente();
     }
 
     public ClienteDTO(){ }
@@ -67,7 +71,19 @@ public class ClienteDTO {
     }
 
     public void setDtNascCliente(Date dtNascCliente) {
-        this.dtNascCliente = dtNascCliente;
+        if (dtNascCliente != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dtNascCliente);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            // Adiciona 1 dia para compensar (necessário apenas para entrada, se assim você configurou)
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            this.dtNascCliente = new java.sql.Date(calendar.getTimeInMillis());
+        } else {
+            this.dtNascCliente = null;
+        }
     }
 
     public Date getUltimaCompraCliente() {
@@ -75,7 +91,19 @@ public class ClienteDTO {
     }
 
     public void setUltimaCompraCliente(Date ultimaCompraCliente) {
-        this.ultimaCompraCliente = ultimaCompraCliente;
+        if (ultimaCompraCliente != null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(ultimaCompraCliente);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            // Adiciona 1 dia para compensar (necessário apenas para entrada, se assim você configurou)
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            this.ultimaCompraCliente = new java.sql.Date(calendar.getTimeInMillis());
+        } else {
+            this.ultimaCompraCliente = null;
+        }
     }
 
     public double getFaturaCliente() {

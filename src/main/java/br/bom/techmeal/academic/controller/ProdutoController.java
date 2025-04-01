@@ -80,7 +80,7 @@ public class ProdutoController {
     public ProdutoDTO alterar(@RequestBody ProdutoDTO produto) {
         return produtoService.alterar(produto);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/alterar/{id}")
     public ResponseEntity<ProdutoDTO> alterar(@PathVariable Integer id, @RequestBody ProdutoDTO produtoAtualizado) {
         try {
             ProdutoDTO produtoExistente = produtoService.buscarPorId(id);

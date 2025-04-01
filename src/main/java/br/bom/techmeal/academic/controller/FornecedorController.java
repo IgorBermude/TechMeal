@@ -51,7 +51,7 @@ public class FornecedorController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/alterar/{id}")
     public ResponseEntity<FornecedorDTO> alterar(@PathVariable Integer id, @RequestBody FornecedorDTO fornecedorAtualizado) {
         try {
             FornecedorDTO fornecedorExistente = fornecedorService.buscarPorId(id);

@@ -2,6 +2,7 @@ package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.ClienteDTO;
 
+import br.bom.techmeal.academic.dto.FornecedorDTO;
 import br.bom.techmeal.academic.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,28 @@ public class ClienteController {
             return ResponseEntity.ok().build(); // Retorna 200 OK se a exclusão for bem-sucedida
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).build(); // Retorna 404 se a conta não for encontrada
+        }
+    }
+
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<ClienteDTO> alterar(@PathVariable Integer id, @RequestBody ClienteDTO clienteAtualizado) {
+        try {
+            ClienteDTO clienteExistente = clienteService.buscarPorId(id);
+
+            if (clienteExistente != null) {
+                // Aqui você pode adicionar qualquer validação extra que queira fazer para o produto
+                // Exemplo: verificar se o código de barras já existe no sistema antes de atualizar
+
+                // Atualiza o produto no serviço
+                clienteAtualizado.setIdCliente(id);
+                ClienteDTO clienteAlterado = clienteService.alterar(clienteAtualizado);
+
+                return ResponseEntity.ok(clienteAlterado); // Retorna o produto atualizado
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Produto não encontrado
+            }
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).build(); // Retorna 404 se o produto não for encontrado
         }
     }
 }
