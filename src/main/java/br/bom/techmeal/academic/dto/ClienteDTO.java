@@ -19,10 +19,10 @@ public class ClienteDTO {
     private Date ultimaCompraCliente;
     private double faturaCliente;
 
-    @JsonIgnore
+
     private List<Comanda> comandas;
 
-    @JsonIgnore
+
     private List<HistoricoRecarga> historicoRecarga;
 
     public ClienteDTO(Cliente cliente){

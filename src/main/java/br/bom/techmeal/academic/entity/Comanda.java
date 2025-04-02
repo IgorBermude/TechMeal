@@ -2,8 +2,7 @@ package br.bom.techmeal.academic.entity;
 
 import br.bom.techmeal.academic.dto.ComandaDTO;
 import br.bom.techmeal.academic.dto.ControleContasDTO;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
@@ -21,13 +20,16 @@ public class Comanda implements Serializable {
     @Column(name = "valorTotal", nullable = false)
     private int valorTotalComanda;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo") // <- Ajuste para formatar corretamente
     private Date horaEntradaComanda;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo") // <- Ajuste para formatar corretame
     private Date horaSaidaComanda;
 
     @ManyToOne
+
     private Cliente cliente;
 
     @ManyToMany
@@ -36,6 +38,7 @@ public class Comanda implements Serializable {
             joinColumns = @JoinColumn(name = "comanda_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
+
     private List<Produto> produtoListComanda;
 
     public Comanda(ComandaDTO comanda){

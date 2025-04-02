@@ -30,11 +30,11 @@ public class Cliente implements Serializable {
     private double faturaCliente;
 
     @OneToMany(mappedBy ="cliente")
-    @JsonManagedReference
+
     private List<Comanda> comandas;
 
     @OneToMany(mappedBy = "cliente")
-    @JsonManagedReference
+
     private List<HistoricoRecarga> historicoRecarga;
 
     public Cliente(ClienteDTO cliente){

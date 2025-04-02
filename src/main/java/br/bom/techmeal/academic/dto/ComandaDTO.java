@@ -4,7 +4,9 @@ import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.entity.Produto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
@@ -14,11 +16,13 @@ import java.util.List;
 public class ComandaDTO {
     private int idCompraComanda;
     private int valorTotalComanda;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo")
     private Date horaEntradaComanda;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo")
     private Date horaSaidaComanda;
-    //@JsonIgnore
+
     private Cliente cliente;
-    //@JsonIgnore
+
     private List<Produto> produtoListComanda;
 
     public ComandaDTO(Comanda comanda){

@@ -17,10 +17,10 @@ public class ProdutoDTO {
     private double valorDeCustoProduto;
     private byte[] codigoBarrasImagemProduto;
 
-    @JsonIgnore
+
     private List<HistoricoPreco> historicoPrecoList;
 
-    @JsonIgnore
+
     private List<Comanda> comandaListProduto;
 
     public ProdutoDTO(Produto produto){

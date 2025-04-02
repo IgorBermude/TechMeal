@@ -3,6 +3,9 @@ package br.bom.techmeal.academic.entity;
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.dto.UsuarioDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +14,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idProduto")
 public class Produto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +40,11 @@ public class Produto implements Serializable {
     private byte[] codigoBarrasImagemProduto;
 
     @OneToMany(mappedBy = "produto")
-    @JsonBackReference // Evita a serialização repetitiva
+
     private List<HistoricoPreco> historicoPrecoList;
 
     @ManyToMany(mappedBy = "produtoListComanda", fetch = FetchType.LAZY)
-    @JsonBackReference // Evita a serialização repetitiva
+
     private List<Comanda> comandaListProduto;
 
     public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<Comanda> comandaListProduto, byte[] codigoBarrasImagemProduto) {

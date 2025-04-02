@@ -29,7 +29,7 @@ public class HistoricoPreco implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)  // Chave estrangeira para Produto
-    @JsonBackReference // Evita a serialização repetitiva
+
     private Produto produto;  // Relacionamento com Produto
 
     // outros métodos...
