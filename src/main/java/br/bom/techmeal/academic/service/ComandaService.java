@@ -76,16 +76,13 @@ public class ComandaService {
                 .orElseThrow(() -> new RuntimeException("Comanda não encontrada")));
     }
 
-    public ComandaDTO atualizarComanda(Integer clienteId, List<Produto> produtos) {
-        Comanda comanda = comandaRepository.findComandaAtivaPorCliente(clienteId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma comanda aberta encontrada para o cliente"));
+    public ComandaDTO atualizarComanda(Integer comandaId, List<Produto> produtos) {
+        Comanda comanda = comandaRepository.findById(comandaId)
+                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
 
         double valorTotal = produtos.stream().mapToDouble(Produto::getPrecoProduto).sum();
         comanda.setProdutoListComanda(produtos);
         comanda.setValorTotalComanda(valorTotal);
-
-
-
         return new ComandaDTO(comandaRepository.save(comanda));
     }
 

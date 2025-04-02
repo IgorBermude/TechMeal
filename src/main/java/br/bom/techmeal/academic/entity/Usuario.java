@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name = "usuario")
 public class Usuario implements Serializable{
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)

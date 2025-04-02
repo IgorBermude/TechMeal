@@ -48,7 +48,7 @@ public class ComandaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ComandaDTO> atualizarComanda(@PathVariable Integer id, @RequestBody List<ProdutoDTO> produtos) {
+    public ResponseEntity<ComandaDTO> atualizarComanda(@PathVariable Integer id, @RequestBody List<Produto> produtos) {
         return ResponseEntity.ok(comandaService.atualizarComanda(id, produtos));
     }
 

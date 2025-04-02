@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import java.io.Serializable;
 import java.util.Date;
 @Entity
+@Table(name = "controle_contas")
 public class ControleContas implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

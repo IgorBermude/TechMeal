@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name = "fornecedor")
 public class Fornecedor implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)

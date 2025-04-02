@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 @Entity
-
+@Table(name = "historico_recarga")
 public class HistoricoRecarga implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

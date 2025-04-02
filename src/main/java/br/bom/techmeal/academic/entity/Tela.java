@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name = "tela")
 public class Tela implements Serializable{
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)

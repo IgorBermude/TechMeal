@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 @Entity
+@Table(name = "historico_preco")
 public class HistoricoPreco implements Serializable {
 
     @Id
