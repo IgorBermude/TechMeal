@@ -23,6 +23,7 @@ public class ClienteService {
     public ClienteDTO buscarPorId(Integer id) {
         Optional<Cliente> clienteOpt = clienteRepository.findById(id);
 
+
         if (clienteOpt.isEmpty()) {
             return null; // Você pode lançar uma exceção personalizada aqui, se desejar
         }

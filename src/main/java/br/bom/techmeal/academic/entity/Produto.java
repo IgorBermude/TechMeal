@@ -35,7 +35,8 @@ public class Produto implements Serializable {
     @Column(nullable = false)
     private double valorDeCustoProduto;
 
-    @Lob
+    //@Lob
+    //@JsonIgnore
     @Column(name = "codigo_barras_imagem")
     private byte[] codigoBarrasImagemProduto;
 

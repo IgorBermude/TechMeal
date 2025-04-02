@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ComandaDTO {
     private int idCompraComanda;
-    private int valorTotalComanda;
+    private double valorTotalComanda;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo")
     private Date horaEntradaComanda;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo")
@@ -39,11 +39,11 @@ public class ComandaDTO {
         this.idCompraComanda = idCompraComanda;
     }
 
-    public int getValorTotalComanda() {
+    public double getValorTotalComanda() {
         return valorTotalComanda;
     }
 
-    public void setValorTotalComanda(int valorTotalComanda) {
+    public void setValorTotalComanda(double valorTotalComanda) {
         this.valorTotalComanda = valorTotalComanda;
     }
 

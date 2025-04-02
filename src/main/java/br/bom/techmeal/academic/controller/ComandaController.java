@@ -1,12 +1,22 @@
 package br.bom.techmeal.academic.controller;
 
+import br.bom.techmeal.academic.dto.AtualizarHoraSaidaDTO;
 import br.bom.techmeal.academic.dto.ComandaDTO;
+import br.bom.techmeal.academic.dto.ProdutoDTO;
+import br.bom.techmeal.academic.entity.Comanda;
+import br.bom.techmeal.academic.entity.Produto;
 import br.bom.techmeal.academic.service.ComandaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/comanda")
@@ -19,15 +29,37 @@ public class ComandaController {
         return comandaService.listarTodos();
     }
 
+    @GetMapping("/ultima/{clienteId}")
+    public ResponseEntity<ComandaDTO> buscarUltimaComandaAtiva(@PathVariable Integer clienteId) {
+        return ResponseEntity.ok(comandaService.buscarUltimaComandaAtiva(clienteId));
+    }
+
+
+
     @PostMapping
-    public void inserir(@RequestBody ComandaDTO comanda){
-        comandaService.inserir(comanda);
+    public ResponseEntity<ComandaDTO> criarComanda(@RequestBody ComandaDTO comandaDTO) {
+        ComandaDTO novaComanda = comandaService.criarComanda(comandaDTO);
+        return ResponseEntity.ok(novaComanda);
     }
 
     @PutMapping
     public ComandaDTO alterar(@RequestBody ComandaDTO comanda){
         return comandaService.alterar(comanda);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ComandaDTO> atualizarComanda(@PathVariable Integer id, @RequestBody List<ProdutoDTO> produtos) {
+        return ResponseEntity.ok(comandaService.atualizarComanda(id, produtos));
+    }
+
+    @PutMapping("/saida/{id}")
+    public ResponseEntity<ComandaDTO> atualizarHoraSaida(@PathVariable Integer id, @RequestBody AtualizarHoraSaidaDTO requestBody) {
+        return ResponseEntity.ok(comandaService.atualizarHoraSaida(id, requestBody.getHoraSaidaComanda()));
+    }
+
+
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable("id") Integer id){

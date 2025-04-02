@@ -17,14 +17,15 @@ public class Comanda implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCompraComanda;
 
-    @Column(name = "valorTotal", nullable = false)
-    private int valorTotalComanda;
+    @Column(name = "valorTotal")
+    private double valorTotalComanda;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo") // <- Ajuste para formatar corretamente
     private Date horaEntradaComanda;
 
     @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "hora_saida_comanda", nullable = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo") // <- Ajuste para formatar corretame
     private Date horaSaidaComanda;
 
@@ -56,11 +57,11 @@ public class Comanda implements Serializable {
         this.idCompraComanda = idCompraComanda;
     }
 
-    public int getValorTotalComanda() {
+    public double getValorTotalComanda() {
         return valorTotalComanda;
     }
 
-    public void setValorTotalComanda(int valorTotalComanda) {
+    public void setValorTotalComanda(double valorTotalComanda) {
         this.valorTotalComanda = valorTotalComanda;
     }
 
