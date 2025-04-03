@@ -23,7 +23,7 @@ public class ComandaDTO {
 
     private Cliente cliente;
 
-    private List<Produto> produtoListComanda;
+    private List<ProdutoQuantidadeDTO> produtoListComanda;
 
     public ComandaDTO(Comanda comanda){
         BeanUtils.copyProperties(comanda, this);
@@ -71,11 +71,11 @@ public class ComandaDTO {
         this.cliente = cliente;
     }
 
-    public List<Produto> getProdutoListComanda() {
+    public List<ProdutoQuantidadeDTO> getProdutoListComanda() {
         return produtoListComanda;
     }
 
-    public void setProdutoListComanda(List<Produto> produtoListComanda) {
+    public void setProdutoListComanda(List<ProdutoQuantidadeDTO> produtoListComanda) {
         this.produtoListComanda = produtoListComanda;
     }
 }

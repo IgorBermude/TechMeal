@@ -1,13 +1,9 @@
 package br.bom.techmeal.academic.entity;
 
 import br.bom.techmeal.academic.dto.ProdutoDTO;
-import br.bom.techmeal.academic.dto.UsuarioDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -15,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "produto")
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idProduto")
 public class Produto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,20 +32,16 @@ public class Produto implements Serializable {
     @Column(nullable = false)
     private double valorDeCustoProduto;
 
-    //@Lob
-    //@JsonIgnore
     @Column(name = "codigo_barras_imagem")
     private byte[] codigoBarrasImagemProduto;
 
-    @OneToMany(mappedBy = "produto")
-
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HistoricoPreco> historicoPrecoList;
 
-    @ManyToMany(mappedBy = "produtoListComanda", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ComandaProduto> comandaProdutos;
 
-    private List<Comanda> comandaListProduto;
-
-    public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<Comanda> comandaListProduto, byte[] codigoBarrasImagemProduto) {
+    public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<ComandaProduto> comandaProdutos, byte[] codigoBarrasImagemProduto) {
         this.idProduto = idProduto;
         this.nomeProduto = nomeProduto;
         this.codigoBarrasProduto = codigoBarrasProduto;
@@ -57,7 +49,7 @@ public class Produto implements Serializable {
         this.precoProduto = precoProduto;
         this.valorDeCustoProduto = valorDeCustoProduto;
         this.historicoPrecoList = historicoPrecoList;
-        this.comandaListProduto = comandaListProduto;
+        this.comandaProdutos = comandaProdutos;
         this.codigoBarrasImagemProduto = codigoBarrasImagemProduto;
     }
 
@@ -65,9 +57,7 @@ public class Produto implements Serializable {
         BeanUtils.copyProperties(produto, this);
     }
 
-    public Produto(){
-
-    }
+    public Produto(){}
 
     public int getIdProduto() {
         return idProduto;
@@ -133,11 +123,11 @@ public class Produto implements Serializable {
         this.historicoPrecoList = historicoPrecoList;
     }
 
-    public List<Comanda> getComandaListProduto() {
-        return comandaListProduto;
+    public List<ComandaProduto> getComandaProdutos() {
+        return comandaProdutos;
     }
 
-    public void setComandaListProduto(List<Comanda> comandaListProduto) {
-        this.comandaListProduto = comandaListProduto;
+    public void setComandaProdutos(List<ComandaProduto> comandaProdutos) {
+        this.comandaProdutos = comandaProdutos;
     }
 }

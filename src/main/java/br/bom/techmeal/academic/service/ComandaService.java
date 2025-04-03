@@ -1,10 +1,13 @@
 package br.bom.techmeal.academic.service;
 
 import br.bom.techmeal.academic.dto.ComandaDTO;
+import br.bom.techmeal.academic.dto.ProdutoQuantidadeDTO;
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.Comanda;
+import br.bom.techmeal.academic.entity.ComandaProduto;
 import br.bom.techmeal.academic.entity.Produto;
 import br.bom.techmeal.academic.repository.ClienteRepository;
+import br.bom.techmeal.academic.repository.ComandaProdutoRepository;
 import br.bom.techmeal.academic.repository.ComandaRepository;
 import br.bom.techmeal.academic.repository.ProdutoRepository;
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ComandaService {
@@ -20,11 +24,14 @@ public class ComandaService {
     private final ComandaRepository comandaRepository;
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
+    private final ComandaProdutoRepository comandaProdutoRepository;
 
-    public ComandaService(ComandaRepository comandaRepository, ClienteRepository clienteRepository, ProdutoRepository produtoRepository) {
+    public ComandaService(ComandaRepository comandaRepository, ClienteRepository clienteRepository,
+                          ProdutoRepository produtoRepository, ComandaProdutoRepository comandaProdutoRepository) {
         this.comandaRepository = comandaRepository;
         this.clienteRepository = clienteRepository;
         this.produtoRepository = produtoRepository;
+        this.comandaProdutoRepository = comandaProdutoRepository;
     }
 
     public List<ComandaDTO> listarTodos() {
@@ -37,8 +44,18 @@ public class ComandaService {
 
     public ComandaDTO atualizarProdutos(Integer id, List<Produto> produtos) {
         Comanda comanda = buscarComandaPorId(id);
-        comanda.setProdutoListComanda(produtos);
-        comandaRepository.save(comanda);
+
+        // Remover todos os produtos antigos da comanda
+        comandaProdutoRepository.deleteByComanda(comanda);
+
+        // Adiciona os novos produtos à comanda
+        List<ComandaProduto> comandaProdutos = produtos.stream().map(produto ->
+                new ComandaProduto(comanda, produto, 1) // Define a quantidade como 1
+        ).toList();
+
+        // Salva os novos produtos relacionados à comanda
+        comandaProdutoRepository.saveAll(comandaProdutos);
+
         return new ComandaDTO(comanda);
     }
 
@@ -59,7 +76,9 @@ public class ComandaService {
 
         Integer idCliente = cliente.getIdCliente();
         comandaRepository.findComandaAtivaPorCliente(idCliente)
-                .ifPresent(c -> { throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe uma comanda aberta para este cliente"); });
+                .ifPresent(c -> {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe uma comanda aberta para este cliente");
+                });
 
         Cliente clienteBD = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
@@ -79,14 +98,25 @@ public class ComandaService {
     public ComandaDTO atualizarComanda(Integer id, ComandaDTO comandaDTO) {
         Comanda comanda = buscarComandaPorId(id);
         comanda.setValorTotalComanda(comandaDTO.getValorTotalComanda());
-        comanda.setHoraSaidaComanda(comandaDTO.getHoraSaidaComanda());
 
+
+        // Remover os produtos antigos da comanda
+        comandaProdutoRepository.deleteByComanda(comanda);
+
+        // Buscar os novos produtos pelo ID corretamente
         List<Produto> produtosAtualizados = produtoRepository.findAllById(
-                comandaDTO.getProdutoListComanda().stream().map(Produto::getIdProduto).toList()
+                comandaDTO.getProdutoListComanda().stream()
+                        .map(ProdutoQuantidadeDTO::getIdProduto) // Correção aqui
+                        .toList()
         );
 
-        comanda.setProdutoListComanda(produtosAtualizados);
-        comandaRepository.save(comanda);
+        // Criar novas relações ComandaProduto
+        List<ComandaProduto> comandaProdutos = produtosAtualizados.stream()
+                .map(produto -> new ComandaProduto(comanda, produto, 1)) // Sempre quantidade 1
+                .collect(Collectors.toList());
+
+        // Salvar os produtos na tabela comanda_produto
+        comandaProdutoRepository.saveAll(comandaProdutos);
 
         return new ComandaDTO(comanda);
     }
