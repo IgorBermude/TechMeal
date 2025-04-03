@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "produto")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idProduto")
+
 public class Produto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

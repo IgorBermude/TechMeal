@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,8 +100,12 @@ public class Comanda implements Serializable {
     }
 
     public void addProduto(Produto produto) {
-        if (produto != null && !produtoListComanda.contains(produto)) {
+        if (produto != null) {
+            if (produtoListComanda == null) {
+                produtoListComanda = new ArrayList<>();
+            }
             produtoListComanda.add(produto);
         }
     }
+
 }

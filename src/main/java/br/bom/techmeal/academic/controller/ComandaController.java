@@ -2,21 +2,14 @@ package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.AtualizarHoraSaidaDTO;
 import br.bom.techmeal.academic.dto.ComandaDTO;
-import br.bom.techmeal.academic.dto.ProdutoDTO;
-import br.bom.techmeal.academic.entity.Comanda;
-import br.bom.techmeal.academic.entity.Produto;
 import br.bom.techmeal.academic.service.ComandaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping(value = "/comanda")
@@ -48,9 +41,12 @@ public class ComandaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ComandaDTO> atualizarComanda(@PathVariable Integer id, @RequestBody List<Produto> produtos) {
-        return ResponseEntity.ok(comandaService.atualizarComanda(id, produtos));
+    public ResponseEntity<ComandaDTO> atualizarComanda(@PathVariable Integer id, @RequestBody ComandaDTO comandaDTO) {
+        return ResponseEntity.ok(comandaService.atualizarComanda(id, comandaDTO));
     }
+
+
+
 
     @PutMapping("/saida/{id}")
     public ResponseEntity<ComandaDTO> atualizarHoraSaida(@PathVariable Integer id, @RequestBody AtualizarHoraSaidaDTO requestBody) {

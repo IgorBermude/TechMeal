@@ -6,58 +6,60 @@ import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.entity.Produto;
 import br.bom.techmeal.academic.repository.ClienteRepository;
 import br.bom.techmeal.academic.repository.ComandaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.bom.techmeal.academic.repository.ProdutoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
 import java.util.Date;
 import java.util.List;
-
 
 @Service
 public class ComandaService {
 
-    @Autowired
-    private ComandaRepository comandaRepository;
+    private final ComandaRepository comandaRepository;
+    private final ClienteRepository clienteRepository;
+    private final ProdutoRepository produtoRepository;
 
-    @Autowired
-    private ClienteRepository clienteRepository;
+    public ComandaService(ComandaRepository comandaRepository, ClienteRepository clienteRepository, ProdutoRepository produtoRepository) {
+        this.comandaRepository = comandaRepository;
+        this.clienteRepository = clienteRepository;
+        this.produtoRepository = produtoRepository;
+    }
 
     public List<ComandaDTO> listarTodos() {
-        List<Comanda> comandas = comandaRepository.findAll();
-        return comandas.stream().map(ComandaDTO::new).toList();
+        return comandaRepository.findAll().stream().map(ComandaDTO::new).toList();
     }
 
     public void inserir(ComandaDTO comanda) {
-        Comanda comandaEntity = new Comanda(comanda);
-        comandaRepository.save(comandaEntity);
+        comandaRepository.save(new Comanda(comanda));
+    }
+
+    public ComandaDTO atualizarProdutos(Integer id, List<Produto> produtos) {
+        Comanda comanda = buscarComandaPorId(id);
+        comanda.setProdutoListComanda(produtos);
+        comandaRepository.save(comanda);
+        return new ComandaDTO(comanda);
     }
 
     public ComandaDTO alterar(ComandaDTO comanda) {
-        Comanda comandaEntity = new Comanda(comanda);
-        return new ComandaDTO(comandaRepository.save(comandaEntity));
+        return new ComandaDTO(comandaRepository.save(new Comanda(comanda)));
     }
 
     public void excluir(Integer id) {
-        Comanda comanda = comandaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
+        Comanda comanda = buscarComandaPorId(id);
         comandaRepository.delete(comanda);
     }
 
     public ComandaDTO criarComanda(ComandaDTO comandaDTO) {
         Cliente cliente = comandaDTO.getCliente();
-
         if (cliente == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente inválido");
         }
 
         Integer idCliente = cliente.getIdCliente();
-
-        if (comandaRepository.findComandaAtivaPorCliente(idCliente).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe uma comanda aberta para este cliente");
-        }
+        comandaRepository.findComandaAtivaPorCliente(idCliente)
+                .ifPresent(c -> { throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe uma comanda aberta para este cliente"); });
 
         Cliente clienteBD = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
@@ -65,34 +67,34 @@ public class ComandaService {
         Comanda novaComanda = new Comanda();
         novaComanda.setCliente(clienteBD);
         novaComanda.setHoraEntradaComanda(new Date());
-
         comandaRepository.save(novaComanda);
 
         return new ComandaDTO(novaComanda);
     }
 
     public ComandaDTO buscarPorId(Integer id) {
-        return new ComandaDTO(comandaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Comanda não encontrada")));
+        return new ComandaDTO(buscarComandaPorId(id));
     }
 
-    public ComandaDTO atualizarComanda(Integer comandaId, List<Produto> produtos) {
-        Comanda comanda = comandaRepository.findById(comandaId)
-                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
+    public ComandaDTO atualizarComanda(Integer id, ComandaDTO comandaDTO) {
+        Comanda comanda = buscarComandaPorId(id);
+        comanda.setValorTotalComanda(comandaDTO.getValorTotalComanda());
+        comanda.setHoraSaidaComanda(comandaDTO.getHoraSaidaComanda());
 
-        double valorTotal = produtos.stream().mapToDouble(Produto::getPrecoProduto).sum();
-        comanda.setProdutoListComanda(produtos);
-        comanda.setValorTotalComanda(valorTotal);
-        return new ComandaDTO(comandaRepository.save(comanda));
+        List<Produto> produtosAtualizados = produtoRepository.findAllById(
+                comandaDTO.getProdutoListComanda().stream().map(Produto::getIdProduto).toList()
+        );
+
+        comanda.setProdutoListComanda(produtosAtualizados);
+        comandaRepository.save(comanda);
+
+        return new ComandaDTO(comanda);
     }
 
     public ComandaDTO atualizarHoraSaida(Integer id, Date horaSaida) {
-        Comanda comanda = comandaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
-
+        Comanda comanda = buscarComandaPorId(id);
         comanda.setHoraSaidaComanda(horaSaida);
         comandaRepository.save(comanda);
-
         return new ComandaDTO(comanda);
     }
 
@@ -102,5 +104,8 @@ public class ComandaService {
         return new ComandaDTO(comanda);
     }
 
-
+    private Comanda buscarComandaPorId(Integer id) {
+        return comandaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comanda não encontrada"));
+    }
 }
