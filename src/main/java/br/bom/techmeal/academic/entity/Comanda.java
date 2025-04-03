@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class Comanda implements Serializable {
 
     @OneToMany(mappedBy = "comanda", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("comanda-comandaProduto")
-    private List<ComandaProduto> comandaProdutos; // REMOVA @JsonManagedReference
+    private List<ComandaProduto> comandaProdutos = new ArrayList<>();; // REMOVA @JsonManagedReference
 
     public Comanda(ComandaDTO comanda){
         BeanUtils.copyProperties(comanda, this);
