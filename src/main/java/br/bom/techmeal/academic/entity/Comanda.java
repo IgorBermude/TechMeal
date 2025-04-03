@@ -30,12 +30,11 @@ public class Comanda implements Serializable {
     private Date horaSaidaComanda;
 
     @ManyToOne
-
     private Cliente cliente;
 
     @OneToMany(mappedBy = "comanda", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<ComandaProduto> comandaProdutos;
+    @JsonManagedReference("comanda-comandaProduto")
+    private List<ComandaProduto> comandaProdutos; // REMOVA @JsonManagedReference
 
     public Comanda(ComandaDTO comanda){
         BeanUtils.copyProperties(comanda, this);
@@ -87,9 +86,8 @@ public class Comanda implements Serializable {
         return comandaProdutos;
     }
 
-
-
     public void setComandaProdutos(List<ComandaProduto> comandaProdutos) {
         this.comandaProdutos = comandaProdutos;
     }
 }
+

@@ -38,29 +38,15 @@ public class ComandaService {
         return comandaRepository.findAll().stream().map(ComandaDTO::new).toList();
     }
 
-    public void inserir(ComandaDTO comanda) {
-        comandaRepository.save(new Comanda(comanda));
+    public void inserir(ComandaDTO comandaDTO) {
+        Comanda comanda = new Comanda(comandaDTO);
+        comandaRepository.save(comanda);
     }
 
-    public ComandaDTO atualizarProdutos(Integer id, List<Produto> produtos) {
-        Comanda comanda = buscarComandaPorId(id);
-
-        // Remover todos os produtos antigos da comanda
-        comandaProdutoRepository.deleteByComanda(comanda);
-
-        // Adiciona os novos produtos à comanda
-        List<ComandaProduto> comandaProdutos = produtos.stream().map(produto ->
-                new ComandaProduto(comanda, produto, 1) // Define a quantidade como 1
-        ).toList();
-
-        // Salva os novos produtos relacionados à comanda
-        comandaProdutoRepository.saveAll(comandaProdutos);
-
-        return new ComandaDTO(comanda);
-    }
-
-    public ComandaDTO alterar(ComandaDTO comanda) {
-        return new ComandaDTO(comandaRepository.save(new Comanda(comanda)));
+    public ComandaDTO alterar(ComandaDTO comandaDTO) {
+        Comanda comanda = buscarComandaPorId(comandaDTO.getIdCompraComanda());
+        comanda.setValorTotalComanda(comandaDTO.getValorTotalComanda());
+        return new ComandaDTO(comandaRepository.save(comanda));
     }
 
     public void excluir(Integer id) {
@@ -69,22 +55,17 @@ public class ComandaService {
     }
 
     public ComandaDTO criarComanda(ComandaDTO comandaDTO) {
-        Cliente cliente = comandaDTO.getCliente();
-        if (cliente == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente inválido");
-        }
+        Cliente cliente = clienteRepository.findById(comandaDTO.getCliente().getIdCliente())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 
-        Integer idCliente = cliente.getIdCliente();
-        comandaRepository.findComandaAtivaPorCliente(idCliente)
+        // Verifica se já existe uma comanda aberta para o cliente
+        comandaRepository.findComandaAtivaPorCliente(cliente.getIdCliente())
                 .ifPresent(c -> {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe uma comanda aberta para este cliente");
                 });
 
-        Cliente clienteBD = clienteRepository.findById(idCliente)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
-
         Comanda novaComanda = new Comanda();
-        novaComanda.setCliente(clienteBD);
+        novaComanda.setCliente(cliente);
         novaComanda.setHoraEntradaComanda(new Date());
         comandaRepository.save(novaComanda);
 
@@ -95,31 +76,54 @@ public class ComandaService {
         return new ComandaDTO(buscarComandaPorId(id));
     }
 
+    public ComandaDTO atualizarProdutos(Integer id, List<ProdutoQuantidadeDTO> produtosDTO) {
+        Comanda comanda = buscarComandaPorId(id);
+
+        // Remover todos os produtos antigos da comanda antes de adicionar os novos
+        comandaProdutoRepository.deleteByComanda(comanda);
+
+        // Adiciona os novos produtos à comanda
+        List<ComandaProduto> comandaProdutos = produtosDTO.stream().map(produtoDTO -> {
+            Produto produto = produtoRepository.findById(produtoDTO.getIdProduto())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+
+            return new ComandaProduto(comanda, produto, produtoDTO.getQuantidade());
+        }).toList();
+
+        // Salva os novos produtos relacionados à comanda
+        comandaProdutoRepository.saveAll(comandaProdutos);
+
+        comanda.setComandaProdutos(comandaProdutos);
+        comandaRepository.save(comanda);
+
+        return new ComandaDTO(comanda);
+    }
+
     public ComandaDTO atualizarComanda(Integer id, ComandaDTO comandaDTO) {
         Comanda comanda = buscarComandaPorId(id);
         comanda.setValorTotalComanda(comandaDTO.getValorTotalComanda());
 
-
-        // Remover os produtos antigos da comanda
-        comandaProdutoRepository.deleteByComanda(comanda);
-
-        // Buscar os novos produtos pelo ID corretamente
-        List<Produto> produtosAtualizados = produtoRepository.findAllById(
-                comandaDTO.getProdutoListComanda().stream()
-                        .map(ProdutoQuantidadeDTO::getIdProduto) // Correção aqui
-                        .toList()
-        );
+        // Remover produtos antigos sem redefinir a coleção
+        comanda.getComandaProdutos().clear();
 
         // Criar novas relações ComandaProduto
-        List<ComandaProduto> comandaProdutos = produtosAtualizados.stream()
-                .map(produto -> new ComandaProduto(comanda, produto, 1)) // Sempre quantidade 1
+        List<ComandaProduto> comandaProdutos = comandaDTO.getComandaProdutos().stream()
+                .map(cpDTO -> {
+                    Produto produto = produtoRepository.findById(cpDTO.getProduto().getIdProduto())
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+                    return new ComandaProduto(comanda, produto, cpDTO.getQuantidade());
+                })
                 .collect(Collectors.toList());
 
-        // Salvar os produtos na tabela comanda_produto
-        comandaProdutoRepository.saveAll(comandaProdutos);
+        // Adiciona os novos produtos diretamente na coleção existente
+        comanda.getComandaProdutos().addAll(comandaProdutos);
+
+        // Persiste as mudanças
+        comandaRepository.save(comanda);
 
         return new ComandaDTO(comanda);
     }
+
 
     public ComandaDTO atualizarHoraSaida(Integer id, Date horaSaida) {
         Comanda comanda = buscarComandaPorId(id);

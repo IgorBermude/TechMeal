@@ -1,31 +1,32 @@
 package br.bom.techmeal.academic.dto;
 
 public class ProdutoQuantidadeDTO {
-    private Integer idProduto;
-    private Integer quantidade;
-
-    public ProdutoQuantidadeDTO(Integer quantidade, Integer idProduto) {
-        this.quantidade = quantidade;
-        this.idProduto = idProduto;
-    }
+    private int idProduto;
+    private int quantidade; // Novo campo
 
     public ProdutoQuantidadeDTO() {
     }
 
-    public Integer getIdProduto() {
+    public ProdutoQuantidadeDTO(int idProduto, int quantidade) {
+        this.idProduto = idProduto;
+        this.quantidade = quantidade;
+    }
+
+    public int getIdProduto() {
         return idProduto;
     }
 
-    public void setIdProduto(Integer idProduto) {
+    public void setIdProduto(int idProduto) {
         this.idProduto = idProduto;
     }
 
-    public Integer getQuantidade() {
+    public int getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
 }
+
 

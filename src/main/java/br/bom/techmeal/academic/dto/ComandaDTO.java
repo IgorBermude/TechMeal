@@ -2,31 +2,35 @@ package br.bom.techmeal.academic.dto;
 
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.Comanda;
-import br.bom.techmeal.academic.entity.Produto;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import br.bom.techmeal.academic.entity.ComandaProduto;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ComandaDTO {
     private int idCompraComanda;
     private double valorTotalComanda;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo")
     private Date horaEntradaComanda;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo")
     private Date horaSaidaComanda;
 
+    @JsonIgnoreProperties("comandas") // Evita referência circular no JSON
     private Cliente cliente;
 
-    private List<ProdutoQuantidadeDTO> produtoListComanda;
+
+    private List<ComandaProduto> comandaProdutos = new ArrayList<>();; // Substitui produtoListComanda
 
     public ComandaDTO(Comanda comanda){
         BeanUtils.copyProperties(comanda, this);
+        this.comandaProdutos = comanda.getComandaProdutos(); // Garante que os produtos sejam copiados corretamente
     }
 
     public ComandaDTO(){ }
@@ -71,11 +75,11 @@ public class ComandaDTO {
         this.cliente = cliente;
     }
 
-    public List<ProdutoQuantidadeDTO> getProdutoListComanda() {
-        return produtoListComanda;
+    public List<ComandaProduto> getComandaProdutos() {
+        return comandaProdutos;
     }
 
-    public void setProdutoListComanda(List<ProdutoQuantidadeDTO> produtoListComanda) {
-        this.produtoListComanda = produtoListComanda;
+    public void setComandaProdutos(List<ComandaProduto> comandaProdutos) {
+        this.comandaProdutos = comandaProdutos;
     }
 }

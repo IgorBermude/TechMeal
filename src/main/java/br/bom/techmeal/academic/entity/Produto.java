@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "produto")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idProduto")
 public class Produto implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idProduto;
@@ -32,7 +33,8 @@ public class Produto implements Serializable {
     @Column(nullable = false)
     private double valorDeCustoProduto;
 
-    @Column(name = "codigo_barras_imagem")
+    //@Lob // Usa @Lob para armazenar grandes blobs binários
+    @Column(name = "codigo_barras_imagem", columnDefinition = "LONGBLOB")
     private byte[] codigoBarrasImagemProduto;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -41,23 +43,11 @@ public class Produto implements Serializable {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ComandaProduto> comandaProdutos;
 
-    public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, int quantProduto, double precoProduto, double valorDeCustoProduto, List<HistoricoPreco> historicoPrecoList, List<ComandaProduto> comandaProdutos, byte[] codigoBarrasImagemProduto) {
-        this.idProduto = idProduto;
-        this.nomeProduto = nomeProduto;
-        this.codigoBarrasProduto = codigoBarrasProduto;
-        this.quantProduto = quantProduto;
-        this.precoProduto = precoProduto;
-        this.valorDeCustoProduto = valorDeCustoProduto;
-        this.historicoPrecoList = historicoPrecoList;
-        this.comandaProdutos = comandaProdutos;
-        this.codigoBarrasImagemProduto = codigoBarrasImagemProduto;
-    }
+    public Produto() {}
 
-    public Produto(ProdutoDTO produto){
-        BeanUtils.copyProperties(produto, this);
+    public Produto(ProdutoDTO produtoDTO) {
+        BeanUtils.copyProperties(produtoDTO, this);
     }
-
-    public Produto(){}
 
     public int getIdProduto() {
         return idProduto;
@@ -111,8 +101,8 @@ public class Produto implements Serializable {
         return codigoBarrasImagemProduto;
     }
 
-    public void setCodigoBarrasImagemProduto(byte[] codigoBarrasImagem) {
-        this.codigoBarrasImagemProduto = codigoBarrasImagem;
+    public void setCodigoBarrasImagemProduto(byte[] codigoBarrasImagemProduto) {
+        this.codigoBarrasImagemProduto = codigoBarrasImagemProduto;
     }
 
     public List<HistoricoPreco> getHistoricoPrecoList() {
