@@ -103,26 +103,25 @@ public class ComandaService {
         Comanda comanda = buscarComandaPorId(id);
         comanda.setValorTotalComanda(comandaDTO.getValorTotalComanda());
 
-        // Remover produtos antigos sem redefinir a coleção
+        // Remove os produtos antigos da comanda antes de adicionar os novos
         comanda.getComandaProdutos().clear();
 
-        // Criar novas relações ComandaProduto
+        // Adiciona os novos produtos à comanda
         List<ComandaProduto> comandaProdutos = comandaDTO.getComandaProdutos().stream()
                 .map(cpDTO -> {
-                    Produto produto = produtoRepository.findById(cpDTO.getProduto().getIdProduto())
+                    Produto produto = produtoRepository.findById(cpDTO.getIdProduto())
                             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
                     return new ComandaProduto(comanda, produto, cpDTO.getQuantidade());
                 })
                 .collect(Collectors.toList());
 
-        // Adiciona os novos produtos diretamente na coleção existente
+        // Adiciona os produtos à comanda e salva
         comanda.getComandaProdutos().addAll(comandaProdutos);
-
-        // Persiste as mudanças
         comandaRepository.save(comanda);
 
         return new ComandaDTO(comanda);
     }
+
 
 
     public ComandaDTO atualizarHoraSaida(Integer id, Date horaSaida) {
