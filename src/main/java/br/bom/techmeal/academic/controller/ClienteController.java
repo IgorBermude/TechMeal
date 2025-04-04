@@ -1,18 +1,14 @@
 package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.ClienteDTO;
-
-import br.bom.techmeal.academic.dto.FornecedorDTO;
 import br.bom.techmeal.academic.service.ClienteService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static br.bom.techmeal.academic.service.ClienteService.*;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/cliente")
@@ -22,39 +18,33 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public List<ClienteDTO> listarTodos(){
+    public List<ClienteDTO> listarTodos() {
         return clienteService.listarTodos();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDTO> buscarPorId(@PathVariable Integer id) {
-        ClienteDTO cliente = clienteService.buscarPorId(id); // Serviço que busca a conta pelo id
-
-        if (cliente != null) {
-            return ResponseEntity.ok(cliente);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 caso não encontre
-        }
+        ClienteDTO cliente = clienteService.buscarPorId(id);
+        return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PostMapping
-    public void inserir(@RequestBody ClienteDTO cliente){
+    public void inserir(@RequestBody ClienteDTO cliente) {
         clienteService.inserir(cliente);
     }
 
     @PutMapping
-    public ClienteDTO alterar(@RequestBody ClienteDTO cliente){
+    public ClienteDTO alterar(@RequestBody ClienteDTO cliente) {
         return clienteService.alterar(cliente);
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {
         try {
             clienteService.excluir(id);
-            return ResponseEntity.ok().build(); // Retorna 200 OK se a exclusão for bem-sucedida
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(404).build(); // Retorna 404 se a conta não for encontrada
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -62,21 +52,31 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> alterar(@PathVariable Integer id, @RequestBody ClienteDTO clienteAtualizado) {
         try {
             ClienteDTO clienteExistente = clienteService.buscarPorId(id);
-
             if (clienteExistente != null) {
-                // Aqui você pode adicionar qualquer validação extra que queira fazer para o produto
-                // Exemplo: verificar se o código de barras já existe no sistema antes de atualizar
-
-                // Atualiza o produto no serviço
                 clienteAtualizado.setIdCliente(id);
                 ClienteDTO clienteAlterado = clienteService.alterar(clienteAtualizado);
-
-                return ResponseEntity.ok(clienteAlterado); // Retorna o produto atualizado
+                return ResponseEntity.ok(clienteAlterado);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Produto não encontrado
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } catch (RuntimeException e) {
-            return ResponseEntity.status(404).build(); // Retorna 404 se o produto não for encontrado
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    // Novo PUT para atualizar apenas o saldoCliente
+    @PutMapping("atualizar-saldo/{id}")
+    public ResponseEntity<ClienteDTO> atualizarSaldo(@PathVariable Integer id, @RequestBody Map<String, Double> request) {
+        Double novoSaldo = request.get("saldoCliente");
+        ClienteDTO clienteAtualizado = clienteService.atualizarSaldo(id, novoSaldo);
+        return ResponseEntity.ok(clienteAtualizado);
+    }
+
+    // Novo PUT para atualizar apenas a faturaCliente
+    @PutMapping("atualizar-fatura/{id}")
+    public ResponseEntity<ClienteDTO> atualizarLimiteDisponivel(@PathVariable Integer id, @RequestBody Map<String, Double> request) {
+        Double novaFatura = request.get("faturaCliente");
+        ClienteDTO clienteAtualizado = clienteService.atualizarFaturaCliente(id, novaFatura);
+        return ResponseEntity.ok(clienteAtualizado);
     }
 }

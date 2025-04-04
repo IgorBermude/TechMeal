@@ -40,6 +40,7 @@ public class Cliente implements Serializable {
 
     public Cliente(ClienteDTO cliente){
         BeanUtils.copyProperties(cliente, this);
+        this.faturaCliente = cliente.getLimiteCliente();
     }
 
     public Cliente(){
