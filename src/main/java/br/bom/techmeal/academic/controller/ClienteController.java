@@ -1,12 +1,15 @@
 package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.ClienteDTO;
+import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +35,7 @@ public class ClienteController {
     public void inserir(@RequestBody ClienteDTO cliente) {
         clienteService.inserir(cliente);
     }
+
 
     @PutMapping
     public ClienteDTO alterar(@RequestBody ClienteDTO cliente) {
@@ -63,8 +67,16 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+    @PutMapping("ultima-compra/{id}")
+    public ClienteDTO atualizarUltimaCompra(@PathVariable Integer id, @RequestBody ClienteDTO clienteRequest) {
+        return clienteService.atualizarUltimaCompra(id, clienteRequest.getUltimaCompraCliente());
+    }
 
-    // Novo PUT para atualizar apenas o saldoCliente
+
+
+
+
+
     @PutMapping("atualizar-saldo/{id}")
     public ResponseEntity<ClienteDTO> atualizarSaldo(@PathVariable Integer id, @RequestBody Map<String, Double> request) {
         Double novoSaldo = request.get("saldoCliente");
@@ -72,7 +84,7 @@ public class ClienteController {
         return ResponseEntity.ok(clienteAtualizado);
     }
 
-    // Novo PUT para atualizar apenas a faturaCliente
+
     @PutMapping("atualizar-fatura/{id}")
     public ResponseEntity<ClienteDTO> atualizarLimiteDisponivel(@PathVariable Integer id, @RequestBody Map<String, Double> request) {
         Double novaFatura = request.get("faturaCliente");

@@ -61,16 +61,22 @@ public class ComandaService {
         // Verifica se já existe uma comanda aberta para o cliente
         comandaRepository.findComandaAtivaPorCliente(cliente.getIdCliente())
                 .ifPresent(c -> {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe uma comanda aberta para este cliente");
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe uma comanda aberta para este cliente");
                 });
 
         Comanda novaComanda = new Comanda();
         novaComanda.setCliente(cliente);
         novaComanda.setHoraEntradaComanda(new Date());
+
+        // Capturar os valores de saldo e limite antes da transação
+        novaComanda.setSaldoAntigo(cliente.getSaldoCliente());
+        novaComanda.setLimiteAntigo(cliente.getFaturaCliente());
+
         comandaRepository.save(novaComanda);
 
         return new ComandaDTO(novaComanda);
     }
+
 
     public ComandaDTO buscarPorId(Integer id) {
         return new ComandaDTO(buscarComandaPorId(id));

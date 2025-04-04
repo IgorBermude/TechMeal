@@ -34,7 +34,7 @@ public class Produto implements Serializable {
     private double valorDeCustoProduto;
 
     //@Lob // Usa @Lob para armazenar grandes blobs binários
-    @Column(name = "codigo_barras_imagem", columnDefinition = "LONGBLOB")
+    @Column(name = "codigo_barras_imagem")
     private byte[] codigoBarrasImagemProduto;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)

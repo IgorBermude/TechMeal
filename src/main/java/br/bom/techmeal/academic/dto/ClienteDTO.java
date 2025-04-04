@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.dto;
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.entity.HistoricoRecarga;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.BeanUtils;
 
@@ -16,6 +17,7 @@ public class ClienteDTO {
     private double saldoCliente;
     private double limiteCliente;
     private Date dtNascCliente;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date ultimaCompraCliente;
     private double faturaCliente;
 

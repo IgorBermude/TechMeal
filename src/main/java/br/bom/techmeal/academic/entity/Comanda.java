@@ -33,6 +33,13 @@ public class Comanda implements Serializable {
     @ManyToOne
     private Cliente cliente;
 
+    @Column(name = "saldo_antigo")
+    private double saldoAntigo;
+
+    @Column(name = "limite_antigo")
+    private double limiteAntigo;
+
+
     @OneToMany(mappedBy = "comanda", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("comanda-comandaProduto")
     private List<ComandaProduto> comandaProdutos = new ArrayList<>();; // REMOVA @JsonManagedReference
@@ -89,6 +96,22 @@ public class Comanda implements Serializable {
 
     public void setComandaProdutos(List<ComandaProduto> comandaProdutos) {
         this.comandaProdutos = comandaProdutos;
+    }
+
+    public double getSaldoAntigo() {
+        return saldoAntigo;
+    }
+
+    public void setSaldoAntigo(double saldoAntigo) {
+        this.saldoAntigo = saldoAntigo;
+    }
+
+    public double getLimiteAntigo() {
+        return limiteAntigo;
+    }
+
+    public void setLimiteAntigo(double limiteAntigo) {
+        this.limiteAntigo = limiteAntigo;
     }
 }
 

@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 public class ComandaDTO {
     private int idCompraComanda;
     private double valorTotalComanda;
+    private double saldoAntigo; // Novo atributo
+    private double limiteAntigo; // Novo atributo
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "America/Sao_Paulo")
     private Date horaEntradaComanda;
@@ -28,6 +30,8 @@ public class ComandaDTO {
 
     public ComandaDTO(Comanda comanda) {
         BeanUtils.copyProperties(comanda, this);
+        this.saldoAntigo = comanda.getSaldoAntigo(); // Copia o saldo antigo
+        this.limiteAntigo = comanda.getLimiteAntigo(); // Copia o limite antigo
         this.comandaProdutos = comanda.getComandaProdutos()
                 .stream()
                 .map(ComandaProdutoDTO::new) // Converte para DTO
@@ -50,6 +54,22 @@ public class ComandaDTO {
 
     public void setValorTotalComanda(double valorTotalComanda) {
         this.valorTotalComanda = valorTotalComanda;
+    }
+
+    public double getSaldoAntigo() {
+        return saldoAntigo;
+    }
+
+    public void setSaldoAntigo(double saldoAntigo) {
+        this.saldoAntigo = saldoAntigo;
+    }
+
+    public double getLimiteAntigo() {
+        return limiteAntigo;
+    }
+
+    public void setLimiteAntigo(double limiteAntigo) {
+        this.limiteAntigo = limiteAntigo;
     }
 
     public Date getHoraEntradaComanda() {

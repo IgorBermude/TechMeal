@@ -3,6 +3,7 @@ package br.bom.techmeal.academic.entity;
 import br.bom.techmeal.academic.dto.ClienteDTO;
 import br.bom.techmeal.academic.dto.ProdutoDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +28,7 @@ public class Cliente implements Serializable {
     private Date dtNascCliente;
     @Temporal(value = TemporalType.DATE)
     private Date ultimaCompraCliente;
-    @Column
+    @Column (name = "limite_disponivel")
     private double faturaCliente;
 
     @OneToMany(mappedBy ="cliente")

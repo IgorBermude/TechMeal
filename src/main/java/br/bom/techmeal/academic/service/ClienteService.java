@@ -2,10 +2,15 @@ package br.bom.techmeal.academic.service;
 
 import br.bom.techmeal.academic.dto.ClienteDTO;
 import br.bom.techmeal.academic.entity.Cliente;
+import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.repository.ClienteRepository;
+import br.bom.techmeal.academic.repository.ComandaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,61 +20,68 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private ComandaRepository comandaRepository;
+
     public List<ClienteDTO> listarTodos() {
         List<Cliente> clientes = clienteRepository.findAll();
         return clientes.stream().map(ClienteDTO::new).toList();
     }
 
     public ClienteDTO buscarPorId(Integer id) {
-        Optional<Cliente> clienteOpt = clienteRepository.findById(id);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
 
-        if (clienteOpt.isEmpty()) {
-            return null; // Você pode lançar uma exceção personalizada aqui, se desejar
-        }
-
-        return new ClienteDTO(clienteOpt.get());
+        return new ClienteDTO(cliente);
     }
 
-    public void inserir(ClienteDTO cliente) {
-        Cliente clienteEntity = new Cliente(cliente);
+    public void inserir(ClienteDTO clienteDTO) {
+        Cliente clienteEntity = new Cliente(clienteDTO);
         clienteRepository.save(clienteEntity);
     }
 
-    public ClienteDTO alterar(ClienteDTO cliente) {
-        Cliente clienteEntity = new Cliente(cliente);
+    public ClienteDTO alterar(ClienteDTO clienteDTO) {
+        Cliente clienteEntity = new Cliente(clienteDTO);
         return new ClienteDTO(clienteRepository.save(clienteEntity));
     }
 
     public void excluir(Integer id) {
-        Optional<Cliente> clienteOpt = clienteRepository.findById(id);
-        clienteOpt.ifPresent(clienteRepository::delete);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
+
+        clienteRepository.delete(cliente);
     }
 
-    // Método para atualizar apenas o saldoCliente
     public ClienteDTO atualizarSaldo(Integer id, double novoSaldo) {
-        Optional<Cliente> clienteOpt = clienteRepository.findById(id);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
 
-        if (clienteOpt.isPresent()) {
-            Cliente cliente = clienteOpt.get();
-            cliente.setSaldoCliente(novoSaldo);
-            clienteRepository.save(cliente);
-            return new ClienteDTO(cliente);
-        } else {
-            throw new RuntimeException("Cliente não encontrado");
-        }
+        cliente.setSaldoCliente(novoSaldo);
+        clienteRepository.save(cliente);
+        return new ClienteDTO(cliente);
     }
 
-    // Método para atualizar apenas a faturaCliente
     public ClienteDTO atualizarFaturaCliente(Integer id, double novaFatura) {
-        Optional<Cliente> clienteOpt = clienteRepository.findById(id);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
 
-        if (clienteOpt.isPresent()) {
-            Cliente cliente = clienteOpt.get();
-            cliente.setFaturaCliente(novaFatura); // Certifique-se de que esse atributo existe na entidade Cliente
-            clienteRepository.save(cliente);
-            return new ClienteDTO(cliente);
-        } else {
-            throw new RuntimeException("Cliente não encontrado");
-        }
+        cliente.setFaturaCliente(novaFatura);
+        clienteRepository.save(cliente);
+        return new ClienteDTO(cliente);
     }
+
+    public ClienteDTO atualizarUltimaCompra(Integer id, Date dataEntradaComanda) {
+        if (dataEntradaComanda == null) {
+            throw new IllegalArgumentException("A data da última compra não pode ser nula.");
+        }
+
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
+
+        cliente.setUltimaCompraCliente(dataEntradaComanda);
+        clienteRepository.save(cliente);
+        return new ClienteDTO(cliente);
+    }
+
+
 }
