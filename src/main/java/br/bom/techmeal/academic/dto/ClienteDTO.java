@@ -20,7 +20,7 @@ public class ClienteDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date ultimaCompraCliente;
     private double faturaCliente;
-    private String idCartãoCliente;
+    private String idCartaoCliente;
 
 
     private List<Comanda> comandas;
@@ -65,12 +65,12 @@ public class ClienteDTO {
         return limiteCliente;
     }
 
-    public String getIdCartãoCliente() {
-        return idCartãoCliente;
+    public String getIdCartaoCliente() {
+        return idCartaoCliente;
     }
 
-    public void setIdCartãoCliente(String idCartãoCliente) {
-        this.idCartãoCliente = idCartãoCliente;
+    public void setIdCartaoCliente(String idCartaoCliente) {
+        this.idCartaoCliente = idCartaoCliente;
     }
 
     public void setLimiteCliente(double limiteCliente) {
