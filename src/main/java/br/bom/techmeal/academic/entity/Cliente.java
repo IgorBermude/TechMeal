@@ -30,6 +30,8 @@ public class Cliente implements Serializable {
     private Date ultimaCompraCliente;
     @Column (name = "limite_disponivel")
     private double faturaCliente;
+    @Column
+    private String idCartaoCliente;
 
     @OneToMany(mappedBy ="cliente")
 
@@ -78,6 +80,14 @@ public class Cliente implements Serializable {
 
     public void setLimiteCliente(double limiteCliente) {
         this.limiteCliente = limiteCliente;
+    }
+
+    public String getIdCartaoCliente() {
+        return idCartaoCliente;
+    }
+
+    public void setIdCartaoCliente(String idCartaoCliente) {
+        this.idCartaoCliente = idCartaoCliente;
     }
 
     public Date getDtNascCliente() {
