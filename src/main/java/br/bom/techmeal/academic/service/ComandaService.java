@@ -10,12 +10,14 @@ import br.bom.techmeal.academic.repository.ClienteRepository;
 import br.bom.techmeal.academic.repository.ComandaProdutoRepository;
 import br.bom.techmeal.academic.repository.ComandaRepository;
 import br.bom.techmeal.academic.repository.ProdutoRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +35,19 @@ public class ComandaService {
         this.produtoRepository = produtoRepository;
         this.comandaProdutoRepository = comandaProdutoRepository;
     }
+
+
+    public ComandaDTO buscarUltimaComandaFinalizada(Integer clienteId) {
+        List<Comanda> comandas = comandaRepository.findUltimaComandaFinalizada(clienteId, PageRequest.of(0, 1));
+
+        if (comandas.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma comanda finalizada encontrada para este cliente.");
+        }
+
+        return new ComandaDTO(comandas.get(0));
+    }
+    
+
 
     public List<ComandaDTO> listarTodos() {
         return comandaRepository.findAll().stream().map(ComandaDTO::new).toList();
