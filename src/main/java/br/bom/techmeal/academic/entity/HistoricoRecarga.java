@@ -21,4 +21,38 @@ public class HistoricoRecarga implements Serializable {
     @JoinColumn(name = "cliente_id", nullable = false)
     @JsonBackReference // Evita a serialização repetitiva
     private Cliente cliente;
+
+
+    public int getIdHistoricoRecarga() {
+        return idHistoricoRecarga;
+    }
+
+    public void setIdHistoricoRecarga(int idHistoricoRecarga) {
+        this.idHistoricoRecarga = idHistoricoRecarga;
+    }
+
+    public Date getDataRecargaHistoricoRecarga() {
+        return dataRecargaHistoricoRecarga;
+    }
+
+    public void setDataRecargaHistoricoRecarga(Date dataRecargaHistoricoRecarga) {
+        this.dataRecargaHistoricoRecarga = dataRecargaHistoricoRecarga;
+    }
+
+    public double getValorRecargaHistoricoRecarga() {
+        return valorRecargaHistoricoRecarga;
+    }
+
+    public void setValorRecargaHistoricoRecarga(double valorRecargaHistoricoRecarga) {
+        this.valorRecargaHistoricoRecarga = valorRecargaHistoricoRecarga;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
 }
