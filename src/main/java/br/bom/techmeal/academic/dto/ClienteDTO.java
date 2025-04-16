@@ -33,6 +33,7 @@ public class ClienteDTO {
         // Sobrescreve a data para evitar ajuste duplicado
         this.dtNascCliente = cliente.getDtNascCliente();
         this.ultimaCompraCliente = cliente.getUltimaCompraCliente();
+        this.historicoRecarga = cliente.getHistoricoRecarga(); 
     }
 
     public ClienteDTO(){ }

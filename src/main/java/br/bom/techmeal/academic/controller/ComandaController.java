@@ -66,9 +66,6 @@ public class ComandaController {
     }
 
 
-
-
-
     @PostMapping
     public ResponseEntity<?> criarComanda(@RequestBody ComandaDTO comandaDTO) {
         try {

@@ -2,17 +2,15 @@ package br.bom.techmeal.academic.service;
 
 import br.bom.techmeal.academic.dto.ClienteDTO;
 import br.bom.techmeal.academic.entity.Cliente;
-import br.bom.techmeal.academic.entity.Comanda;
+import br.bom.techmeal.academic.entity.HistoricoRecarga;
 import br.bom.techmeal.academic.repository.ClienteRepository;
 import br.bom.techmeal.academic.repository.ComandaRepository;
+import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -22,6 +20,10 @@ public class ClienteService {
 
     @Autowired
     private ComandaRepository comandaRepository;
+
+    @Autowired
+    private HistoricoRecargaRepository historicoRecargaRepository;
+
 
     public List<ClienteDTO> listarTodos() {
         List<Cliente> clientes = clienteRepository.findAll();
@@ -56,8 +58,21 @@ public class ClienteService {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
 
+        double saldoAntigo = cliente.getSaldoCliente();
+        double valorRecarga = novoSaldo - saldoAntigo;
+
         cliente.setSaldoCliente(novoSaldo);
         clienteRepository.save(cliente);
+
+        // Se houve recarga (saldo aumentou), salva no histórico
+        if (valorRecarga > 0) {
+            HistoricoRecarga historico = new HistoricoRecarga();
+            historico.setCliente(cliente);
+            historico.setValorRecargaHistoricoRecarga(valorRecarga);
+            historico.setDataRecargaHistoricoRecarga(new Date());
+            historicoRecargaRepository.save(historico);
+        }
+
         return new ClienteDTO(cliente);
     }
 
