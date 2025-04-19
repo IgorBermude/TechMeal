@@ -1,36 +1,21 @@
-package br.bom.techmeal.academic.entity;
+package br.bom.techmeal.academic.dto;
 
-import br.bom.techmeal.academic.dto.ClienteDTO;
-import br.bom.techmeal.academic.dto.TelaDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import br.bom.techmeal.academic.entity.Tela;
+import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
 import org.springframework.beans.BeanUtils;
-
-import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "tela")
-public class Tela implements Serializable{
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+public class TelaDTO {
     private int idTela;
-
-    @Column(nullable = false)
     private String nomeTela;
-
-    @Column (nullable = false)
     private String urlTela;
-
-    @OneToMany(mappedBy = "tela")
-    @JsonBackReference // Evita a serialização repetitiva
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListTela;
 
-    public Tela(TelaDTO tela){
+    public TelaDTO(Tela tela){
         BeanUtils.copyProperties(tela, this);
     }
 
-    public Tela(){
+    public TelaDTO(){
 
     }
 

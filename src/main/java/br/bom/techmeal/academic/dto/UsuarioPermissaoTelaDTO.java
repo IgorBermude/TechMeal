@@ -1,29 +1,24 @@
-package br.bom.techmeal.academic.entity;
+package br.bom.techmeal.academic.dto;
 
-import br.bom.techmeal.academic.dto.UsuarioPermissaoTelaDTO;
-import jakarta.persistence.*;
+import br.bom.techmeal.academic.entity.Permissao;
+import br.bom.techmeal.academic.entity.Tela;
+import br.bom.techmeal.academic.entity.Usuario;
+import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
+import jakarta.persistence.ManyToOne;
 import org.springframework.beans.BeanUtils;
 
-@Entity
-@Table(name = "usuario_permissao_tela")
-public class UsuarioPermissaoTela {
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+public class UsuarioPermissaoTelaDTO {
     private int idPermissaoTela;
-    @ManyToOne
     private Tela tela;
-
-    @ManyToOne
     private Permissao permissao;
-
-    @ManyToOne
     private Usuario usuario;
 
-    public UsuarioPermissaoTela(UsuarioPermissaoTelaDTO usuarioPermissaoTela){
+    public UsuarioPermissaoTelaDTO(UsuarioPermissaoTela usuarioPermissaoTela){
         BeanUtils.copyProperties(usuarioPermissaoTela, this);
     }
 
-    public UsuarioPermissaoTela() {
+    public UsuarioPermissaoTelaDTO(){
+
     }
 
     public int getIdPermissaoTela() {
