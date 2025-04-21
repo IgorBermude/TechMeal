@@ -31,6 +31,18 @@ public class ClienteController {
         return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    @GetMapping("/cartao/{idCartaoCliente}")
+    public ResponseEntity<Cliente> buscarClientePorCartao(@PathVariable String idCartaoCliente) {
+        Cliente cliente = clienteService.buscarClientePorCartao(idCartaoCliente);
+        if (cliente != null) {
+            return ResponseEntity.ok(cliente);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Retorna 404 se não encontrar o cliente
+        }
+    }
+
+
+
     @PostMapping
     public void inserir(@RequestBody ClienteDTO cliente) {
         clienteService.inserir(cliente);

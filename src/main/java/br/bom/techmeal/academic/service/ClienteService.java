@@ -30,6 +30,10 @@ public class ClienteService {
         return clientes.stream().map(ClienteDTO::new).toList();
     }
 
+    public Cliente buscarClientePorCartao(String idCartaoCliente) {
+        return clienteRepository.findByIdCartaoCliente(idCartaoCliente); // Método no repositório
+    }
+
     public ClienteDTO buscarPorId(Integer id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
