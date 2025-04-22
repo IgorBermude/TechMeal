@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TelaRepository extends JpaRepository<Tela, Integer> {
+    Tela findByNomeTela(String nomeTela);
+
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.PageRequest;
@@ -82,7 +83,7 @@ public class ComandaController {
     public ComandaDTO alterar(@RequestBody ComandaDTO comanda) {
         return comandaService.alterar(comanda);
     }
-
+    @PreAuthorize("hasPermission(null, 'PUT_VENDAS')")
     @PutMapping("/{id}")
     public ResponseEntity<ComandaDTO> atualizarComanda(@PathVariable Integer id, @RequestBody ComandaDTO comandaDTO) {
         return ResponseEntity.ok(comandaService.atualizarComanda(id, comandaDTO));

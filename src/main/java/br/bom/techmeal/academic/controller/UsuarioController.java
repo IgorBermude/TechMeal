@@ -2,9 +2,11 @@ package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.UsuarioDTO;
 import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
+import br.bom.techmeal.academic.exeptions.UsuarioNaoEncontradoException;
 import br.bom.techmeal.academic.service.PermissaoService;
 import br.bom.techmeal.academic.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,9 +68,22 @@ public class UsuarioController {
         permissaoService.removerPermissao(idUsuarioPermissaoTela);
         return ResponseEntity.noContent().build();
     }
-
+     /* SUBSTITUIDO*/
     @GetMapping("/{idUsuario}/permissao")
     public ResponseEntity<List<UsuarioPermissaoTela>> listarPermissoes(@PathVariable int idUsuario) {
         return ResponseEntity.ok(permissaoService.listarPermissoesDoUsuario(idUsuario));
     }
+
+    @GetMapping("/id/{nomeUsuario}")
+    public ResponseEntity<Long> obterIdPorNomeUsuario(@PathVariable String nomeUsuario) {
+        try {
+            Long id = usuarioService.buscarIdPorNomeUsuario(nomeUsuario);
+            return ResponseEntity.ok(id); // Retorna o ID do usuário como Long
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+
 }

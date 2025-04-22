@@ -40,6 +40,15 @@ public class UsuarioService {
         usuarioRepository.delete(usuario);
     }
 
+    public Long buscarIdPorNomeUsuario(String nomeUsuario) {
+        Usuario usuario = usuarioRepository.findByLogin(nomeUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return (long) usuario.getIdUsuario(); // Converte o int para Long
+    }
+
+
+
+
     public UsuarioDTO buscarPorId(Integer id){
         return new UsuarioDTO(usuarioRepository.findById(id).get());
     }

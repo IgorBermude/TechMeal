@@ -18,7 +18,7 @@ public class Permissao implements Serializable {
     @Column(nullable = false)
     private String nomePermissao;
 
-    @Column(nullable = false)
+    @Column
     private String acaoPermissao;
 
     @OneToMany (mappedBy = "permissao")
@@ -31,6 +31,12 @@ public class Permissao implements Serializable {
 
     public Permissao(){
 
+    }
+
+
+    public Permissao(String nomePermissao, String acaoPermissao) {
+        this.nomePermissao = nomePermissao;
+        this.acaoPermissao = acaoPermissao;
     }
 
     public int getIdPermisao() {

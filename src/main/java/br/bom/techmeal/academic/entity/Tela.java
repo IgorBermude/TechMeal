@@ -34,6 +34,14 @@ public class Tela implements Serializable{
 
     }
 
+    public Tela(Object o, String vendas, String s) {
+    }
+
+    public Tela(String nomeTela, String urlTela) {
+        this.nomeTela = nomeTela;
+        this.urlTela = urlTela;
+    }
+
     public int getIdTela() {
         return idTela;
     }
