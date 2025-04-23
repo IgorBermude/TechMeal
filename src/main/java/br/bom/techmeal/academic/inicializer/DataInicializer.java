@@ -61,7 +61,7 @@ public class DataInicializer implements CommandLineRunner {
 
 
 
-        if (usuarioRepository.findByLogin("admin") == null) {
+        if (usuarioRepository.count() == 0) {
             System.out.println("-> Criando SUPER ADMIN...");
 
             // Criptografar a senha usando BCryptPasswordEncoder
