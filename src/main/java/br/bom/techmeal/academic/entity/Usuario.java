@@ -24,13 +24,13 @@ public class Usuario implements Serializable{
     @Column (nullable = false)
     private String nomeUsuario;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column (nullable = false)
     private String senhaUsuario;
 
-    @OneToMany (mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference // Evita a serialização repetitiva
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
 

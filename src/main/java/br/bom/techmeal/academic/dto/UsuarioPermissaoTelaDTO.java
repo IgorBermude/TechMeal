@@ -9,16 +9,18 @@ import org.springframework.beans.BeanUtils;
 
 public class UsuarioPermissaoTelaDTO {
     private int idPermissaoTela;
-    private Tela tela;
-    private Permissao permissao;
-    private Usuario usuario;
+    private int idTela;  // Usando o ID da Tela
+    private int idPermissao;  // Usando o ID da Permissão
+    private int idUsuario;  // Usando o ID do Usuário
 
-    public UsuarioPermissaoTelaDTO(UsuarioPermissaoTela usuarioPermissaoTela){
-        BeanUtils.copyProperties(usuarioPermissaoTela, this);
+    public UsuarioPermissaoTelaDTO(UsuarioPermissaoTela usuarioPermissaoTela) {
+        this.idPermissaoTela = usuarioPermissaoTela.getIdPermissaoTela();
+        this.idTela = usuarioPermissaoTela.getTela().getIdTela();  // Pegando o ID da Tela
+        this.idPermissao = usuarioPermissaoTela.getPermissao().getIdPermissao();  // Pegando o ID da Permissão
+        this.idUsuario = usuarioPermissaoTela.getUsuario().getIdUsuario();  // Pegando o ID do Usuário
     }
 
-    public UsuarioPermissaoTelaDTO(){
-
+    public UsuarioPermissaoTelaDTO() {
     }
 
     public int getIdPermissaoTela() {
@@ -29,27 +31,27 @@ public class UsuarioPermissaoTelaDTO {
         this.idPermissaoTela = idPermissaoTela;
     }
 
-    public Tela getTela() {
-        return tela;
+    public int getIdTela() {
+        return idTela;
     }
 
-    public void setTela(Tela tela) {
-        this.tela = tela;
+    public void setIdTela(int idTela) {
+        this.idTela = idTela;
     }
 
-    public Permissao getPermissao() {
-        return permissao;
+    public int getIdPermissao() {
+        return idPermissao;
     }
 
-    public void setPermissao(Permissao permissao) {
-        this.permissao = permissao;
+    public void setIdPermissao(int idPermissao) {
+        this.idPermissao = idPermissao;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

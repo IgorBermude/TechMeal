@@ -23,10 +23,11 @@ public class UsuarioService {
         return usuarios.stream().map(UsuarioDTO::new).toList();
     }
 
-    public void inserir(UsuarioDTO usuario){
+    public Usuario inserir(UsuarioDTO usuario){
         Usuario usuarioEntity = new Usuario(usuario);
         usuarioEntity.setSenhaUsuario(passwordEncoder.encode(usuario.getSenhaUsuario()));
-        usuarioRepository.save(usuarioEntity);
+        return usuarioRepository.save(usuarioEntity);
+
     }
 
     public UsuarioDTO alterar(UsuarioDTO usuario){

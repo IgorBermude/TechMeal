@@ -19,21 +19,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
+
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public AuthFilterToken authFilterToken(){
+    public AuthFilterToken authFilterToken() {
         return new AuthFilterToken();
     }
 
@@ -45,10 +46,10 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Permite acesso ao login e autenticação
-                        .requestMatchers("/usuario/**").permitAll() // Permite acesso aos endpoints de usuário
+                        //.requestMatchers("/usuario/**").permitAll() // Permite acesso aos endpoints de usuário
                         .requestMatchers("/swagger-ui/**").permitAll() // Permite acesso ao Swagger UI
-                       // .requestMatchers("/v3/api-docs/**").permitAll()  // Permite acesso aos docs da API (Swagger)
-                        .requestMatchers("/favicon.ico").permitAll()  // Permite acesso ao favicon do Swagger
+                        // .requestMatchers("/v3/api-docs/**").permitAll()  // Permite acesso aos docs da API (Swagger)
+                        .requestMatchers("/favicon.ico").permitAll()  // Permite acesso ao favicon do Swagge
                         .anyRequest().authenticated()); // Outras requisições exigem autenticação
 
         // Adiciona o filtro de autenticação antes do UsernamePasswordAuthenticationFilter

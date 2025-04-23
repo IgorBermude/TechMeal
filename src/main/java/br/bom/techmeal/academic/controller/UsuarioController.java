@@ -1,13 +1,14 @@
 package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.dto.UsuarioDTO;
-import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
-import br.bom.techmeal.academic.exeptions.UsuarioNaoEncontradoException;
+import br.bom.techmeal.academic.dto.UsuarioPermissaoTelaDTO;
+import br.bom.techmeal.academic.entity.Usuario;
 import br.bom.techmeal.academic.service.PermissaoService;
 import br.bom.techmeal.academic.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,29 +22,35 @@ public class UsuarioController {
 
     @Autowired
     private PermissaoService permissaoService;
-
+    //@PreAuthorize("hasPermission('Tela Usuarios', 'GET')")
     @GetMapping
-    public List<UsuarioDTO> listarTodos(){
+    public List<UsuarioDTO> listarTodos() {
         return usuarioService.ListarTodos();
     }
 
     @PostMapping
-    public void inserir(@RequestBody UsuarioDTO usuario){
-        usuarioService.inserir(usuario);
+    public ResponseEntity<Usuario> inserir(@RequestBody UsuarioDTO usuarioDTO) {
+        // Converte o DTO para a entidade Usuario (supondo que você tenha um método de conversão)
+        Usuario usuario = usuarioService.inserir(usuarioDTO);
+
+        // Retorna a resposta com o usuário recém-criado e o código HTTP 201 (Created)
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
+
+
     @PutMapping
-    public UsuarioDTO alterar(@RequestBody UsuarioDTO usuario){
+    public UsuarioDTO alterar(@RequestBody UsuarioDTO usuario) {
         return usuarioService.alterar(usuario);
     }
 
-    //http://endereco/usuario/3
+    // http://endereco/usuario/3
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {
         usuarioService.excluir(id);
         return ResponseEntity.ok().build();
     }
-
+    //@PreAuthorize("hasPermission(null, 'GET_USUARIOS')")
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Integer id) {
         UsuarioDTO usuario = usuarioService.buscarPorId(id);
@@ -68,11 +75,7 @@ public class UsuarioController {
         permissaoService.removerPermissao(idUsuarioPermissaoTela);
         return ResponseEntity.noContent().build();
     }
-     /* SUBSTITUIDO*/
-    @GetMapping("/{idUsuario}/permissao")
-    public ResponseEntity<List<UsuarioPermissaoTela>> listarPermissoes(@PathVariable int idUsuario) {
-        return ResponseEntity.ok(permissaoService.listarPermissoesDoUsuario(idUsuario));
-    }
+
 
     @GetMapping("/id/{nomeUsuario}")
     public ResponseEntity<Long> obterIdPorNomeUsuario(@PathVariable String nomeUsuario) {
@@ -83,7 +86,4 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
-
-
 }

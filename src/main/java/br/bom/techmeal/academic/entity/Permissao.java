@@ -39,7 +39,7 @@ public class Permissao implements Serializable {
         this.acaoPermissao = acaoPermissao;
     }
 
-    public int getIdPermisao() {
+    public int getIdPermissao() {
         return idPermisao;
     }
 

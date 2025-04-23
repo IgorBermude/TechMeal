@@ -1,5 +1,6 @@
 package br.bom.techmeal.academic.service;
 
+import br.bom.techmeal.academic.dto.UsuarioPermissaoTelaDTO;
 import br.bom.techmeal.academic.entity.Permissao;
 import br.bom.techmeal.academic.entity.Tela;
 import br.bom.techmeal.academic.entity.Usuario;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PermissaoService {
@@ -27,6 +29,13 @@ public class PermissaoService {
 
     @Autowired
     private PermissaoRepository permissaoRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    public Long buscarIdPorNomeUsuario(String login) {
+        return usuarioService.buscarIdPorNomeUsuario(login);
+    }
 
     public boolean temPermissao(int idUsuario, String nomeTela, String acaoPermissao) {
         return usuarioPermissaoTelaRepository.existsPermissao(idUsuario, nomeTela, acaoPermissao);
@@ -49,8 +58,14 @@ public class PermissaoService {
         usuarioPermissaoTelaRepository.deleteById(idUsuarioPermissaoTela);
     }
 
-    public List<UsuarioPermissaoTela> listarPermissoesDoUsuario(int idUsuario) {
-        return usuarioPermissaoTelaRepository.findByUsuarioIdUsuario(idUsuario);
+    // Método atualizado para retornar uma lista de DTOs
+    public List<UsuarioPermissaoTelaDTO> listarPermissoesDoUsuario(int idUsuario) {
+        List<UsuarioPermissaoTela> permissoes = usuarioPermissaoTelaRepository.findByUsuarioIdUsuario(idUsuario);
+
+        // Mapeia a lista de entidades para DTOs
+        return permissoes.stream()
+                .map(UsuarioPermissaoTelaDTO::new) // Mapeamento de entidade para DTO
+                .collect(Collectors.toList());
     }
 
     public List<Permissao> listarTodasPermissoes() {

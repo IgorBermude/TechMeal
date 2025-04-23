@@ -10,7 +10,10 @@ import br.bom.techmeal.academic.repository.UsuarioRepository;
 import br.bom.techmeal.academic.repository.UsuarioPermissaoTelaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class DataInicializer implements CommandLineRunner {
@@ -56,25 +59,49 @@ public class DataInicializer implements CommandLineRunner {
             System.out.println("-> Permissões já existem");
         }
 
-        if (usuarioRepository.count() == 0) {
-            System.out.println("-> Criando usuário João...");
-            Usuario usuario = new Usuario();
-            usuario.setNomeUsuario("João");
-            usuario.setSenhaUsuario("senha123");
-            usuarioRepository.save(usuario);
 
-            Permissao permissaoVisualizar = permissaoRepository.findByAcaoPermissao("Visualizar");
 
-            for (Tela tela : telaRepository.findAll()) {
-                UsuarioPermissaoTela upt = new UsuarioPermissaoTela();
-                upt.setUsuario(usuario);
-                upt.setTela(tela);
-                upt.setPermissao(permissaoVisualizar);
-                usuarioPermissaoTelaRepository.save(upt);
+        if (usuarioRepository.findByLogin("admin") == null) {
+            System.out.println("-> Criando SUPER ADMIN...");
+
+            // Criptografar a senha usando BCryptPasswordEncoder
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String senhaCriptografada = passwordEncoder.encode("admin");
+            Usuario superAdmin = new Usuario();
+            superAdmin.setNomeUsuario("administrador");
+            superAdmin.setLogin("admin");
+            superAdmin.setSenhaUsuario(senhaCriptografada);
+            superAdmin.setEmailUsuario("admin@email.com");
+            superAdmin.setTelefoneUsuario("1234567890");
+            superAdmin = usuarioRepository.save(superAdmin); // <- salva e obtém a instância gerenciada
+
+            List<Tela> telas = telaRepository.findAll();
+            List<Permissao> permissoes = permissaoRepository.findAll();
+
+            for (Tela tela : telas) {
+                int idTela = tela.getIdTela(); // pega o ID da tela
+                for (Permissao permissao : permissoes) {
+                    int idPermissao = permissao.getIdPermissao(); // pega o ID da permissão
+
+                    // busca as instâncias gerenciadas diretamente do banco
+                    Tela telaGerenciada = telaRepository.findById(idTela).orElse(null);
+                    Permissao permissaoGerenciada = permissaoRepository.findById(idPermissao).orElse(null);
+
+                    if (telaGerenciada != null && permissaoGerenciada != null) {
+                        UsuarioPermissaoTela upt = new UsuarioPermissaoTela();
+                        upt.setUsuario(superAdmin);
+                        upt.setTela(telaGerenciada);
+                        upt.setPermissao(permissaoGerenciada);
+                        usuarioPermissaoTelaRepository.save(upt);
+                    }
+                }
             }
+        } else {
+            System.out.println("-> Super Admin já existe");
         }
-
-        System.out.println("✔ Dados iniciais carregados com sucesso.");
     }
 
+
+
 }
+
