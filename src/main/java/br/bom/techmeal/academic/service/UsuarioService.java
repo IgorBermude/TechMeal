@@ -1,5 +1,6 @@
 package br.bom.techmeal.academic.service;
 
+import br.bom.techmeal.academic.dto.ProdutoDTO;
 import br.bom.techmeal.academic.dto.UsuarioDTO;
 import br.bom.techmeal.academic.entity.Permissao;
 import br.bom.techmeal.academic.entity.Usuario;
@@ -8,10 +9,16 @@ import br.bom.techmeal.academic.repository.PermissaoRepository;
 import br.bom.techmeal.academic.repository.UsuarioPermissaoTelaRepository;
 import br.bom.techmeal.academic.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -60,8 +67,6 @@ public class UsuarioService {
         return new UsuarioDTO(usuarioRepository.save(usuarioEntity));
     }
 
-
-
     public void excluir(Integer id){
         Usuario usuario = usuarioRepository.findById(id).get();
         usuarioRepository.delete(usuario);
@@ -73,11 +78,20 @@ public class UsuarioService {
         return (long) usuario.getIdUsuario(); // Converte o int para Long
     }
 
-
-
-
     public UsuarioDTO buscarPorId(Integer id){
         return new UsuarioDTO(usuarioRepository.findById(id).get());
     }
 
+    public UsuarioDTO getUsuarioLogado() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Usuario usuario = usuarioRepository.findByLogin(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+            return new UsuarioDTO(usuario);
+        } else {
+            return null;
+        }
+    }
 }

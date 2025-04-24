@@ -40,5 +40,4 @@ public class UsuarioPermissaoTelaController {
         return ResponseEntity.ok(telasComPermissoes); // Retorna os dados
     }
 
-
 }

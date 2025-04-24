@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -42,20 +43,28 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
+
+    //Ao usuario se alterar retornar 409 (O usuario não pode se alterar)
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> alterarPorId(
             @PathVariable Integer id,
             @RequestBody UsuarioDTO usuarioDTO
     ) {
         try {
+            UsuarioDTO usuarioLogado = usuarioService.getUsuarioLogado();
+            UsuarioDTO usuarioEditado = usuarioService.buscarPorId(id);
+
+            // Verifica se o usuário está tentando alterar a si mesmo
+            if (usuarioLogado.getIdUsuario() == usuarioEditado.getIdUsuario()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Retorna 409
+            }
+
             UsuarioDTO usuarioAtualizado = usuarioService.alterarPorId(id, usuarioDTO);
             return ResponseEntity.ok(usuarioAtualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 
     @PutMapping
     public UsuarioDTO alterar(@RequestBody UsuarioDTO usuario) {
@@ -91,8 +100,6 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
-
-
     @GetMapping("/id/{nomeUsuario}")
     public ResponseEntity<Long> obterIdPorNomeUsuario(@PathVariable String nomeUsuario) {
         try {
@@ -103,3 +110,4 @@ public class UsuarioController {
         }
     }
 }
+
