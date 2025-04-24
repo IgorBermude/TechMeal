@@ -3,8 +3,10 @@ package br.bom.techmeal.academic.controller;
 import br.bom.techmeal.academic.dto.UsuarioDTO;
 import br.bom.techmeal.academic.dto.UsuarioPermissaoTelaDTO;
 import br.bom.techmeal.academic.entity.Usuario;
+import br.bom.techmeal.academic.repository.UsuarioPermissaoTelaRepository;
 import br.bom.techmeal.academic.service.PermissaoService;
 import br.bom.techmeal.academic.service.UsuarioService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,10 @@ public class UsuarioController {
 
     @Autowired
     private PermissaoService permissaoService;
-    //@PreAuthorize("hasPermission('Tela Usuarios', 'GET')")
+
+    @Autowired
+    private UsuarioPermissaoTelaRepository usuarioPermissaoTelaRepository;
+
     @GetMapping
     public List<UsuarioDTO> listarTodos() {
         return usuarioService.ListarTodos();
@@ -35,6 +40,19 @@ public class UsuarioController {
 
         // Retorna a resposta com o usuário recém-criado e o código HTTP 201 (Created)
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> alterarPorId(
+            @PathVariable Integer id,
+            @RequestBody UsuarioDTO usuarioDTO
+    ) {
+        try {
+            UsuarioDTO usuarioAtualizado = usuarioService.alterarPorId(id, usuarioDTO);
+            return ResponseEntity.ok(usuarioAtualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
 
@@ -50,7 +68,13 @@ public class UsuarioController {
         usuarioService.excluir(id);
         return ResponseEntity.ok().build();
     }
-    //@PreAuthorize("hasPermission(null, 'GET_USUARIOS')")
+    @Transactional
+    @DeleteMapping("/tela/{idUsuario}")
+    public ResponseEntity<?> deletarTelasDoUsuario(@PathVariable Long idUsuario) {
+        usuarioPermissaoTelaRepository.deleteByUsuario_IdUsuario(idUsuario);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Integer id) {
         UsuarioDTO usuario = usuarioService.buscarPorId(id);
@@ -67,14 +91,6 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{idUsuario}/permissao/{idUsuarioPermissaoTela}")
-    public ResponseEntity<Void> removerPermissao(
-            @PathVariable int idUsuario,
-            @PathVariable int idUsuarioPermissaoTela
-    ) {
-        permissaoService.removerPermissao(idUsuarioPermissaoTela);
-        return ResponseEntity.noContent().build();
-    }
 
 
     @GetMapping("/id/{nomeUsuario}")

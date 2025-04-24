@@ -9,6 +9,7 @@ import br.bom.techmeal.academic.repository.PermissaoRepository;
 import br.bom.techmeal.academic.repository.TelaRepository;
 import br.bom.techmeal.academic.repository.UsuarioPermissaoTelaRepository;
 import br.bom.techmeal.academic.repository.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +55,14 @@ public class PermissaoService {
         usuarioPermissaoTelaRepository.save(upt);
     }
 
-    public void removerPermissao(int idUsuarioPermissaoTela) {
-        usuarioPermissaoTelaRepository.deleteById(idUsuarioPermissaoTela);
+    public void removerPermissao(int idUsuario, int idPermissao, int idTela) {
+        UsuarioPermissaoTela permissaoTela = usuarioPermissaoTelaRepository
+                .findByUsuario_IdUsuarioAndPermissao_IdPermisaoAndTela_IdTela(idUsuario, idPermissao, idTela)
+                .orElseThrow(() -> new EntityNotFoundException("Permissão não encontrada para os parâmetros fornecidos."));
+
+        usuarioPermissaoTelaRepository.delete(permissaoTela);
     }
+
 
     // Método atualizado para retornar uma lista de DTOs
     public List<UsuarioPermissaoTelaDTO> listarPermissoesDoUsuario(int idUsuario) {

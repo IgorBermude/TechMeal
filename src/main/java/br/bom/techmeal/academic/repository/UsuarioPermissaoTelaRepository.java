@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioPermissaoTelaRepository extends JpaRepository<UsuarioPermissaoTela, Integer> {
@@ -24,5 +25,11 @@ public interface UsuarioPermissaoTelaRepository extends JpaRepository<UsuarioPer
                             @Param("nomeTela") String nomeTela,
                             @Param("acaoPermissao") String acaoPermissao);
 
+    Optional<UsuarioPermissaoTela> findByUsuario_IdUsuarioAndPermissao_IdPermisaoAndTela_IdTela(int idUsuario, int idPermissao, int idTela);
+
+
     List<UsuarioPermissaoTela> findByUsuarioIdUsuario(int idUsuario);
+
+    void deleteByUsuario_IdUsuario(Long idUsuario);
+
 }
