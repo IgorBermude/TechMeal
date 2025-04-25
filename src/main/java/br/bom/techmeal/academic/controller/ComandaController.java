@@ -83,7 +83,7 @@ public class ComandaController {
     public ComandaDTO alterar(@RequestBody ComandaDTO comanda) {
         return comandaService.alterar(comanda);
     }
-    @PreAuthorize("hasPermission(null, 'PUT_VENDAS')")
+
     @PutMapping("/{id}")
     public ResponseEntity<ComandaDTO> atualizarComanda(@PathVariable Integer id, @RequestBody ComandaDTO comandaDTO) {
         return ResponseEntity.ok(comandaService.atualizarComanda(id, comandaDTO));
