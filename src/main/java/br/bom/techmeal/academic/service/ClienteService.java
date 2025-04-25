@@ -8,6 +8,7 @@ import br.bom.techmeal.academic.repository.ComandaRepository;
 import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -102,5 +103,18 @@ public class ClienteService {
         return new ClienteDTO(cliente);
     }
 
+    public boolean verificarComandaAtiva(Integer id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
 
+        return comandaRepository.findComandaAtivaPorCliente(cliente.getIdCliente()).isPresent();
+    }
+
+    @Transactional
+    public void limparComandas(Integer id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
+
+        comandaRepository.deleteByClienteId(cliente.getIdCliente());
+    }
 }
