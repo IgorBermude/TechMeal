@@ -74,9 +74,22 @@ public class UsuarioController {
     // http://endereco/usuario/3
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {
-        usuarioService.excluir(id);
-        return ResponseEntity.ok().build();
+        try{
+            UsuarioDTO usuarioLogado = usuarioService.getUsuarioLogado();
+            UsuarioDTO usuarioEditado = usuarioService.buscarPorId(id);
+
+            // Verifica se o usuário está tentando exxcluir a si mesmo
+            if (usuarioLogado.getIdUsuario() == usuarioEditado.getIdUsuario()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Retorna 409
+            }
+
+            usuarioService.excluir(id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
+
     @Transactional
     @DeleteMapping("/tela/{idUsuario}")
     public ResponseEntity<?> deletarTelasDoUsuario(@PathVariable Long idUsuario) {
