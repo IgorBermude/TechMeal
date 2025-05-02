@@ -2,15 +2,18 @@ package br.bom.techmeal.academic.repository;
 
 import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UsuarioPermissaoTelaRepository extends JpaRepository<UsuarioPermissaoTela, Integer> {
+
     @Query(value = """
         SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
         FROM usuario_permissao_tela upt
@@ -27,9 +30,11 @@ public interface UsuarioPermissaoTelaRepository extends JpaRepository<UsuarioPer
 
     Optional<UsuarioPermissaoTela> findByUsuario_IdUsuarioAndPermissao_IdPermisaoAndTela_IdTela(int idUsuario, int idPermissao, int idTela);
 
-
     List<UsuarioPermissaoTela> findByUsuarioIdUsuario(int idUsuario);
 
     void deleteByUsuario_IdUsuario(Long idUsuario);
 
+    @Modifying
+    @Transactional
+    void deleteByTela_IdTela(Integer idTela);
 }

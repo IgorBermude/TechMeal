@@ -30,6 +30,13 @@ public class Usuario implements Serializable{
     @Column (nullable = false)
     private String senhaUsuario;
 
+    @Column(name = "is_super_adm", nullable = false)
+    private Boolean isSuperAdm;
+
+    @Column(name = "is_adm", nullable = false)
+    private Boolean isAdm;
+
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference // Evita a serialização repetitiva
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
@@ -111,7 +118,25 @@ public class Usuario implements Serializable{
 
     public void login(){
 
+
     }
+
+    public Boolean getIsAdm() {
+        return isAdm;
+    }
+
+    public void setIsAdm(Boolean isAdm) {
+        this.isAdm = isAdm;
+    }
+
+    public Boolean getIsSuperAdm() {
+        return isSuperAdm;
+    }
+
+    public void setIsSuperAdm(Boolean isSuperAdm) {
+        this.isSuperAdm = isSuperAdm;
+    }
+
 
     public void logout(){
 

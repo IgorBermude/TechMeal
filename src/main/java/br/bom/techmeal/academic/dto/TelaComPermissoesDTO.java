@@ -4,10 +4,12 @@ import java.util.Set;
 
 public class TelaComPermissoesDTO {
     private String tela;
+    private String urlTela;
     private Set<String> permissoes;
 
-    public TelaComPermissoesDTO(String tela, Set<String> permissoes) {
+    public TelaComPermissoesDTO(String tela, String urlTela, Set<String> permissoes) {
         this.tela = tela;
+        this.urlTela = urlTela;
         this.permissoes = permissoes;
     }
 
@@ -19,6 +21,14 @@ public class TelaComPermissoesDTO {
         this.tela = tela;
     }
 
+    public String getUrlTela() {
+        return urlTela;
+    }
+
+    public void setUrlTela(String urlTela) {
+        this.urlTela = urlTela;
+    }
+
     public Set<String> getPermissoes() {
         return permissoes;
     }
@@ -26,6 +36,4 @@ public class TelaComPermissoesDTO {
     public void setPermissoes(Set<String> permissoes) {
         this.permissoes = permissoes;
     }
-// Getters e Setters
 }
-

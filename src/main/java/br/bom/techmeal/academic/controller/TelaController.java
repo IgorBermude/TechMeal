@@ -17,14 +17,22 @@ public class TelaController {
     @Autowired
     private TelaService telaService;
 
+
     @GetMapping
     public List<TelaDTO> listarTodos(){
         return telaService.listarTodos();
     }
 
     @PostMapping
-    public void inserir(@RequestBody TelaDTO tela){
-        telaService.inserir(tela);
+    public ResponseEntity<TelaDTO> inserir(@RequestBody TelaDTO tela) {
+        // Verifica se já existe uma tela com o mesmo nome ou URL
+        if (telaService.existeTelaComNomeOuUrl(tela.getNomeTela(), tela.getUrlTela())) {
+            return ResponseEntity.status(409).build(); // Retorna status 409 (Conflict) caso o recurso já exista
+        }
+
+        // Inserir a nova tela se não houver conflito
+        TelaDTO novaTela = telaService.inserir(tela);
+        return ResponseEntity.status(201).body(novaTela); // Retorna status 201 (Created) quando a inserção for bem-sucedida
     }
 
     @PutMapping

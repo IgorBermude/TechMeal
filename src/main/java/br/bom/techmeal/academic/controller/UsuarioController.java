@@ -7,6 +7,7 @@ import br.bom.techmeal.academic.repository.UsuarioPermissaoTelaRepository;
 import br.bom.techmeal.academic.service.PermissaoService;
 import br.bom.techmeal.academic.service.UsuarioService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> inserir(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Usuario> inserir(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         // Converte o DTO para a entidade Usuario (supondo que você tenha um método de conversão)
         Usuario usuario = usuarioService.inserir(usuarioDTO);
 
@@ -59,6 +60,14 @@ public class UsuarioController {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Retorna 409
             }
 
+            // Verifica se o usuário logado é um SuperAdm
+            if (!usuarioLogado.getIsSuperAdm()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Retorna 403 - Acesso negado
+            }
+
+            // Atualiza o usuário com a flag isAdm e outros dados
+            usuarioDTO.setIsAdm(usuarioDTO.getIsAdm()); // Aqui você pode garantir que a flag isAdm está sendo passada
+
             UsuarioDTO usuarioAtualizado = usuarioService.alterarPorId(id, usuarioDTO);
             return ResponseEntity.ok(usuarioAtualizado);
         } catch (RuntimeException e) {
@@ -66,29 +75,38 @@ public class UsuarioController {
         }
     }
 
+
     @PutMapping
     public UsuarioDTO alterar(@RequestBody UsuarioDTO usuario) {
         return usuarioService.alterar(usuario);
     }
 
-    // http://endereco/usuario/3
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {
-        try{
+        try {
             UsuarioDTO usuarioLogado = usuarioService.getUsuarioLogado();
             UsuarioDTO usuarioEditado = usuarioService.buscarPorId(id);
 
-            // Verifica se o usuário está tentando exxcluir a si mesmo
-            if (usuarioLogado.getIdUsuario() == usuarioEditado.getIdUsuario()) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Retorna 409
+            // Verifica se o usuário logado é um SuperAdm
+            if (!usuarioLogado.getIsSuperAdm()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Retorna 403 - Acesso negado
             }
 
+            // Verifica se o usuário está tentando excluir a si mesmo
+            if (usuarioLogado.getIdUsuario() == usuarioEditado.getIdUsuario()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Retorna 409 - Conflito
+            }
+
+
+            // Chama o serviço para excluir o usuário
             usuarioService.excluir(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().build(); // Retorna 200 - Sucesso
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 - Não encontrado
         }
     }
+
 
     @Transactional
     @DeleteMapping("/tela/{idUsuario}")

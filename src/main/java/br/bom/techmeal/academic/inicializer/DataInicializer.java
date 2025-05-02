@@ -44,7 +44,8 @@ public class DataInicializer implements CommandLineRunner {
             telaRepository.save(new Tela("Tela de Relatórios", "/relatorios"));
             telaRepository.save(new Tela("Tela de Entrada", "/entrada"));
             telaRepository.save(new Tela("Tela de Saída", "/saida"));
-            telaRepository.save(new Tela("Tela Usuarios", "/usuarios"));
+            telaRepository.save(new Tela("Tela de Usuarios", "/usuarios"));
+            telaRepository.save(new Tela("Tela de Tela", "/telas"));
         } else {
             System.out.println("-> Telas já existem");
         }
@@ -66,17 +67,19 @@ public class DataInicializer implements CommandLineRunner {
 
             // Criptografar a senha usando BCryptPasswordEncoder
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String senhaCriptografada = passwordEncoder.encode("admin");
+            String senhaCriptografada = passwordEncoder.encode("superadmin");
             Usuario superAdmin = new Usuario();
-            superAdmin.setNomeUsuario("administrador");
-            superAdmin.setLogin("admin");
+            superAdmin.setNomeUsuario("superadmin");
+            superAdmin.setLogin("superadmin");
             superAdmin.setSenhaUsuario(senhaCriptografada);
-            superAdmin.setEmailUsuario("admin@email.com");
+            superAdmin.setEmailUsuario("superadm@email.com");
             superAdmin.setTelefoneUsuario("1234567890");
+            superAdmin.setIsAdm(true);
+            superAdmin.setIsSuperAdm(true);
             superAdmin = usuarioRepository.save(superAdmin); // <- salva e obtém a instância gerenciada
 
             List<Tela> telas = telaRepository.findAll();
-            List<Permissao> permissoes = permissaoRepository.findAll();
+            List<Permissao> permissoes = permissaoRepository.findAllByOrderByIdPermisaoAsc();
 
             for (Tela tela : telas) {
                 int idTela = tela.getIdTela(); // pega o ID da tela

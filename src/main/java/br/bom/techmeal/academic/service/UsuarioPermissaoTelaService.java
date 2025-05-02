@@ -17,20 +17,33 @@ public class UsuarioPermissaoTelaService {
     public List<TelaComPermissoesDTO> listarTelasComPermissoes(int idUsuario) {
         List<UsuarioPermissaoTela> permissoes = usuarioPermissaoTelaRepository.findByUsuarioIdUsuario(idUsuario);
 
-        Map<String, Set<String>> agrupado = new HashMap<>();
+        // Mapa temporário com chave sendo o nome da tela e valor um par (urlTela, set de permissões)
+        Map<String, Map.Entry<String, Set<String>>> agrupado = new HashMap<>();
 
         for (UsuarioPermissaoTela upt : permissoes) {
             String nomeTela = upt.getTela().getNomeTela();
+            String urlTela = upt.getTela().getUrlTela();
             String acao = upt.getPermissao().getAcaoPermissao();
 
-            agrupado
-                    .computeIfAbsent(nomeTela, k -> new HashSet<>())
-                    .add(acao);
+            agrupado.compute(nomeTela, (k, v) -> {
+                if (v == null) {
+                    Set<String> permissoesSet = new HashSet<>();
+                    permissoesSet.add(acao);
+                    return new AbstractMap.SimpleEntry<>(urlTela, permissoesSet);
+                } else {
+                    v.getValue().add(acao);
+                    return v;
+                }
+            });
         }
 
         return agrupado.entrySet().stream()
-                .map(entry -> new TelaComPermissoesDTO(entry.getKey(), entry.getValue()))
+                .map(entry -> new TelaComPermissoesDTO(
+                        entry.getKey(),
+                        entry.getValue().getKey(),      // urlTela
+                        entry.getValue().getValue()))   // Set<String> permissoes
                 .toList();
     }
+
 
 }

@@ -2,6 +2,7 @@ package br.bom.techmeal.academic.dto;
 
 import br.bom.techmeal.academic.entity.Usuario;
 import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class UsuarioDTO {
     private String nomeUsuario;
     private String login;
     private String senhaUsuario;
+    @NotNull(message = "O campo isSuperAdm é obrigatório")
+    private Boolean isSuperAdm;
+    @NotNull(message = "O campo isAdm é obrigatório")
+    private Boolean isAdm;
     private List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario;
 
     public UsuarioDTO(Usuario usuario){
@@ -79,4 +84,21 @@ public class UsuarioDTO {
     public void setUsuarioPermissaoTelaListUsuario(List<UsuarioPermissaoTela> usuarioPermissaoTelaListUsuario) {
         this.usuarioPermissaoTelaListUsuario = usuarioPermissaoTelaListUsuario;
     }
+
+    public Boolean getIsAdm() {
+        return isAdm;
+    }
+
+    public void setIsAdm(Boolean isAdm) {
+        this.isAdm = isAdm;
+    }
+
+    public Boolean getIsSuperAdm() {
+        return isSuperAdm;
+    }
+
+    public void setIsSuperAdm(Boolean isSuperAdm) {
+        this.isSuperAdm = isSuperAdm;
+    }
+
 }

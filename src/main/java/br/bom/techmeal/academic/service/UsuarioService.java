@@ -54,6 +54,7 @@ public class UsuarioService {
         usuarioExistente.setNomeUsuario(usuarioDTO.getNomeUsuario());
         usuarioExistente.setLogin(usuarioDTO.getLogin());
         usuarioExistente.setTelefoneUsuario(usuarioDTO.getTelefoneUsuario());
+        usuarioExistente.setIsAdm(usuarioDTO.getIsAdm());
 
 
         Usuario salvo = usuarioRepository.save(usuarioExistente);
