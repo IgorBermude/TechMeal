@@ -37,4 +37,23 @@ public interface UsuarioPermissaoTelaRepository extends JpaRepository<UsuarioPer
     @Modifying
     @Transactional
     void deleteByTela_IdTela(Integer idTela);
+
+    // NOVA QUERY PARA LISTAR PERMISSÕES ORDENADAS PELA ORDEM DAS TELAS
+    @Query(value = """
+    SELECT t.id_tela, t.nome_tela, t.url_tela, p.acao_permissao
+    FROM usuario_permissao_tela upt
+    JOIN tela t ON t.id_tela = upt.tela_id_tela  
+    JOIN permissao p ON permissao_id_permisao = upt.permissao_id_permisao  
+    WHERE upt.usuario_id_usuario = :idUsuario
+    ORDER BY t.id_tela ASC
+""", nativeQuery = true)
+    List<Object[]> listarPermissoesOrdenadasPorTela(@Param("idUsuario") int idUsuario);
+
+
+
+
+
+
+
+
 }
