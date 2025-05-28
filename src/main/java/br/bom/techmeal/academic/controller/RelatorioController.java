@@ -2,6 +2,7 @@ package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.HistoricoRecarga;
+import br.bom.techmeal.academic.relatoriosDTO.RelatorioAniversariantesDiaDTO;
 import br.bom.techmeal.academic.relatoriosDTO.RelatorioTicketMedioDTO;
 import br.bom.techmeal.academic.repository.ClienteRepository;
 import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
@@ -10,6 +11,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -89,6 +91,51 @@ public class RelatorioController {
         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
 
         try (java.io.FileOutputStream fos = new java.io.FileOutputStream("ticket_medio_teste.pdf")) {
+            fos.write(outputStream.toByteArray());
+        }
+
+        return outputStream.toByteArray();
+    }
+
+    @PostMapping("/aniversariantes-dia")
+    public byte[] gerarRelatorioAniversariantesDia(
+            @RequestParam("dia") int dia,
+            @RequestParam("mes") int mes
+    ) throws JRException, IOException {
+        List<Cliente> aniversariantes = clienteRepository.findByDiaMesAniversario(dia, mes);
+        List<RelatorioAniversariantesDiaDTO> dados = new java.util.ArrayList<>();
+
+        for (Cliente cliente : aniversariantes) {
+            RelatorioAniversariantesDiaDTO dto = new RelatorioAniversariantesDiaDTO();
+            dto.setNomeCliente(cliente.getNomeCliente());
+            dto.setDataNascimento(cliente.getDtNascCliente());
+            dados.add(dto);
+        }
+
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("titulo", "Relatório de Aniversariantes do Dia");
+        parametros.put("dia", dia);
+        parametros.put("mes", mes);
+
+        String jrxmlPath = "src/main/resources/br/bom/techmeal/academic/relatorios/aniversariantes_dia.jrxml";
+        File jrxmlFile = new File(jrxmlPath);
+
+        RelatorioAniversariantesDiaDTO.criarTemplateJrxmlSeNaoExistir(jrxmlFile);
+
+        InputStream jrxml = getClass().getClassLoader().getResourceAsStream(jrxmlPath);
+        if (jrxml == null) {
+            jrxml = new java.io.FileInputStream(jrxmlFile);
+        }
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxml);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+        try (java.io.FileOutputStream fos = new java.io.FileOutputStream("aniversariantes_dia_teste.pdf")) {
             fos.write(outputStream.toByteArray());
         }
 
