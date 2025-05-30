@@ -14,6 +14,7 @@ public class RelatorioTicketMedioDTO {
     private double ticketMedio;
     private LocalDate dataInicio;
     private LocalDate dataFim;
+    private int qtd;
 
     public RelatorioTicketMedioDTO() {
     }
@@ -84,6 +85,14 @@ public class RelatorioTicketMedioDTO {
         this.dataFim = dataFim;
     }
 
+    public int getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(int qtd) {
+        this.qtd = qtd;
+    }
+
     public static void criarTemplateJrxmlSeNaoExistir(File jrxmlFile) throws IOException {
         if (!jrxmlFile.exists()) {
             jrxmlFile.getParentFile().mkdirs();
@@ -94,7 +103,6 @@ public class RelatorioTicketMedioDTO {
                     "    name=\"ticket_medio\" pageWidth=\"900\" pageHeight=\"842\" columnWidth=\"860\" leftMargin=\"20\" rightMargin=\"20\" topMargin=\"20\" bottomMargin=\"20\" uuid=\"12345678-1234-1234-1234-123456789012\">\n" +
                     "    <parameter name=\"dataInicio\" class=\"java.lang.String\"/>\n" +
                     "    <parameter name=\"dataFim\" class=\"java.lang.String\"/>\n" +
-                    "    <parameter name=\"totalClientes\" class=\"java.lang.Integer\"/>\n" +
                     "    <field name=\"nomeCliente\" class=\"java.lang.String\"/>\n" +
                     "    <field name=\"totalGasto\" class=\"java.lang.Double\"/>\n" +
                     "    <field name=\"totalPagar\" class=\"java.lang.Double\"/>\n" +
@@ -102,6 +110,7 @@ public class RelatorioTicketMedioDTO {
                     "    <field name=\"ticketMedio\" class=\"java.lang.Double\"/>\n" +
                     "    <field name=\"dataInicio\" class=\"java.time.LocalDate\"/>\n" +
                     "    <field name=\"dataFim\" class=\"java.time.LocalDate\"/>\n" +
+                    "    <field name=\"qtd\" class=\"java.lang.Integer\"/>\n" +
                     "    <title>\n" +
                     "        <band height=\"60\">\n" +
                     "            <staticText>\n" +
@@ -114,7 +123,7 @@ public class RelatorioTicketMedioDTO {
                     "            <textField>\n" +
                     "                <reportElement x=\"0\" y=\"35\" width=\"860\" height=\"20\"/>\n" +
                     "                <textElement textAlignment=\"Center\"/>\n" +
-                    "                <textFieldExpression><![CDATA[\"Período: \" + $P{dataInicio} + \" a \" + $P{dataFim} + \"    Total de Clientes: \" + $P{totalClientes}]]></textFieldExpression>\n" +
+                    "                <textFieldExpression><![CDATA[\"Período: \" + $P{dataInicio} + \" a \" + $P{dataFim}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "        </band>\n" +
                     "    </title>\n" +
@@ -124,7 +133,8 @@ public class RelatorioTicketMedioDTO {
                     "            <staticText><reportElement x=\"150\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Ticket Médio]]></text></staticText>\n" +
                     "            <staticText><reportElement x=\"250\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Fatura]]></text></staticText>\n" +
                     "            <staticText><reportElement x=\"350\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Saldo Atual]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Total Gasto]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Dias]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"550\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Total Gasto]]></text></staticText>\n" +
                     "        </band>\n" +
                     "    </columnHeader>\n" +
                     "    <detail>\n" +
@@ -133,7 +143,8 @@ public class RelatorioTicketMedioDTO {
                     "            <textField><reportElement x=\"150\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{ticketMedio})]]></textFieldExpression></textField>\n" +
                     "            <textField><reportElement x=\"250\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{totalPagar})]]></textFieldExpression></textField>\n" +
                     "            <textField><reportElement x=\"350\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{saldo})]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{totalGasto})]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"550\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{totalGasto})]]></textFieldExpression></textField>\n" +
                     "        </band>\n" +
                     "    </detail>\n" +
                     "</jasperReport>\n";

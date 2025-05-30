@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+    name="aniversariantes_dia" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="123e4567-e89b-12d3-a456-426614174000">
+    <parameter name="titulo" class="java.lang.String"/>
+    <parameter name="dia" class="java.lang.Integer"/>
+    <parameter name="mes" class="java.lang.Integer"/>
+    <field name="nomeCliente" class="java.lang.String"/>
+    <field name="dataNascimento" class="java.util.Date"/>
+    <title>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="20"/>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[RELATORIO ANIVERSARIANTES DO DIA]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="25" width="555" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA["Data: " + $P{dia} + "/" + $P{mes}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="350" height="20"/>
+                <textElement textAlignment="Left"/>
+                <text><![CDATA[Nome do Cliente]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="350" y="0" width="205" height="20"/>
+                <textElement textAlignment="Left"/>
+                <text><![CDATA[Data de Nascimento]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="350" height="20"/>
+                <textFieldExpression><![CDATA[$F{nomeCliente}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="350" y="0" width="205" height="20"/>
+                <textFieldExpression><![CDATA[$F{dataNascimento} != null ? $F{dataNascimento}.toString() : ""]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>
