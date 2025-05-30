@@ -159,8 +159,10 @@ public class RelatorioController {
         for (Object[] venda : vendas) {
             RelatorioVendasPorProdutoDTO dto = new RelatorioVendasPorProdutoDTO();
             dto.setNomeProduto((String) venda[0]);
-            dto.setQuantidadeVendida(((Long) venda[1]).intValue());
-            dto.setValorTotal(venda[2] != null ? ((Number) venda[2]).doubleValue() : 0.0);
+            dto.setQuantidadeVendida(((Number) venda[1]).intValue());
+            dto.setValorVenda(venda[2] != null ? ((Number) venda[2]).doubleValue() : 0.0);
+            dto.setValorCusto(venda[3] != null ? ((Number) venda[3]).doubleValue() : 0.0);
+            dto.setLucro(venda[4] != null ? ((Number) venda[4]).doubleValue() : 0.0);
             dados.add(dto);
         }
 

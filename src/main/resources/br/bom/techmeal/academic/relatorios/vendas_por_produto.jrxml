@@ -6,16 +6,17 @@
     <parameter name="titulo" class="java.lang.String"/>
     <parameter name="dataInicio" class="java.lang.String"/>
     <parameter name="dataFim" class="java.lang.String"/>
-    <parameter name="produtoId" class="java.lang.Integer"/>
     <field name="nomeProduto" class="java.lang.String"/>
     <field name="quantidadeVendida" class="java.lang.Integer"/>
-    <field name="valorTotal" class="java.lang.Double"/>
+    <field name="valorVenda" class="java.lang.Double"/>
+    <field name="valorCusto" class="java.lang.Double"/>
+    <field name="lucro" class="java.lang.Double"/>
     <title>
         <band height="50">
             <staticText>
                 <reportElement x="0" y="0" width="555" height="30"/>
                 <textElement textAlignment="Center"/>
-                <text><![CDATA[VENDAS POR PRODUTO]]></text>
+                <text><![CDATA[RELATÓRIO DE VENDAS POR PRODUTO]]></text>
             </staticText>
             <textField>
                 <reportElement x="0" y="30" width="555" height="20"/>
@@ -26,16 +27,20 @@
     </title>
     <columnHeader>
         <band height="20">
-            <staticText><reportElement x="0" y="0" width="200" height="20"/><text><![CDATA[Produto]]></text></staticText>
-            <staticText><reportElement x="200" y="0" width="100" height="20"/><text><![CDATA[Quantidade]]></text></staticText>
-            <staticText><reportElement x="300" y="0" width="100" height="20"/><text><![CDATA[Valor Total]]></text></staticText>
+            <staticText><reportElement x="0" y="0" width="150" height="20"/><text><![CDATA[Produto]]></text></staticText>
+            <staticText><reportElement x="150" y="0" width="80" height="20"/><text><![CDATA[Quantidade]]></text></staticText>
+            <staticText><reportElement x="230" y="0" width="80" height="20"/><text><![CDATA[Valor Venda]]></text></staticText>
+            <staticText><reportElement x="310" y="0" width="80" height="20"/><text><![CDATA[Valor Custo]]></text></staticText>
+            <staticText><reportElement x="390" y="0" width="80" height="20"/><text><![CDATA[Lucro]]></text></staticText>
         </band>
     </columnHeader>
     <detail>
         <band height="20">
-            <textField><reportElement x="0" y="0" width="200" height="20"/><textFieldExpression><![CDATA[$F{nomeProduto}]]></textFieldExpression></textField>
-            <textField><reportElement x="200" y="0" width="100" height="20"/><textFieldExpression><![CDATA[$F{quantidadeVendida}]]></textFieldExpression></textField>
-            <textField><reportElement x="300" y="0" width="100" height="20"/><textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression></textField>
+            <textField><reportElement x="0" y="0" width="150" height="20"/><textFieldExpression><![CDATA[$F{nomeProduto}]]></textFieldExpression></textField>
+            <textField><reportElement x="150" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{quantidadeVendida}]]></textFieldExpression></textField>
+            <textField><reportElement x="230" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{valorVenda}]]></textFieldExpression></textField>
+            <textField><reportElement x="310" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{valorCusto}]]></textFieldExpression></textField>
+            <textField><reportElement x="390" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{lucro}]]></textFieldExpression></textField>
         </band>
     </detail>
 </jasperReport>

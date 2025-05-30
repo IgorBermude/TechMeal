@@ -13,12 +13,17 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     Produto findByCodigoBarrasProduto(String codigoBarrasProduto);
 
     @Query(
-        value = "SELECT p.nome_produto, SUM(cp.quantidade), SUM(cp.quantidade * p.preco_produto) " +
+        value = "SELECT p.nome_produto, " +
+                "SUM(cp.quantidade), " +
+                "SUM(cp.quantidade * p.preco_produto) AS valor_venda, " +
+                "SUM(cp.quantidade * p.valor_de_custo_produto) AS valor_custo, " +
+                "SUM(cp.quantidade * (p.preco_produto - p.valor_de_custo_produto)) AS lucro " +
                 "FROM comanda_produto cp " +
                 "JOIN produto p ON cp.produto_id = p.id_produto " +
                 "JOIN comanda c ON cp.comanda_id = c.id_compra_comanda " +
                 "WHERE c.hora_entrada_comanda BETWEEN :dataInicio AND :dataFim " +
-                "GROUP BY p.nome_produto",
+                "GROUP BY p.nome_produto " +
+                "ORDER BY MIN(c.hora_entrada_comanda)",
         nativeQuery = true
     )
     List<Object[]> findVendasPorPeriodo(

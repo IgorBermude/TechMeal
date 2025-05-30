@@ -7,7 +7,9 @@ import java.io.IOException;
 public class RelatorioVendasPorProdutoDTO {
     private String nomeProduto;
     private int quantidadeVendida;
-    private double valorTotal;
+    private double valorVenda;
+    private double valorCusto;
+    private double lucro;
 
     public String getNomeProduto() {
         return nomeProduto;
@@ -21,11 +23,23 @@ public class RelatorioVendasPorProdutoDTO {
     public void setQuantidadeVendida(int quantidadeVendida) {
         this.quantidadeVendida = quantidadeVendida;
     }
-    public double getValorTotal() {
-        return valorTotal;
+    public double getValorVenda() {
+        return valorVenda;
     }
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
+    public void setValorVenda(double valorVenda) {
+        this.valorVenda = valorVenda;
+    }
+    public double getValorCusto() {
+        return valorCusto;
+    }
+    public void setValorCusto(double valorCusto) {
+        this.valorCusto = valorCusto;
+    }
+    public double getLucro() {
+        return lucro;
+    }
+    public void setLucro(double lucro) {
+        this.lucro = lucro;
     }
 
     public static void criarTemplateJrxmlSeNaoExistir(File jrxmlFile) throws IOException {
@@ -42,13 +56,15 @@ public class RelatorioVendasPorProdutoDTO {
                     "    <parameter name=\"dataFim\" class=\"java.lang.String\"/>\n" +
                     "    <field name=\"nomeProduto\" class=\"java.lang.String\"/>\n" +
                     "    <field name=\"quantidadeVendida\" class=\"java.lang.Integer\"/>\n" +
-                    "    <field name=\"valorTotal\" class=\"java.lang.Double\"/>\n" +
+                    "    <field name=\"valorVenda\" class=\"java.lang.Double\"/>\n" +
+                    "    <field name=\"valorCusto\" class=\"java.lang.Double\"/>\n" +
+                    "    <field name=\"lucro\" class=\"java.lang.Double\"/>\n" +
                     "    <title>\n" +
                     "        <band height=\"50\">\n" +
                     "            <staticText>\n" +
                     "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"30\"/>\n" +
                     "                <textElement textAlignment=\"Center\"/>\n" +
-                    "                <text><![CDATA[VENDAS POR PRODUTO]]></text>\n" +
+                    "                <text><![CDATA[RELATÓRIO DE VENDAS POR PRODUTO]]></text>\n" +
                     "            </staticText>\n" +
                     "            <textField>\n" +
                     "                <reportElement x=\"0\" y=\"30\" width=\"555\" height=\"20\"/>\n" +
@@ -59,16 +75,20 @@ public class RelatorioVendasPorProdutoDTO {
                     "    </title>\n" +
                     "    <columnHeader>\n" +
                     "        <band height=\"20\">\n" +
-                    "            <staticText><reportElement x=\"0\" y=\"0\" width=\"200\" height=\"20\"/><text><![CDATA[Produto]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"200\" y=\"0\" width=\"100\" height=\"20\"/><text><![CDATA[Quantidade]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"300\" y=\"0\" width=\"100\" height=\"20\"/><text><![CDATA[Valor Total]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><text><![CDATA[Produto]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"150\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Quantidade]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"230\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Valor Venda]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"310\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Valor Custo]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"390\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Lucro]]></text></staticText>\n" +
                     "        </band>\n" +
                     "    </columnHeader>\n" +
                     "    <detail>\n" +
                     "        <band height=\"20\">\n" +
-                    "            <textField><reportElement x=\"0\" y=\"0\" width=\"200\" height=\"20\"/><textFieldExpression><![CDATA[$F{nomeProduto}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"200\" y=\"0\" width=\"100\" height=\"20\"/><textFieldExpression><![CDATA[$F{quantidadeVendida}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"300\" y=\"0\" width=\"100\" height=\"20\"/><textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><textFieldExpression><![CDATA[$F{nomeProduto}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"150\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{quantidadeVendida}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"230\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{valorVenda}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"310\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{valorCusto}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"390\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{lucro}]]></textFieldExpression></textField>\n" +
                     "        </band>\n" +
                     "    </detail>\n" +
                     "</jasperReport>\n");
