@@ -1,14 +1,16 @@
 package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.entity.Cliente;
+import br.bom.techmeal.academic.entity.ControleContas;
 import br.bom.techmeal.academic.entity.HistoricoRecarga;
 import br.bom.techmeal.academic.relatoriosDTO.RelatorioAniversariantesDiaDTO;
 import br.bom.techmeal.academic.relatoriosDTO.RelatorioTicketMedioDTO;
 import br.bom.techmeal.academic.relatoriosDTO.RelatorioVendasPorProdutoDTO;
+import br.bom.techmeal.academic.relatoriosDTO.RelatorioDREDiarioDTO;
 import br.bom.techmeal.academic.repository.ClienteRepository;
-import br.bom.techmeal.academic.repository.ComandaProdutoRepository;
 import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
 import br.bom.techmeal.academic.repository.ProdutoRepository;
+import br.bom.techmeal.academic.repository.ControleContasRepository;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +40,9 @@ public class RelatorioController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ControleContasRepository controleContasRepository;
 
     // Tiket medio pega o total gasto e divide pelo total de dias que ele comprou
     @PostMapping("/ticket-medio-clientes")
@@ -148,6 +154,7 @@ public class RelatorioController {
         return outputStream.toByteArray();
     }
 
+    // Colocar o valor unitario e o valor de custo unitario no relatorio
     @PostMapping("/vendas-por-produto")
     public byte[] gerarRelatorioVendasPorProduto(
             @RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
@@ -192,6 +199,80 @@ public class RelatorioController {
         /*try (java.io.FileOutputStream fos = new java.io.FileOutputStream("vendas-por-produto.pdf")) {
             fos.write(outputStream.toByteArray());
         }*/
+
+        return outputStream.toByteArray();
+    }
+
+    @PostMapping("/dred-diario")
+    public byte[] gerarRelatorioDREDiario(
+            @RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam("dataFim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim
+    ) throws JRException, IOException {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<RelatorioDREDiarioDTO> dados = new java.util.ArrayList<>();
+
+        long dias = ChronoUnit.DAYS.between(dataInicio, dataFim) + 1;
+        for (int i = 0; i < dias; i++) {
+            LocalDate dia = dataInicio.plusDays(i);
+
+            // Total recebido no dia (recargas)
+            double totalRecebido = historicoRecargaRepository
+                    .findByDataRecarga(dia)
+                    .stream()
+                    .mapToDouble(HistoricoRecarga::getValorRecargaHistoricoRecarga)
+                    .sum();
+
+            // Total gasto no dia (contas de fornecedores pagas na data)
+            double totalGasto = controleContasRepository
+                    .findByDataPagamento(dia)
+                    .stream()
+                    .mapToDouble(ControleContas::getValorControleContas)
+                    .sum();
+
+            // Número de clientes atendidos no dia (clientes que fizeram recarga no dia)
+            long clientesAtendidos = historicoRecargaRepository
+                    .findByDataRecarga(dia)
+                    .stream()
+                    .map(HistoricoRecarga::getCliente)
+                    .map(Cliente::getIdCliente)
+                    .distinct()
+                    .count();
+
+            // Saldo atualizado o receber - pagar
+            double saldoAtualizado = totalRecebido - totalGasto;
+
+            RelatorioDREDiarioDTO dre = new RelatorioDREDiarioDTO();
+            dre.setData(dia);
+            dre.setReceber(totalRecebido);
+            dre.setPagar(totalGasto);
+            dre.setSaldo(saldoAtualizado);
+            dre.setClientesAtendidos((int) clientesAtendidos);
+
+            dados.add(dre);
+        }
+
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("titulo", "DRE Diário");
+        parametros.put("dataInicio", dataInicio.toString());
+        parametros.put("dataFim", dataFim.toString());
+
+        String jrxmlPath = "src/main/resources/br/bom/techmeal/academic/relatorios/dre_diario.jrxml";
+        File jrxmlFile = new File(jrxmlPath);
+
+        RelatorioDREDiarioDTO.criarTemplateJrxmlSeNaoExistir(jrxmlFile);
+
+        InputStream jrxml = getClass().getClassLoader().getResourceAsStream(jrxmlPath);
+        if (jrxml == null) {
+            jrxml = new java.io.FileInputStream(jrxmlFile);
+        }
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxml);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
 
         return outputStream.toByteArray();
     }

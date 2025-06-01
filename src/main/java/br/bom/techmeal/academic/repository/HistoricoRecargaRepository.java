@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public interface HistoricoRecargaRepository extends JpaRepository<HistoricoRecarga, Integer> {
@@ -17,5 +18,7 @@ public interface HistoricoRecargaRepository extends JpaRepository<HistoricoRecar
         @Param("inicio") LocalDate inicio,
         @Param("fim") LocalDate fim
     );
-}
 
+    @Query("SELECT h FROM HistoricoRecarga h WHERE h.dataRecargaHistoricoRecarga = :dia")
+    List<HistoricoRecarga> findByDataRecarga(@Param("dia") LocalDate dia);
+}

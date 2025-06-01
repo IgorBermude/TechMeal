@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,10 @@ public interface ControleContasRepository extends JpaRepository<ControleContas, 
     // Busca contas com status "Não Paga" e vencidas
     @Query("SELECT c FROM ControleContas c WHERE c.statusControleContas = 'Não Paga' AND c.dtVencimentoControleContas <= :currentDate")
     List<ControleContas> findVencidas(@Param("currentDate") Date currentDate);
+
+    // Buscar contas pagas na data específica (considerando fornecedores)
+    @Query("SELECT c FROM ControleContas c WHERE FUNCTION('DATE', c.dtVencimentoControleContas) = :data")
+    List<ControleContas> findByDataPagamento(@Param("data") LocalDate data);
 
     //   buscar uma conta pelo ID
     ControleContas findByIdContaControleContas(Integer id);

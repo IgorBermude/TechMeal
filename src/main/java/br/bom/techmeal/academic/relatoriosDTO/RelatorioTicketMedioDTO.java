@@ -131,7 +131,7 @@ public class RelatorioTicketMedioDTO {
                     "        <band height=\"20\">\n" +
                     "            <staticText><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><textElement/><text><![CDATA[Cliente]]></text></staticText>\n" +
                     "            <staticText><reportElement x=\"150\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Ticket Médio]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"250\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Fatura]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"250\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Limite]]></text></staticText>\n" +
                     "            <staticText><reportElement x=\"350\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Saldo Atual]]></text></staticText>\n" +
                     "            <staticText><reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Dias]]></text></staticText>\n" +
                     "            <staticText><reportElement x=\"550\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Total Gasto]]></text></staticText>\n" +

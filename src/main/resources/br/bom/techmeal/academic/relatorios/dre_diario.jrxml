@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+    name="dre_diario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="123e4567-e89b-12d3-a456-426614174002">
+    <parameter name="titulo" class="java.lang.String"/>
+    <parameter name="dataInicio" class="java.lang.String"/>
+    <parameter name="dataFim" class="java.lang.String"/>
+    <field name="data" class="java.time.LocalDate"/>
+    <field name="receber" class="java.lang.Double"/>
+    <field name="pagar" class="java.lang.Double"/>
+    <field name="saldo" class="java.lang.Double"/>
+    <field name="clientesAtendidos" class="java.lang.Integer"/>
+    <title>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="30"/>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[DRE DIÁRIO]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="30" width="555" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA["Período: " + $P{dataInicio} + " a " + $P{dataFim}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="20">
+            <staticText><reportElement x="0" y="0" width="80" height="20"/><text><![CDATA[Data]]></text></staticText>
+            <staticText><reportElement x="80" y="0" width="90" height="20"/><text><![CDATA[Receber]]></text></staticText>
+            <staticText><reportElement x="170" y="0" width="90" height="20"/><text><![CDATA[Pagar]]></text></staticText>
+            <staticText><reportElement x="260" y="0" width="90" height="20"/><text><![CDATA[Saldo]]></text></staticText>
+            <staticText><reportElement x="350" y="0" width="120" height="20"/><text><![CDATA[Clientes Atendidos]]></text></staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="20">
+            <textField><reportElement x="0" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{data}.toString()]]></textFieldExpression></textField>
+            <textField><reportElement x="80" y="0" width="90" height="20"/><textFieldExpression><![CDATA[$F{receber}]]></textFieldExpression></textField>
+            <textField><reportElement x="170" y="0" width="90" height="20"/><textFieldExpression><![CDATA[$F{pagar}]]></textFieldExpression></textField>
+            <textField><reportElement x="260" y="0" width="90" height="20"/><textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression></textField>
+            <textField><reportElement x="350" y="0" width="120" height="20"/><textFieldExpression><![CDATA[$F{clientesAtendidos}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+</jasperReport>
