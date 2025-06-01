@@ -7,6 +7,7 @@ import br.bom.techmeal.academic.relatoriosDTO.RelatorioAniversariantesDiaDTO;
 import br.bom.techmeal.academic.relatoriosDTO.RelatorioTicketMedioDTO;
 import br.bom.techmeal.academic.relatoriosDTO.RelatorioVendasPorProdutoDTO;
 import br.bom.techmeal.academic.relatoriosDTO.RelatorioDREDiarioDTO;
+import br.bom.techmeal.academic.relatoriosDTO.RelatorioConsumoDTO;
 import br.bom.techmeal.academic.repository.ClienteRepository;
 import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
 import br.bom.techmeal.academic.repository.ProdutoRepository;
@@ -262,6 +263,67 @@ public class RelatorioController {
         File jrxmlFile = new File(jrxmlPath);
 
         RelatorioDREDiarioDTO.criarTemplateJrxmlSeNaoExistir(jrxmlFile);
+
+        InputStream jrxml = getClass().getClassLoader().getResourceAsStream(jrxmlPath);
+        if (jrxml == null) {
+            jrxml = new java.io.FileInputStream(jrxmlFile);
+        }
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxml);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+        return outputStream.toByteArray();
+    }
+
+    @PostMapping("/consumo")
+    public byte[] gerarRelatorioConsumo(
+            @RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam("dataFim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim
+    ) throws JRException, IOException {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<RelatorioConsumoDTO> dados = new java.util.ArrayList<>();
+
+        for (Cliente cliente : clientes) {
+            List<HistoricoRecarga> historicos = historicoRecargaRepository.findByClienteAndDataRecargaBetween(
+                cliente.getIdCliente(), dataInicio, dataFim
+            );
+
+            double totalConsumido = historicos.stream()
+                .mapToDouble(HistoricoRecarga::getValorRecargaHistoricoRecarga)
+                .sum();
+
+            int totalCompras = produtoRepository.somarProdutosCompradosPorClienteEPeriodo(
+                cliente.getIdCliente(), dataInicio, dataFim
+            );
+
+            int totalRecargas = historicos.size();
+
+            RelatorioConsumoDTO dto = new RelatorioConsumoDTO();
+            dto.setNomeCliente(cliente.getNomeCliente());
+            dto.setTotalConsumido(totalConsumido);
+            dto.setTotalCompras(totalCompras);
+            dto.setTotalRecargas(totalRecargas);
+            dto.setSaldoCliente(cliente.getSaldoCliente());
+            dto.setFaturaCliente(cliente.getFaturaCliente());
+            dto.setDataInicio(dataInicio);
+            dto.setDataFim(dataFim);
+            dados.add(dto);
+        }
+
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("titulo", "Relatório de Consumo por Cliente");
+        parametros.put("dataInicio", dataInicio.toString());
+        parametros.put("dataFim", dataFim.toString());
+
+        String jrxmlPath = "src/main/resources/br/bom/techmeal/academic/relatorios/consumo_cliente.jrxml";
+        File jrxmlFile = new File(jrxmlPath);
+
+        RelatorioConsumoDTO.criarTemplateJrxmlSeNaoExistir(jrxmlFile);
 
         InputStream jrxml = getClass().getClassLoader().getResourceAsStream(jrxmlPath);
         if (jrxml == null) {
