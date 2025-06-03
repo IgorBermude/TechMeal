@@ -344,7 +344,7 @@ public class RelatorioController {
 
     @PostMapping("/clientes-devedores")
     public byte[] gerarRelatorioClientesDevedores() throws JRException, IOException {
-        List<Cliente> clientes = clienteRepository.findByFaturaClienteGreaterThan(0);
+        List<Cliente> clientes = clienteRepository.findAll();
         List<RelatorioClientesDevedoresDTO> dados = new java.util.ArrayList<>();
         LocalDate hoje = LocalDate.now();
 
@@ -352,22 +352,25 @@ public class RelatorioController {
             // Usa o atributo ultimaCompraCliente do Cliente
             Date dataUltimaCompra = cliente.getUltimaCompraCliente();
             boolean devedor = false;
-            if (dataUltimaCompra != null) {
-                LocalDate dataUltimaCompraLocalDate;
-                if (dataUltimaCompra instanceof java.sql.Date) {
-                    dataUltimaCompraLocalDate = ((java.sql.Date) dataUltimaCompra).toLocalDate();
+            // Critério: faturaCliente diferente de limiteCliente
+            if (cliente.getFaturaCliente() != cliente.getLimiteCliente()) {
+                if (dataUltimaCompra != null) {
+                    LocalDate dataUltimaCompraLocalDate;
+                    if (dataUltimaCompra instanceof java.sql.Date) {
+                        dataUltimaCompraLocalDate = ((java.sql.Date) dataUltimaCompra).toLocalDate();
+                    } else {
+                        dataUltimaCompraLocalDate = dataUltimaCompra.toInstant()
+                            .atZone(java.time.ZoneId.systemDefault())
+                            .toLocalDate();
+                    }
+                    long diasSemComprar = java.time.temporal.ChronoUnit.DAYS.between(dataUltimaCompraLocalDate, hoje);
+                    if (diasSemComprar > 30) {
+                        devedor = true;
+                    }
                 } else {
-                    dataUltimaCompraLocalDate = dataUltimaCompra.toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDate();
-                }
-                long diasSemComprar = java.time.temporal.ChronoUnit.DAYS.between(dataUltimaCompraLocalDate, hoje);
-                if (diasSemComprar > 30) {
+                    // Nunca comprou, considera devedor
                     devedor = true;
                 }
-            } else {
-                // Nunca comprou, considera devedor
-                devedor = true;
             }
 
             if (devedor) {
