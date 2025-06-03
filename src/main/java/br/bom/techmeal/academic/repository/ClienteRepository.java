@@ -21,4 +21,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
         nativeQuery = true
     )
     List<Cliente> findByDiaMesAniversario(@Param("dia") int dia, @Param("mes") int mes);
+
+    List<Cliente> findByFaturaClienteGreaterThan(double valor);
 }

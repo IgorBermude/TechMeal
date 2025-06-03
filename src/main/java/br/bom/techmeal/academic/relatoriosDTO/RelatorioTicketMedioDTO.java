@@ -38,35 +38,35 @@ public class RelatorioTicketMedioDTO {
     }
 
     public double getTotalGasto() {
-        return totalGasto;
+        return Double.isNaN(totalGasto) ? 0 : totalGasto;
     }
 
     public void setTotalGasto(double totalGasto) {
-        this.totalGasto = totalGasto;
+        this.totalGasto = Double.isNaN(totalGasto) ? 0 : totalGasto;
     }
 
     public double getTotalPagar() {
-        return totalPagar;
+        return Double.isNaN(totalPagar) ? 0 : totalPagar;
     }
 
     public void setTotalPagar(double totalPagar) {
-        this.totalPagar = totalPagar;
+        this.totalPagar = Double.isNaN(totalPagar) ? 0 : totalPagar;
     }
 
     public double getSaldo() {
-        return saldo;
+        return Double.isNaN(saldo) ? 0 : saldo;
     }
 
     public void setSaldo(double saldo) {
-        this.saldo = saldo;
+        this.saldo = Double.isNaN(saldo) ? 0 : saldo;
     }
 
     public double getTicketMedio() {
-        return ticketMedio;
+        return Double.isNaN(ticketMedio) ? 0 : ticketMedio;
     }
 
     public void setTicketMedio(double ticketMedio) {
-        this.ticketMedio = ticketMedio;
+        this.ticketMedio = Double.isNaN(ticketMedio) ? 0 : ticketMedio;
     }
 
     public LocalDate getDataInicio() {

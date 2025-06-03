@@ -3,11 +3,7 @@ package br.bom.techmeal.academic.controller;
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.ControleContas;
 import br.bom.techmeal.academic.entity.HistoricoRecarga;
-import br.bom.techmeal.academic.relatoriosDTO.RelatorioAniversariantesDiaDTO;
-import br.bom.techmeal.academic.relatoriosDTO.RelatorioTicketMedioDTO;
-import br.bom.techmeal.academic.relatoriosDTO.RelatorioVendasPorProdutoDTO;
-import br.bom.techmeal.academic.relatoriosDTO.RelatorioDREDiarioDTO;
-import br.bom.techmeal.academic.relatoriosDTO.RelatorioConsumoDTO;
+import br.bom.techmeal.academic.relatoriosDTO.*;
 import br.bom.techmeal.academic.repository.ClienteRepository;
 import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
 import br.bom.techmeal.academic.repository.ProdutoRepository;
@@ -25,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +65,11 @@ public class RelatorioController {
                 qtd++;
             }
 
-            double ticketMedio = totalGasto / qtd;
+            double ticketMedio = qtd == 0 ? 0 : totalGasto / qtd;
+            if (Double.isNaN(ticketMedio)) ticketMedio = 0;
+            if (Double.isNaN(totalGasto)) totalGasto = 0;
+            if (Double.isNaN(totalPagar)) totalPagar = 0;
+            if (Double.isNaN(saldo)) saldo = 0;
 
             RelatorioTicketMedioDTO dto = new RelatorioTicketMedioDTO();
             dto.setNomeCliente(cliente.getNomeCliente());
@@ -204,6 +205,7 @@ public class RelatorioController {
         return outputStream.toByteArray();
     }
 
+    // O saldo tem que ser acomulativo.
     @PostMapping("/dred-diario")
     public byte[] gerarRelatorioDREDiario(
             @RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
@@ -213,6 +215,7 @@ public class RelatorioController {
         List<RelatorioDREDiarioDTO> dados = new java.util.ArrayList<>();
 
         long dias = ChronoUnit.DAYS.between(dataInicio, dataFim) + 1;
+        double saldoAcumulado = 0.0;
         for (int i = 0; i < dias; i++) {
             LocalDate dia = dataInicio.plusDays(i);
 
@@ -239,14 +242,14 @@ public class RelatorioController {
                     .distinct()
                     .count();
 
-            // Saldo atualizado o receber - pagar
-            double saldoAtualizado = totalRecebido - totalGasto;
+            // Saldo acumulativo
+            saldoAcumulado += (totalRecebido - totalGasto);
 
             RelatorioDREDiarioDTO dre = new RelatorioDREDiarioDTO();
             dre.setData(dia);
             dre.setReceber(totalRecebido);
             dre.setPagar(totalGasto);
-            dre.setSaldo(saldoAtualizado);
+            dre.setSaldo(saldoAcumulado);
             dre.setClientesAtendidos((int) clientesAtendidos);
 
             dados.add(dre);
@@ -338,4 +341,66 @@ public class RelatorioController {
 
         return outputStream.toByteArray();
     }
+
+    @PostMapping("/clientes-devedores")
+    public byte[] gerarRelatorioClientesDevedores() throws JRException, IOException {
+        List<Cliente> clientes = clienteRepository.findByFaturaClienteGreaterThan(0);
+        List<RelatorioClientesDevedoresDTO> dados = new java.util.ArrayList<>();
+        LocalDate hoje = LocalDate.now();
+
+        for (Cliente cliente : clientes) {
+            // Usa o atributo ultimaCompraCliente do Cliente
+            Date dataUltimaCompra = cliente.getUltimaCompraCliente();
+            boolean devedor = false;
+            if (dataUltimaCompra != null) {
+                LocalDate dataUltimaCompraLocalDate;
+                if (dataUltimaCompra instanceof java.sql.Date) {
+                    dataUltimaCompraLocalDate = ((java.sql.Date) dataUltimaCompra).toLocalDate();
+                } else {
+                    dataUltimaCompraLocalDate = dataUltimaCompra.toInstant()
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalDate();
+                }
+                long diasSemComprar = java.time.temporal.ChronoUnit.DAYS.between(dataUltimaCompraLocalDate, hoje);
+                if (diasSemComprar > 30) {
+                    devedor = true;
+                }
+            } else {
+                // Nunca comprou, considera devedor
+                devedor = true;
+            }
+
+            if (devedor) {
+                RelatorioClientesDevedoresDTO dto = new RelatorioClientesDevedoresDTO();
+                dto.setNomeCliente(cliente.getNomeCliente());
+                dto.setFaturaCliente(cliente.getFaturaCliente());
+                dto.setSaldoCliente(cliente.getSaldoCliente());
+                dados.add(dto);
+            }
+        }
+
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("titulo", "Relatório de Clientes Devedores");
+
+        String jrxmlPath = "src/main/resources/br/bom/techmeal/academic/relatorios/clientes_devedores.jrxml";
+        File jrxmlFile = new File(jrxmlPath);
+
+        RelatorioClientesDevedoresDTO.criarTemplateJrxmlSeNaoExistir(jrxmlFile);
+
+        InputStream jrxml = getClass().getClassLoader().getResourceAsStream(jrxmlPath);
+        if (jrxml == null) {
+            jrxml = new java.io.FileInputStream(jrxmlFile);
+        }
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxml);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+        return outputStream.toByteArray();
+    }
+
 }
