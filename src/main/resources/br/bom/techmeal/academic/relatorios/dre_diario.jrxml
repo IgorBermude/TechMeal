@@ -15,7 +15,9 @@
         <band height="50">
             <staticText>
                 <reportElement x="0" y="0" width="555" height="30"/>
-                <textElement textAlignment="Center"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="16" isBold="true"/>
+                </textElement>
                 <text><![CDATA[DRE DIÁRIO]]></text>
             </staticText>
             <textField>
@@ -26,21 +28,36 @@
         </band>
     </title>
     <columnHeader>
-        <band height="20">
-            <staticText><reportElement x="0" y="0" width="80" height="20"/><text><![CDATA[Data]]></text></staticText>
-            <staticText><reportElement x="80" y="0" width="90" height="20"/><text><![CDATA[Receber]]></text></staticText>
-            <staticText><reportElement x="170" y="0" width="90" height="20"/><text><![CDATA[Pagar]]></text></staticText>
-            <staticText><reportElement x="260" y="0" width="90" height="20"/><text><![CDATA[Saldo]]></text></staticText>
-            <staticText><reportElement x="350" y="0" width="120" height="20"/><text><![CDATA[Clientes Atendidos]]></text></staticText>
+        <band height="22">
+            <staticText><reportElement x="0" y="0" width="80" height="22" backcolor="#E0E0E0" mode="Opaque"/><box><pen lineWidth="1.0"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Data]]></text></staticText>
+            <staticText><reportElement x="80" y="0" width="90" height="22" backcolor="#E0E0E0" mode="Opaque"/><box><pen lineWidth="1.0"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Receber]]></text></staticText>
+            <staticText><reportElement x="170" y="0" width="90" height="22" backcolor="#E0E0E0" mode="Opaque"/><box><pen lineWidth="1.0"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Pagar]]></text></staticText>
+            <staticText><reportElement x="260" y="0" width="90" height="22" backcolor="#E0E0E0" mode="Opaque"/><box><pen lineWidth="1.0"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Saldo]]></text></staticText>
+            <staticText><reportElement x="350" y="0" width="120" height="22" backcolor="#E0E0E0" mode="Opaque"/><box><pen lineWidth="1.0"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Clientes Atendidos]]></text></staticText>
         </band>
     </columnHeader>
     <detail>
         <band height="20">
-            <textField><reportElement x="0" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{data}.toString()]]></textFieldExpression></textField>
-            <textField><reportElement x="80" y="0" width="90" height="20"/><textFieldExpression><![CDATA[$F{receber}]]></textFieldExpression></textField>
-            <textField><reportElement x="170" y="0" width="90" height="20"/><textFieldExpression><![CDATA[$F{pagar}]]></textFieldExpression></textField>
-            <textField><reportElement x="260" y="0" width="90" height="20"/><textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression></textField>
-            <textField><reportElement x="350" y="0" width="120" height="20"/><textFieldExpression><![CDATA[$F{clientesAtendidos}]]></textFieldExpression></textField>
+            <textField><reportElement x="0" y="0" width="80" height="20"/><box><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"/><textFieldExpression><![CDATA[$F{data}.toString()]]></textFieldExpression></textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="80" y="0" width="90" height="20"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{receber}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="170" y="0" width="90" height="20"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{pagar}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="260" y="0" width="90" height="20"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+            </textField>
+            <textField><reportElement x="350" y="0" width="120" height="20"/><box><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"/><textFieldExpression><![CDATA[$F{clientesAtendidos}]]></textFieldExpression></textField>
         </band>
     </detail>
 </jasperReport>

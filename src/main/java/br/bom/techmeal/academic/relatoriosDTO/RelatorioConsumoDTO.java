@@ -80,41 +80,57 @@ public class RelatorioConsumoDTO {
                     "    <field name=\"saldoCliente\" class=\"java.lang.Double\"/>\n" +
                     "    <field name=\"faturaCliente\" class=\"java.lang.Double\"/>\n" +
                     "    <title>\n" +
-                    "        <band height=\"50\">\n" +
-                    "            <staticText>\n" +
-                    "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"20\"/>\n" +
-                    "                <text><![CDATA[Relatório de Consumo por Cliente]]></text>\n" +
-                    "            </staticText>\n" +
+                    "        <band height=\"60\">\n" +
                     "            <textField>\n" +
-                    "                <reportElement x=\"0\" y=\"25\" width=\"555\" height=\"20\"/>\n" +
+                    "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"30\"/>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\">\n" +
+                    "                    <font size=\"16\" isBold=\"true\"/>\n" +
+                    "                </textElement>\n" +
+                    "                <textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>\n" +
+                    "            </textField>\n" +
+                    "            <textField>\n" +
+                    "                <reportElement x=\"0\" y=\"35\" width=\"555\" height=\"20\"/>\n" +
+                    "                <textElement textAlignment=\"Center\"/>\n" +
                     "                <textFieldExpression><![CDATA[\"Período: \" + $P{dataInicio} + \" a \" + $P{dataFim}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "        </band>\n" +
                     "    </title>\n" +
                     "    <columnHeader>\n" +
-                    "        <band height=\"20\">\n" +
+                    "        <band height=\"22\">\n" +
                     "            <staticText>\n" +
-                    "                <reportElement x=\"0\" y=\"0\" width=\"120\" height=\"20\"/>\n" +
+                    "                <reportElement x=\"0\" y=\"0\" width=\"120\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
                     "                <text><![CDATA[Cliente]]></text>\n" +
                     "            </staticText>\n" +
                     "            <staticText>\n" +
-                    "                <reportElement x=\"120\" y=\"0\" width=\"80\" height=\"20\"/>\n" +
+                    "                <reportElement x=\"120\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
                     "                <text><![CDATA[Consumido]]></text>\n" +
                     "            </staticText>\n" +
                     "            <staticText>\n" +
-                    "                <reportElement x=\"200\" y=\"0\" width=\"70\" height=\"20\"/>\n" +
+                    "                <reportElement x=\"200\" y=\"0\" width=\"70\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
                     "                <text><![CDATA[Compras]]></text>\n" +
                     "            </staticText>\n" +
                     "            <staticText>\n" +
-                    "                <reportElement x=\"270\" y=\"0\" width=\"70\" height=\"20\"/>\n" +
+                    "                <reportElement x=\"270\" y=\"0\" width=\"70\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
                     "                <text><![CDATA[Recargas]]></text>\n" +
                     "            </staticText>\n" +
                     "            <staticText>\n" +
-                    "                <reportElement x=\"340\" y=\"0\" width=\"80\" height=\"20\"/>\n" +
+                    "                <reportElement x=\"340\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
                     "                <text><![CDATA[Fatura]]></text>\n" +
                     "            </staticText>\n" +
                     "            <staticText>\n" +
-                    "                <reportElement x=\"420\" y=\"0\" width=\"80\" height=\"20\"/>\n" +
+                    "                <reportElement x=\"420\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
                     "                <text><![CDATA[Saldo]]></text>\n" +
                     "            </staticText>\n" +
                     "        </band>\n" +
@@ -123,26 +139,38 @@ public class RelatorioConsumoDTO {
                     "        <band height=\"20\">\n" +
                     "            <textField>\n" +
                     "                <reportElement x=\"0\" y=\"0\" width=\"120\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
                     "                <textFieldExpression><![CDATA[$F{nomeCliente}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "            <textField pattern=\"#,##0.00\">\n" +
                     "                <reportElement x=\"120\" y=\"0\" width=\"80\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
                     "                <textFieldExpression><![CDATA[$F{totalConsumido}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "            <textField>\n" +
                     "                <reportElement x=\"200\" y=\"0\" width=\"70\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
                     "                <textFieldExpression><![CDATA[$F{totalCompras}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "            <textField>\n" +
                     "                <reportElement x=\"270\" y=\"0\" width=\"70\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
                     "                <textFieldExpression><![CDATA[$F{totalRecargas}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "            <textField pattern=\"#,##0.00\">\n" +
                     "                <reportElement x=\"340\" y=\"0\" width=\"80\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
                     "                <textFieldExpression><![CDATA[$F{faturaCliente}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "            <textField pattern=\"#,##0.00\">\n" +
                     "                <reportElement x=\"420\" y=\"0\" width=\"80\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
                     "                <textFieldExpression><![CDATA[$F{saldoCliente}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
                     "        </band>\n" +

@@ -63,7 +63,9 @@ public class RelatorioVendasPorProdutoDTO {
                     "        <band height=\"50\">\n" +
                     "            <staticText>\n" +
                     "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"30\"/>\n" +
-                    "                <textElement textAlignment=\"Center\"/>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\">\n" +
+                    "                    <font size=\"16\" isBold=\"true\"/>\n" +
+                    "                </textElement>\n" +
                     "                <text><![CDATA[RELATÓRIO DE VENDAS POR PRODUTO]]></text>\n" +
                     "            </staticText>\n" +
                     "            <textField>\n" +
@@ -74,21 +76,21 @@ public class RelatorioVendasPorProdutoDTO {
                     "        </band>\n" +
                     "    </title>\n" +
                     "    <columnHeader>\n" +
-                    "        <band height=\"20\">\n" +
-                    "            <staticText><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><text><![CDATA[Produto]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"150\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Quantidade]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"230\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Valor Venda]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"310\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Valor Custo]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"390\" y=\"0\" width=\"80\" height=\"20\"/><text><![CDATA[Lucro]]></text></staticText>\n" +
+                    "        <band height=\"22\">\n" +
+                    "            <staticText><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Produto]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"150\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Quantidade]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"230\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Valor Venda]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"310\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Valor Custo]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"390\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Lucro]]></text></staticText>\n" +
                     "        </band>\n" +
                     "    </columnHeader>\n" +
                     "    <detail>\n" +
                     "        <band height=\"20\">\n" +
-                    "            <textField><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><textFieldExpression><![CDATA[$F{nomeProduto}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"150\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{quantidadeVendida}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"230\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{valorVenda}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"310\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{valorCusto}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"390\" y=\"0\" width=\"80\" height=\"20\"/><textFieldExpression><![CDATA[$F{lucro}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nomeProduto}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"150\" y=\"0\" width=\"80\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{quantidadeVendida}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"230\" y=\"0\" width=\"80\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{valorVenda}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"310\" y=\"0\" width=\"80\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{valorCusto}]]></textFieldExpression></textField>\n" +
+                    "            <textField><reportElement x=\"390\" y=\"0\" width=\"80\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{lucro}]]></textFieldExpression></textField>\n" +
                     "        </band>\n" +
                     "    </detail>\n" +
                     "</jasperReport>\n");

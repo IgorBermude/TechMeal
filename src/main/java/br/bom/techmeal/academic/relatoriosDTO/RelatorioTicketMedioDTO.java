@@ -128,23 +128,89 @@ public class RelatorioTicketMedioDTO {
                     "        </band>\n" +
                     "    </title>\n" +
                     "    <columnHeader>\n" +
-                    "        <band height=\"20\">\n" +
-                    "            <staticText><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><textElement/><text><![CDATA[Cliente]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"150\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Ticket Médio]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"250\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Limite]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"350\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Saldo Atual]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Dias]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"550\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><text><![CDATA[Total Gasto]]></text></staticText>\n" +
+                    "        <band height=\"22\">\n" +
+                    "            <frame>\n" +
+                    "                <reportElement x=\"120\" y=\"0\" width=\"660\" height=\"22\"/>\n" + // Centraliza a tabela (860-660)/2 = 100, ajustado para 120 para melhor centralização visual
+                    "                <staticText>\n" +
+                    "                    <reportElement x=\"0\" y=\"0\" width=\"150\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                    <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
+                    "                    <text><![CDATA[Cliente]]></text>\n" +
+                    "                </staticText>\n" +
+                    "                <staticText>\n" +
+                    "                    <reportElement x=\"150\" y=\"0\" width=\"100\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                    <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
+                    "                    <text><![CDATA[Ticket Médio]]></text>\n" +
+                    "                </staticText>\n" +
+                    "                <staticText>\n" +
+                    "                    <reportElement x=\"250\" y=\"0\" width=\"100\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                    <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
+                    "                    <text><![CDATA[Limite]]></text>\n" +
+                    "                </staticText>\n" +
+                    "                <staticText>\n" +
+                    "                    <reportElement x=\"350\" y=\"0\" width=\"100\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                    <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
+                    "                    <text><![CDATA[Saldo Atual]]></text>\n" +
+                    "                </staticText>\n" +
+                    "                <staticText>\n" +
+                    "                    <reportElement x=\"450\" y=\"0\" width=\"100\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                    <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
+                    "                    <text><![CDATA[Dias]]></text>\n" +
+                    "                </staticText>\n" +
+                    "                <staticText>\n" +
+                    "                    <reportElement x=\"550\" y=\"0\" width=\"100\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/>\n" +
+                    "                    <box><pen lineWidth=\"1.0\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement>\n" +
+                    "                    <text><![CDATA[Total Gasto]]></text>\n" +
+                    "                </staticText>\n" +
+                    "            </frame>\n" +
                     "        </band>\n" +
                     "    </columnHeader>\n" +
                     "    <detail>\n" +
                     "        <band height=\"20\">\n" +
-                    "            <textField><reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[$F{nomeCliente}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"150\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{ticketMedio})]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"250\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{totalPagar})]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"350\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{saldo})]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression></textField>\n" +
-                    "            <textField><reportElement x=\"550\" y=\"0\" width=\"100\" height=\"20\"/><textElement/><textFieldExpression><![CDATA[String.format(\"%.2f\", $F{totalGasto})]]></textFieldExpression></textField>\n" +
+                    "            <frame>\n" +
+                    "                <reportElement x=\"120\" y=\"0\" width=\"660\" height=\"20\"/>\n" +
+                    "                <textField>\n" +
+                    "                    <reportElement x=\"0\" y=\"0\" width=\"150\" height=\"20\"/>\n" +
+                    "                    <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
+                    "                    <textFieldExpression><![CDATA[$F{nomeCliente}]]></textFieldExpression>\n" +
+                    "                </textField>\n" +
+                    "                <textField pattern=\"#,##0.00\">\n" +
+                    "                    <reportElement x=\"150\" y=\"0\" width=\"100\" height=\"20\"/>\n" +
+                    "                    <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
+                    "                    <textFieldExpression><![CDATA[$F{ticketMedio}]]></textFieldExpression>\n" +
+                    "                </textField>\n" +
+                    "                <textField pattern=\"#,##0.00\">\n" +
+                    "                    <reportElement x=\"250\" y=\"0\" width=\"100\" height=\"20\"/>\n" +
+                    "                    <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
+                    "                    <textFieldExpression><![CDATA[$F{totalPagar}]]></textFieldExpression>\n" +
+                    "                </textField>\n" +
+                    "                <textField pattern=\"#,##0.00\">\n" +
+                    "                    <reportElement x=\"350\" y=\"0\" width=\"100\" height=\"20\"/>\n" +
+                    "                    <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
+                    "                    <textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>\n" +
+                    "                </textField>\n" +
+                    "                <textField>\n" +
+                    "                    <reportElement x=\"450\" y=\"0\" width=\"100\" height=\"20\"/>\n" +
+                    "                    <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
+                    "                    <textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression>\n" +
+                    "                </textField>\n" +
+                    "                <textField pattern=\"#,##0.00\">\n" +
+                    "                    <reportElement x=\"550\" y=\"0\" width=\"100\" height=\"20\"/>\n" +
+                    "                    <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                    <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
+                    "                    <textFieldExpression><![CDATA[$F{totalGasto}]]></textFieldExpression>\n" +
+                    "                </textField>\n" +
+                    "            </frame>\n" +
                     "        </band>\n" +
                     "    </detail>\n" +
                     "</jasperReport>\n";

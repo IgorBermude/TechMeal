@@ -23,15 +23,17 @@
         </band>
     </title>
     <columnHeader>
-        <band height="20">
+        <band height="22">
             <staticText>
-                <reportElement x="0" y="0" width="350" height="20"/>
-                <textElement textAlignment="Left"/>
+                <reportElement x="0" y="0" width="350" height="22" backcolor="#E0E0E0" mode="Opaque"/>
+                <box><pen lineWidth="1.0"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
                 <text><![CDATA[Nome do Cliente]]></text>
             </staticText>
             <staticText>
-                <reportElement x="350" y="0" width="205" height="20"/>
-                <textElement textAlignment="Left"/>
+                <reportElement x="350" y="0" width="205" height="22" backcolor="#E0E0E0" mode="Opaque"/>
+                <box><pen lineWidth="1.0"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
                 <text><![CDATA[Data de Nascimento]]></text>
             </staticText>
         </band>
@@ -40,10 +42,14 @@
         <band height="20">
             <textField>
                 <reportElement x="0" y="0" width="350" height="20"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression><![CDATA[$F{nomeCliente}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="350" y="0" width="205" height="20"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression><![CDATA[$F{dataNascimento} != null ? $F{dataNascimento}.toString() : ""]]></textFieldExpression>
             </textField>
         </band>
