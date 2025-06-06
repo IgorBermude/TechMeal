@@ -18,7 +18,7 @@
             <staticText>
                 <reportElement x="0" y="0" width="860" height="30"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font size="18" isBold="true"/>
+                    <font size="16" isBold="true"/>
                 </textElement>
                 <text><![CDATA[RELATORIO TICKET MÉDIO]]></text>
             </staticText>
@@ -36,37 +36,37 @@
                 <staticText>
                     <reportElement x="0" y="0" width="150" height="22" backcolor="#E0E0E0" mode="Opaque"/>
                     <box><pen lineWidth="1.0"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true" size="12"/></textElement>
                     <text><![CDATA[Cliente]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="150" y="0" width="100" height="22" backcolor="#E0E0E0" mode="Opaque"/>
                     <box><pen lineWidth="1.0"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true" size="12"/></textElement>
                     <text><![CDATA[Ticket Médio]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="250" y="0" width="100" height="22" backcolor="#E0E0E0" mode="Opaque"/>
                     <box><pen lineWidth="1.0"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true" size="12"/></textElement>
                     <text><![CDATA[Limite]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="350" y="0" width="100" height="22" backcolor="#E0E0E0" mode="Opaque"/>
                     <box><pen lineWidth="1.0"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true" size="12"/></textElement>
                     <text><![CDATA[Saldo Atual]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="450" y="0" width="100" height="22" backcolor="#E0E0E0" mode="Opaque"/>
                     <box><pen lineWidth="1.0"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true" size="12"/></textElement>
                     <text><![CDATA[Dias]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="550" y="0" width="100" height="22" backcolor="#E0E0E0" mode="Opaque"/>
                     <box><pen lineWidth="1.0"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true" size="12"/></textElement>
                     <text><![CDATA[Total Gasto]]></text>
                 </staticText>
             </frame>
@@ -79,37 +79,37 @@
                 <textField>
                     <reportElement x="0" y="0" width="150" height="20"/>
                     <box><pen lineWidth="0.5"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font size="11"/></textElement>
                     <textFieldExpression><![CDATA[$F{nomeCliente}]]></textFieldExpression>
                 </textField>
                 <textField pattern="#,##0.00">
                     <reportElement x="150" y="0" width="100" height="20"/>
                     <box><pen lineWidth="0.5"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font size="11"/></textElement>
                     <textFieldExpression><![CDATA[$F{ticketMedio}]]></textFieldExpression>
                 </textField>
                 <textField pattern="#,##0.00">
                     <reportElement x="250" y="0" width="100" height="20"/>
                     <box><pen lineWidth="0.5"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font size="11"/></textElement>
                     <textFieldExpression><![CDATA[$F{totalPagar}]]></textFieldExpression>
                 </textField>
                 <textField pattern="#,##0.00">
                     <reportElement x="350" y="0" width="100" height="20"/>
                     <box><pen lineWidth="0.5"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font size="11"/></textElement>
                     <textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
                 </textField>
                 <textField>
                     <reportElement x="450" y="0" width="100" height="20"/>
                     <box><pen lineWidth="0.5"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font size="11"/></textElement>
                     <textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression>
                 </textField>
                 <textField pattern="#,##0.00">
                     <reportElement x="550" y="0" width="100" height="20"/>
                     <box><pen lineWidth="0.5"/></box>
-                    <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle"><font size="11"/></textElement>
                     <textFieldExpression><![CDATA[$F{totalGasto}]]></textFieldExpression>
                 </textField>
             </frame>
