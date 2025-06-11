@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Permite acesso ao login e autenticação
-                        .requestMatchers("/usuario/**").permitAll() // Permite acesso aos endpoints de usuário
+                        //.requestMatchers("/usuario/**").permitAll() // Permite acesso aos endpoints de usuário
                         .requestMatchers("/swagger-ui/**").permitAll() // Permite acesso ao Swagger UI
                         .requestMatchers("/v3/api-docs/**").permitAll()  // Permite acesso aos docs da API (Swagger)
                         .requestMatchers("/favicon.ico").permitAll()  // Permite acesso ao favicon do Swagge
