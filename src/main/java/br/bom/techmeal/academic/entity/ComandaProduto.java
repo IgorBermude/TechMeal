@@ -19,12 +19,12 @@ public class ComandaProduto implements Serializable {
     @MapsId("comandaId")
     @JoinColumn(name = "comanda_id")
     @JsonBackReference("comanda-comandaProduto")
-    private Comanda comanda; // REMOVA @JsonBackReference
+    private Comanda comanda;
 
     @ManyToOne
     @MapsId("produtoId")
     @JoinColumn(name = "produto_id")
-    private Produto produto; // REMOVA @JsonManagedReference
+    private Produto produto;
 
     @Column(nullable = false)
     private Integer quantidade;
