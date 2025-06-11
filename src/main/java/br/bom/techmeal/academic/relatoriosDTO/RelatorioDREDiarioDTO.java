@@ -9,8 +9,8 @@ public class RelatorioDREDiarioDTO {
     private LocalDate data;
     private double receber;
     private double pagar;
-    private double saldo;
-    private int clientesAtendidos;
+    private double saldo; // saldo anterior
+    private double resultado; // saldo anterior + resultado do dia
 
     public LocalDate getData() { return data; }
     public void setData(LocalDate data) { this.data = data; }
@@ -24,8 +24,8 @@ public class RelatorioDREDiarioDTO {
     public double getSaldo() { return saldo; }
     public void setSaldo(double saldo) { this.saldo = saldo; }
 
-    public int getClientesAtendidos() { return clientesAtendidos; }
-    public void setClientesAtendidos(int clientesAtendidos) { this.clientesAtendidos = clientesAtendidos; }
+    public double getResultado() { return resultado; }
+    public void setResultado(double resultado) { this.resultado = resultado; }
 
     public static void criarTemplateJrxmlSeNaoExistir(File jrxmlFile) throws IOException {
         if (jrxmlFile.exists()) return;
@@ -43,7 +43,7 @@ public class RelatorioDREDiarioDTO {
                     "    <field name=\"receber\" class=\"java.lang.Double\"/>\n" +
                     "    <field name=\"pagar\" class=\"java.lang.Double\"/>\n" +
                     "    <field name=\"saldo\" class=\"java.lang.Double\"/>\n" +
-                    "    <field name=\"clientesAtendidos\" class=\"java.lang.Integer\"/>\n" +
+                    "    <field name=\"resultado\" class=\"java.lang.Double\"/>\n" +
                     "    <title>\n" +
                     "        <band height=\"50\">\n" +
                     "            <staticText>\n" +
@@ -62,35 +62,40 @@ public class RelatorioDREDiarioDTO {
                     "    </title>\n" +
                     "    <columnHeader>\n" +
                     "        <band height=\"22\">\n" +
-                    "            <staticText><reportElement x=\"0\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Data]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"80\" y=\"0\" width=\"90\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Receber]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"170\" y=\"0\" width=\"90\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Pagar]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"260\" y=\"0\" width=\"90\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Saldo]]></text></staticText>\n" +
-                    "            <staticText><reportElement x=\"350\" y=\"0\" width=\"120\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Clientes Atendidos]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"0\" y=\"0\" width=\"80\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\" size=\"12\"/></textElement><text><![CDATA[Data]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"80\" y=\"0\" width=\"90\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\" size=\"12\"/></textElement><text><![CDATA[Saldo]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"170\" y=\"0\" width=\"90\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\" size=\"12\"/></textElement><text><![CDATA[Receber]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"260\" y=\"0\" width=\"90\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\" size=\"12\"/></textElement><text><![CDATA[Pagar]]></text></staticText>\n" +
+                    "            <staticText><reportElement x=\"350\" y=\"0\" width=\"90\" height=\"22\" backcolor=\"#E0E0E0\" mode=\"Opaque\"/><box><pen lineWidth=\"1.0\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font isBold=\"true\" size=\"12\"/></textElement><text><![CDATA[Resultado]]></text></staticText>\n" +
                     "        </band>\n" +
                     "    </columnHeader>\n" +
                     "    <detail>\n" +
                     "        <band height=\"20\">\n" +
-                    "            <textField><reportElement x=\"0\" y=\"0\" width=\"80\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{data}.toString()]]></textFieldExpression></textField>\n" +
-                    "            <textField pattern=\"#,##0.00\">\n" +
+                    "            <textField><reportElement x=\"0\" y=\"0\" width=\"80\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font size=\"11\"/></textElement><textFieldExpression><![CDATA[$F{data}.toString()]]></textFieldExpression></textField>\n" +
+                    "            <textField pattern=\"#,#0.00\">\n" +
                     "                <reportElement x=\"80\" y=\"0\" width=\"90\" height=\"20\"/>\n" +
                     "                <box><pen lineWidth=\"0.5\"/></box>\n" +
-                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
-                    "                <textFieldExpression><![CDATA[$F{receber}]]></textFieldExpression>\n" +
-                    "            </textField>\n" +
-                    "            <textField pattern=\"#,##0.00\">\n" +
-                    "                <reportElement x=\"170\" y=\"0\" width=\"90\" height=\"20\"/>\n" +
-                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
-                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
-                    "                <textFieldExpression><![CDATA[$F{pagar}]]></textFieldExpression>\n" +
-                    "            </textField>\n" +
-                    "            <textField pattern=\"#,##0.00\">\n" +
-                    "                <reportElement x=\"260\" y=\"0\" width=\"90\" height=\"20\"/>\n" +
-                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
-                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font size=\"11\"/></textElement>\n" +
                     "                <textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>\n" +
                     "            </textField>\n" +
-                    "            <textField><reportElement x=\"350\" y=\"0\" width=\"120\" height=\"20\"/><box><pen lineWidth=\"0.5\"/></box><textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{clientesAtendidos}]]></textFieldExpression></textField>\n" +
+                    "            <textField pattern=\"#,#0.00\">\n" +
+                    "                <reportElement x=\"170\" y=\"0\" width=\"90\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font size=\"11\"/></textElement>\n" +
+                    "                <textFieldExpression><![CDATA[$F{receber}]]></textFieldExpression>\n" +
+                    "            </textField>\n" +
+                    "            <textField pattern=\"#,#0.00\">\n" +
+                    "                <reportElement x=\"260\" y=\"0\" width=\"90\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font size=\"11\"/></textElement>\n" +
+                    "                <textFieldExpression><![CDATA[$F{pagar}]]></textFieldExpression>\n" +
+                    "            </textField>\n" +
+                    "            <textField pattern=\"#,#0.00\">\n" +
+                    "                <reportElement x=\"350\" y=\"0\" width=\"90\" height=\"20\"/>\n" +
+                    "                <box><pen lineWidth=\"0.5\"/></box>\n" +
+                    "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\"><font size=\"11\"/></textElement>\n" +
+                    "                <textFieldExpression><![CDATA[$F{resultado}]]></textFieldExpression>\n" +
+                    "            </textField>\n" +
                     "        </band>\n" +
                     "    </detail>\n" +
                     "</jasperReport>\n");

@@ -8,6 +8,7 @@ public class RelatorioClientesDevedoresDTO {
     private String nomeCliente;
     private double faturaCliente;
     private double saldoCliente;
+    private double limiteCliente;
 
     public String getNomeCliente() {
         return nomeCliente;
@@ -33,6 +34,14 @@ public class RelatorioClientesDevedoresDTO {
         this.saldoCliente = Double.isNaN(saldoCliente) ? 0 : saldoCliente;
     }
 
+    public double getLimiteCliente() {
+        return limiteCliente;
+    }
+
+    public void setLimiteCliente(double limiteCliente) {
+        this.limiteCliente = limiteCliente;
+    }
+
     // Cria o template jrxml se não existir
     public static void criarTemplateJrxmlSeNaoExistir(File jrxmlFile) throws IOException {
         if (!jrxmlFile.exists()) {
@@ -45,6 +54,7 @@ public class RelatorioClientesDevedoresDTO {
                     "    <field name=\"nomeCliente\" class=\"java.lang.String\"/>\n" +
                     "    <field name=\"faturaCliente\" class=\"java.lang.Double\"/>\n" +
                     "    <field name=\"saldoCliente\" class=\"java.lang.Double\"/>\n" +
+                    "    <field name=\"limiteCliente\" class=\"java.lang.Double\"/>\n" +
                     "    <title>\n" +
                     "        <band height=\"40\">\n" +
                     "            <textField>\n" +

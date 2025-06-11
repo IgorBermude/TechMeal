@@ -19,6 +19,10 @@ public interface ControleContasRepository extends JpaRepository<ControleContas, 
     @Query("SELECT c FROM ControleContas c WHERE FUNCTION('DATE', c.dtVencimentoControleContas) = :data")
     List<ControleContas> findByDataPagamento(@Param("data") LocalDate data);
 
+    // Buscar contas pagas antes de uma data específica
+    @Query("SELECT c FROM ControleContas c WHERE FUNCTION('DATE', c.dtVencimentoControleContas) < :data")
+    List<ControleContas> findByDataPagamentoBefore(@Param("data") LocalDate data);
+
     //   buscar uma conta pelo ID
     ControleContas findByIdContaControleContas(Integer id);
 

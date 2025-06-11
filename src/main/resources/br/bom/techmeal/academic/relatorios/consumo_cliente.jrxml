@@ -55,7 +55,7 @@
                 <reportElement x="340" y="0" width="80" height="22" backcolor="#E0E0E0" mode="Opaque"/>
                 <box><pen lineWidth="1.0"/></box>
                 <textElement textAlignment="Center" verticalAlignment="Middle"><font isBold="true" size="12"/></textElement>
-                <text><![CDATA[Fatura]]></text>
+                <text><![CDATA[Limite Disponivel]]></text>
             </staticText>
             <staticText>
                 <reportElement x="420" y="0" width="80" height="22" backcolor="#E0E0E0" mode="Opaque"/>

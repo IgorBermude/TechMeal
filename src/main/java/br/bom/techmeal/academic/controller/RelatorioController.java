@@ -205,7 +205,7 @@ public class RelatorioController {
         return outputStream.toByteArray();
     }
 
-    // O saldo tem que ser acomulativo.
+    // Adicionar a coluna com saldo anterior e ir somando com o campo Saldo.
     @PostMapping("/dred-diario")
     public byte[] gerarRelatorioDREDiario(
             @RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
@@ -214,8 +214,28 @@ public class RelatorioController {
         List<Cliente> clientes = clienteRepository.findAll();
         List<RelatorioDREDiarioDTO> dados = new java.util.ArrayList<>();
 
+        // Buscar saldo anterior ao período pesquisado
+        double saldoAnterior = 0.0;
+        if (dataInicio != null) {
+            // Soma todas as recargas antes do período
+            double totalRecebidoAntes = historicoRecargaRepository
+                    .findByDataRecargaBefore(dataInicio)
+                    .stream()
+                    .mapToDouble(HistoricoRecarga::getValorRecargaHistoricoRecarga)
+                    .sum();
+
+            // Soma todos os pagamentos de fornecedores antes do período
+            double totalGastoAntes = controleContasRepository
+                    .findByDataPagamentoBefore(dataInicio)
+                    .stream()
+                    .mapToDouble(ControleContas::getValorControleContas)
+                    .sum();
+
+            saldoAnterior = totalRecebidoAntes - totalGastoAntes;
+        }
+
+        double saldoAcumulado = saldoAnterior;
         long dias = ChronoUnit.DAYS.between(dataInicio, dataFim) + 1;
-        double saldoAcumulado = 0.0;
         for (int i = 0; i < dias; i++) {
             LocalDate dia = dataInicio.plusDays(i);
 
@@ -233,24 +253,17 @@ public class RelatorioController {
                     .mapToDouble(ControleContas::getValorControleContas)
                     .sum();
 
-            // Número de clientes atendidos no dia (clientes que fizeram recarga no dia)
-            long clientesAtendidos = historicoRecargaRepository
-                    .findByDataRecarga(dia)
-                    .stream()
-                    .map(HistoricoRecarga::getCliente)
-                    .map(Cliente::getIdCliente)
-                    .distinct()
-                    .count();
-
-            // Saldo acumulativo
-            saldoAcumulado += (totalRecebido - totalGasto);
+            // Resultado do dia (não acumulativo)
+            double resultado = totalRecebido - totalGasto;
 
             RelatorioDREDiarioDTO dre = new RelatorioDREDiarioDTO();
             dre.setData(dia);
             dre.setReceber(totalRecebido);
             dre.setPagar(totalGasto);
-            dre.setSaldo(saldoAcumulado);
-            dre.setClientesAtendidos((int) clientesAtendidos);
+            dre.setResultado(resultado); // resultado do dia (não acumulativo)
+            dre.setSaldo(saldoAcumulado); // saldo anterior/acumulado
+
+            saldoAcumulado += resultado; // saldo acumulado para o próximo dia
 
             dados.add(dre);
         }
@@ -378,6 +391,7 @@ public class RelatorioController {
                 dto.setNomeCliente(cliente.getNomeCliente());
                 dto.setFaturaCliente(cliente.getFaturaCliente());
                 dto.setSaldoCliente(cliente.getSaldoCliente());
+                dto.setLimiteCliente(cliente.getLimiteCliente());
                 dados.add(dto);
             }
         }
@@ -406,4 +420,32 @@ public class RelatorioController {
         return outputStream.toByteArray();
     }
 
+    @PostMapping("/consumo-grafico")
+    public List<RelatorioConsumoDTO> gerarGraficoConsumo() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<RelatorioConsumoDTO> dados = new java.util.ArrayList<>();
+
+        for (Cliente cliente : clientes) {
+            List<HistoricoRecarga> historicos = historicoRecargaRepository.findByCliente(cliente.getIdCliente());
+
+            double totalConsumido = historicos.stream()
+                    .mapToDouble(HistoricoRecarga::getValorRecargaHistoricoRecarga)
+                    .sum();
+
+            int totalCompras = produtoRepository.somarProdutosCompradosPorCliente(cliente.getIdCliente());
+
+            int totalRecargas = historicos.size();
+
+            RelatorioConsumoDTO dto = new RelatorioConsumoDTO();
+            dto.setNomeCliente(cliente.getNomeCliente());
+            dto.setTotalConsumido(totalConsumido);
+            dto.setTotalCompras(totalCompras);
+            dto.setTotalRecargas(totalRecargas);
+            dto.setSaldoCliente(cliente.getSaldoCliente());
+            dto.setFaturaCliente(cliente.getFaturaCliente());
+            dados.add(dto);
+        }
+
+        return dados;
+    }
 }

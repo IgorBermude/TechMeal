@@ -21,4 +21,11 @@ public interface HistoricoRecargaRepository extends JpaRepository<HistoricoRecar
 
     @Query("SELECT h FROM HistoricoRecarga h WHERE h.dataRecargaHistoricoRecarga = :dia")
     List<HistoricoRecarga> findByDataRecarga(@Param("dia") LocalDate dia);
+
+    @Query("SELECT h FROM HistoricoRecarga h WHERE h.dataRecargaHistoricoRecarga < :data")
+    List<HistoricoRecarga> findByDataRecargaBefore(@Param("data") LocalDate data);
+
+    @Query("SELECT h FROM HistoricoRecarga h WHERE h.cliente.idCliente = :clienteId")
+    List<HistoricoRecarga> findByCliente(@Param("clienteId") Integer clienteId);
+
 }

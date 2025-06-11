@@ -44,4 +44,14 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
             @Param("dataInicio") LocalDate dataInicio,
             @Param("dataFim") LocalDate dataFim
     );
+    @Query(
+            value = "SELECT COALESCE(SUM(cp.quantidade), 0) " +
+                    "FROM comanda_produto cp " +
+                    "JOIN comanda c ON cp.comanda_id = c.id_compra_comanda " +
+                    "WHERE c.cliente_id_cliente = :clienteId",
+            nativeQuery = true
+    )
+    int somarProdutosCompradosPorCliente(
+            @Param("clienteId") Integer clienteId
+    );
 }
