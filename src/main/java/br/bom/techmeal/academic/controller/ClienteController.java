@@ -52,12 +52,15 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> excluir(@PathVariable("id") Integer id, @RequestParam(value = "confirmar", required = false) Boolean confirmar) {
         try {
             // Verifica se o cliente tem uma comanda ativa
-            if (clienteService.verificarComandaAtiva(id)) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Retorna 409
-            }
+            /*if (clienteService.verificarComandaAtiva(id)) {
+                if (confirmar == null || !confirmar) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT)
+                            .body("O cliente possui uma comanda ativa. Confirma a exclusão?");
+                }
+            }*/
 
             // Limpa a lista de comandas do cliente
             clienteService.limparComandas(id);

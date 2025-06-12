@@ -30,7 +30,7 @@ public class Cliente implements Serializable {
     private Date ultimaCompraCliente;
     @Column (name = "limite_disponivel")
     private double faturaCliente;
-    @Column
+    @Column(unique = true)
     private String idCartaoCliente;
 
     @OneToMany(mappedBy ="cliente")
