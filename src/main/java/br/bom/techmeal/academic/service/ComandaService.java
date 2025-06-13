@@ -65,9 +65,32 @@ public class ComandaService {
     }
 
     public void excluir(Integer id) {
-        Comanda comanda = buscarComandaPorId(id);
+        Comanda comanda = comandaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
+
+
+        comanda.getComandaProdutos().clear();
+        comandaRepository.save(comanda);
         comandaRepository.delete(comanda);
     }
+
+    /*@Transactional
+    public void excluirComanda(Integer id) {
+        Comanda comanda = comandaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
+
+        boolean isComandaAtiva = (comanda.getHoraSaidaComanda() == null);
+
+        if (isComandaAtiva) {
+            throw new RuntimeException("Comanda ativa não pode ser excluída");
+        } else {
+            comanda.getComandaProdutos().clear();
+            comandaRepository.save(comanda);
+            comandaRepository.delete(comanda);
+        }
+    }*/
+
+
 
     public ComandaDTO criarComanda(ComandaDTO comandaDTO) {
         Cliente cliente = clienteRepository.findById(comandaDTO.getCliente().getIdCliente())

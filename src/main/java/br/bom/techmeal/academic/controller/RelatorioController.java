@@ -420,7 +420,7 @@ public class RelatorioController {
         return outputStream.toByteArray();
     }
 
-    @PostMapping("/consumo-grafico")
+    @GetMapping("/consumo-grafico")
     public List<RelatorioConsumoDTO> gerarGraficoConsumo() {
         List<Cliente> clientes = clienteRepository.findAll();
         List<RelatorioConsumoDTO> dados = new java.util.ArrayList<>();

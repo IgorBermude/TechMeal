@@ -4,6 +4,7 @@ import br.bom.techmeal.academic.dto.ClienteDTO;
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.HistoricoRecarga;
 import br.bom.techmeal.academic.repository.ClienteRepository;
+import br.bom.techmeal.academic.repository.ComandaProdutoRepository;
 import br.bom.techmeal.academic.repository.ComandaRepository;
 import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ClienteService {
 
     @Autowired
     private HistoricoRecargaRepository historicoRecargaRepository;
+
+    @Autowired
+    private ComandaProdutoRepository comandaProdutoRepository;
 
 
     public List<ClienteDTO> listarTodos() {
@@ -53,12 +57,18 @@ public class ClienteService {
         return new ClienteDTO(clienteRepository.save(clienteEntity));
     }
 
-    public void excluir(Integer id) {
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
+    @Transactional
+    public void excluir(int clienteId) {
+        // 1) Deletar registros em comanda_produto relacionados ao cliente
+        comandaProdutoRepository.deleteByComanda_Cliente_IdCliente(clienteId);
 
-        clienteRepository.delete(cliente);
+        // 2) Deletar as comandas do cliente
+        comandaRepository.deleteByCliente_IdCliente(clienteId);
+
+        // 3) Deletar o cliente
+        clienteRepository.deleteById(clienteId);
     }
+
 
     public ClienteDTO atualizarSaldo(Integer id, double novoSaldo) {
         Cliente cliente = clienteRepository.findById(id)
@@ -118,4 +128,9 @@ public class ClienteService {
 
         comandaRepository.deleteByClienteId(cliente.getIdCliente());
     }
+
+    public boolean clientePossuiRegistroEmComandaProduto(int clienteId) {
+        return comandaProdutoRepository.existsByComanda_Cliente_IdCliente(clienteId);
+    }
+
 }

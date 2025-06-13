@@ -52,18 +52,12 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluir(@PathVariable("id") Integer id, @RequestParam(value = "confirmar", required = false) Boolean confirmar) {
+    public ResponseEntity<?> excluir(@PathVariable("id") Integer id) {
         try {
-            // Verifica se o cliente tem uma comanda ativa
-            /*if (clienteService.verificarComandaAtiva(id)) {
-                if (confirmar == null || !confirmar) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT)
-                            .body("O cliente possui uma comanda ativa. Confirma a exclusão?");
-                }
-            }*/
-
-            // Limpa a lista de comandas do cliente
-            clienteService.limparComandas(id);
+            if (clienteService.verificarComandaAtiva(id)) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Não é possível excluir o cliente porque possui comanda ativa.");
+            }
 
             clienteService.excluir(id);
             return ResponseEntity.ok().build();
@@ -71,6 +65,8 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+
 
     @PutMapping("/alterar/{id}")
     public ResponseEntity<ClienteDTO> alterar(@PathVariable Integer id, @RequestBody ClienteDTO clienteAtualizado) {

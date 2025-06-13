@@ -2,7 +2,7 @@ package br.bom.techmeal.academic.repository;
 
 import br.bom.techmeal.academic.entity.Cliente;
 import br.bom.techmeal.academic.entity.Comanda;
-import br.bom.techmeal.academic.entity.ControleContas;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +27,9 @@ public interface ComandaRepository extends JpaRepository<Comanda, Integer> {
     @Modifying
     @Query("DELETE FROM Comanda c WHERE c.cliente.id = :idCliente")
     void deleteByClienteId(@Param("idCliente") int idCliente);
+
+    @Transactional
+    void deleteByCliente_IdCliente(int clienteId);
+
+
 }
