@@ -28,4 +28,5 @@ public interface HistoricoRecargaRepository extends JpaRepository<HistoricoRecar
     @Query("SELECT h FROM HistoricoRecarga h WHERE h.cliente.idCliente = :clienteId")
     List<HistoricoRecarga> findByCliente(@Param("clienteId") Integer clienteId);
 
+    void deleteByCliente_IdCliente(int clienteId);
 }

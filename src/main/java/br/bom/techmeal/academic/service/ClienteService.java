@@ -65,6 +65,9 @@ public class ClienteService {
         // 2) Deletar as comandas do cliente
         comandaRepository.deleteByCliente_IdCliente(clienteId);
 
+        // 3) Deletar o histórico de recargas do cliente
+        historicoRecargaRepository.deleteByCliente_IdCliente(clienteId);
+
         // 3) Deletar o cliente
         clienteRepository.deleteById(clienteId);
     }

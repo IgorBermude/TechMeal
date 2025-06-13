@@ -31,5 +31,5 @@ public interface ComandaRepository extends JpaRepository<Comanda, Integer> {
     @Transactional
     void deleteByCliente_IdCliente(int clienteId);
 
-
+    List<Comanda> findByCliente(Cliente cliente);
 }

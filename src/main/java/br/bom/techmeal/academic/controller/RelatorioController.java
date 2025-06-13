@@ -1,13 +1,11 @@
 package br.bom.techmeal.academic.controller;
 
 import br.bom.techmeal.academic.entity.Cliente;
+import br.bom.techmeal.academic.entity.Comanda;
 import br.bom.techmeal.academic.entity.ControleContas;
 import br.bom.techmeal.academic.entity.HistoricoRecarga;
 import br.bom.techmeal.academic.relatoriosDTO.*;
-import br.bom.techmeal.academic.repository.ClienteRepository;
-import br.bom.techmeal.academic.repository.HistoricoRecargaRepository;
-import br.bom.techmeal.academic.repository.ProdutoRepository;
-import br.bom.techmeal.academic.repository.ControleContasRepository;
+import br.bom.techmeal.academic.repository.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,9 @@ public class RelatorioController {
 
     @Autowired
     private ControleContasRepository controleContasRepository;
+
+    @Autowired
+    private ComandaRepository comandaRepository;
 
     // Tiket medio pega o total gasto e divide pelo total de dias que ele comprou
     @PostMapping("/ticket-medio-clientes")
@@ -274,6 +275,7 @@ public class RelatorioController {
         parametros.put("titulo", "DRE Diário");
         parametros.put("dataInicio", dataInicio.toString());
         parametros.put("dataFim", dataFim.toString());
+        parametros.put("saldoAnterior", saldoAnterior); // Adicionado parâmetro saldoAnterior
 
         String jrxmlPath = "src/main/resources/br/bom/techmeal/academic/relatorios/dre_diario.jrxml";
         File jrxmlFile = new File(jrxmlPath);
@@ -426,15 +428,15 @@ public class RelatorioController {
         List<RelatorioConsumoDTO> dados = new java.util.ArrayList<>();
 
         for (Cliente cliente : clientes) {
-            List<HistoricoRecarga> historicos = historicoRecargaRepository.findByCliente(cliente.getIdCliente());
+            List<Comanda> comandas = comandaRepository.findByCliente(cliente);
 
-            double totalConsumido = historicos.stream()
-                    .mapToDouble(HistoricoRecarga::getValorRecargaHistoricoRecarga)
+            double totalConsumido = comandas.stream()
+                    .mapToDouble(Comanda::getValorTotalComanda)
                     .sum();
 
             int totalCompras = produtoRepository.somarProdutosCompradosPorCliente(cliente.getIdCliente());
 
-            int totalRecargas = historicos.size();
+            int totalRecargas = comandas.size();
 
             RelatorioConsumoDTO dto = new RelatorioConsumoDTO();
             dto.setNomeCliente(cliente.getNomeCliente());

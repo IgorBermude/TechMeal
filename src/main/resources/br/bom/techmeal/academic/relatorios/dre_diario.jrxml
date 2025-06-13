@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-    name="dre_diario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="123e4567-e89b-12d3-a456-426614174002">
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="dre_diario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="123e4567-e89b-12d3-a456-426614174002">
     <parameter name="titulo" class="java.lang.String"/>
     <parameter name="dataInicio" class="java.lang.String"/>
     <parameter name="dataFim" class="java.lang.String"/>
+    <parameter name="saldoAnterior" class="java.lang.Double"/>
     <field name="data" class="java.time.LocalDate"/>
     <field name="receber" class="java.lang.Double"/>
     <field name="pagar" class="java.lang.Double"/>
     <field name="saldo" class="java.lang.Double"/>
     <field name="resultado" class="java.lang.Double"/>
     <title>
-        <band height="50">
+        <band height="70">
             <staticText>
                 <reportElement x="0" y="0" width="555" height="30"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
@@ -24,6 +25,13 @@
                 <reportElement x="0" y="30" width="555" height="20"/>
                 <textElement textAlignment="Center"/>
                 <textFieldExpression><![CDATA["Período: " + $P{dataInicio} + " a " + $P{dataFim}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="0" y="50" width="555" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Saldo Anterior: " + $P{saldoAnterior}]]></textFieldExpression>
             </textField>
         </band>
     </title>
