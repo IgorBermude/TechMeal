@@ -48,12 +48,4 @@ public interface UsuarioPermissaoTelaRepository extends JpaRepository<UsuarioPer
     ORDER BY t.id_tela ASC
 """, nativeQuery = true)
     List<Object[]> listarPermissoesOrdenadasPorTela(@Param("idUsuario") int idUsuario);
-
-
-
-
-
-
-
-
 }

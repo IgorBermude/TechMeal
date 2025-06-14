@@ -52,8 +52,8 @@ public class UsuarioService {
 
 
         usuarioExistente.setNomeUsuario(usuarioDTO.getNomeUsuario());
-        usuarioExistente.setEmailUsuario(usuarioDTO.getEmailUsuario());
         usuarioExistente.setLogin(usuarioDTO.getLogin());
+        usuarioExistente.setEmailUsuario(usuarioDTO.getEmailUsuario());
         usuarioExistente.setTelefoneUsuario(usuarioDTO.getTelefoneUsuario());
         usuarioExistente.setIsAdm(usuarioDTO.getIsAdm());
 

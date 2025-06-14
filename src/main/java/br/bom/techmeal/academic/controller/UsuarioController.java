@@ -88,8 +88,8 @@ public class UsuarioController {
             UsuarioDTO usuarioLogado = usuarioService.getUsuarioLogado();
             UsuarioDTO usuarioEditado = usuarioService.buscarPorId(id);
 
-            // Verifica se o usuário logado é um SuperAdm
-            if (!usuarioLogado.getIsSuperAdm()) {
+            // Verifica a ser excluido eh admin
+            if (usuarioEditado.getIsAdm()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Retorna 403 - Acesso negado
             }
 
@@ -141,4 +141,3 @@ public class UsuarioController {
         }
     }
 }
-

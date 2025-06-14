@@ -1,6 +1,7 @@
 package br.bom.techmeal.academic.service;
 
 import br.bom.techmeal.academic.dto.TelaComPermissoesDTO;
+import br.bom.techmeal.academic.entity.UsuarioPermissaoTela;
 import br.bom.techmeal.academic.repository.UsuarioPermissaoTelaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,21 +14,33 @@ public class UsuarioPermissaoTelaService {
     @Autowired
     private UsuarioPermissaoTelaRepository usuarioPermissaoTelaRepository;
 
+
     public List<TelaComPermissoesDTO> listarTelasComPermissoes(int idUsuario) {
-        List<Object[]> resultados = usuarioPermissaoTelaRepository.listarPermissoesOrdenadasPorTela(idUsuario);
+        List<UsuarioPermissaoTela> permissoes = usuarioPermissaoTelaRepository.findByUsuarioIdUsuario(idUsuario);
 
-        Map<Integer, TelaComPermissoesDTO> mapaTelas = new LinkedHashMap<>();
+        // Mapa temporário com chave sendo o id da tela e valor um objeto com nome, url e set de permissões
+        Map<Integer, TelaComPermissoesDTO> agrupado = new HashMap<>();
 
-        for (Object[] row : resultados) {
-            Integer idTela = (Integer) row[0];
-            String nomeTela = (String) row[1];
-            String urlTela = (String) row[2];
-            String acaoPermissao = (String) row[3];
+        for (UsuarioPermissaoTela upt : permissoes) {
+            Integer idTela = upt.getTela().getIdTela();
+            String nomeTela = upt.getTela().getNomeTela();
+            String urlTela = upt.getTela().getUrlTela();
+            String acao = upt.getPermissao().getAcaoPermissao();
 
-            mapaTelas.computeIfAbsent(idTela, k -> new TelaComPermissoesDTO(nomeTela, urlTela, new HashSet<>()));
-            mapaTelas.get(idTela).getPermissoes().add(acaoPermissao);
+            agrupado.compute(idTela, (k, v) -> {
+                if (v == null) {
+                    Set<String> permissoesSet = new HashSet<>();
+                    permissoesSet.add(acao);
+                    return new TelaComPermissoesDTO(idTela, nomeTela, urlTela, permissoesSet);
+                } else {
+                    v.getPermissoes().add(acao);
+                    return v;
+                }
+            });
         }
 
-        return new ArrayList<>(mapaTelas.values());
+        return new ArrayList<>(agrupado.values());
     }
+
+
 }
