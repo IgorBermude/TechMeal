@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +33,11 @@ public interface ComandaRepository extends JpaRepository<Comanda, Integer> {
     void deleteByCliente_IdCliente(int clienteId);
 
     List<Comanda> findByCliente(Cliente cliente);
+
+    @Query("SELECT c FROM Comanda c WHERE c.cliente = :cliente AND c.horaEntradaComanda BETWEEN :dataInicio AND :dataFim")
+    List<Comanda> findByClienteAndHoraEntradaComandaBetween(
+        @Param("cliente") Cliente cliente,
+        @Param("dataInicio") LocalDateTime dataInicio,
+        @Param("dataFim") LocalDateTime dataFim
+    );
 }

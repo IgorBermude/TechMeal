@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
@@ -296,6 +297,7 @@ public class RelatorioController {
         return outputStream.toByteArray();
     }
 
+    // Concertar grafico
     @PostMapping("/consumo")
     public byte[] gerarRelatorioConsumo(
             @RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
@@ -304,13 +306,16 @@ public class RelatorioController {
         List<Cliente> clientes = clienteRepository.findAll();
         List<RelatorioConsumoDTO> dados = new java.util.ArrayList<>();
 
+        LocalDateTime dataInicioDateTime = dataInicio.atStartOfDay();
+        LocalDateTime dataFimDateTime = dataFim.atTime(23, 59, 59);
+
         for (Cliente cliente : clientes) {
-            List<HistoricoRecarga> historicos = historicoRecargaRepository.findByClienteAndDataRecargaBetween(
-                cliente.getIdCliente(), dataInicio, dataFim
+            List<Comanda> historicos = comandaRepository.findByClienteAndHoraEntradaComandaBetween(
+                cliente, dataInicioDateTime, dataFimDateTime
             );
 
             double totalConsumido = historicos.stream()
-                .mapToDouble(HistoricoRecarga::getValorRecargaHistoricoRecarga)
+                .mapToDouble(Comanda::getValorTotalComanda)
                 .sum();
 
             int totalCompras = produtoRepository.somarProdutosCompradosPorClienteEPeriodo(
