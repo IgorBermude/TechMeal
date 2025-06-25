@@ -63,7 +63,7 @@ public class TerminalSession implements Runnable {
     private void consultarSaldo(BufferedReader in, BufferedWriter out, Cliente cliente) throws IOException {
         while (true) {
             clearTerminal(out);
-            out.write("Saldo atual R$ " + cliente.getSaldoCliente());
+            out.write("Nome: " + cliente.getNomeCliente() +" Saldo atual R$ " + cliente.getSaldoCliente());
             out.flush();
             String codigo = in.readLine();
             if (codigo == null || codigo.equalsIgnoreCase("X")) break;
